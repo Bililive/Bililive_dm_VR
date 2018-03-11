@@ -81,8 +81,12 @@ public class DanmakuReceiver : MonoBehaviour
 
             Client = new TcpClient();
             Client.Connect(ChatHost, ChatPort);
+            if (!Client.Connected)
+            {
+                return false;
+            }
             NetStream = Client.GetStream();
-            SendSocketData(7, "{\"roomid\"=\"" + channelId + "\",\"uid\"=0}");
+            SendSocketData(7, "{\"roomid\":\"" + channelId + "\",\"uid\":\"0\"}");
             Connected = true;
             ReceiveMessageLoopThread = new Thread(this.ReceiveMessageLoop);
             ReceiveMessageLoopThread.IsBackground = true;

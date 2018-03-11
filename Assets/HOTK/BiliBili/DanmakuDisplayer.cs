@@ -86,7 +86,7 @@ public class DanmakuDisplayer : MonoBehaviour
 
     public void HandlerDisconnected(Exception error)
     {
-        AddMsg("系统", "被断开连接：" + error != null ? error.Message : "神秘错误", "FF0000");
+        AddMsg("系统", "被断开连接：" + (error != null ? error.Message : "神秘错误"), "FF0000");
     }
 
     public void HandlerLogMessage(string log)
@@ -108,7 +108,7 @@ public class DanmakuDisplayer : MonoBehaviour
                 }
                 else
                 {
-                    AddMsg("系统", "连接失败：" + Receiver.Error == null ? "神秘错误" : Receiver.Error.Message, "FF0000");
+                    AddMsg("系统", "连接失败：" + (Receiver.Error == null ? "神秘错误" : Receiver.Error.Message), "FF0000");
                 }
             }
             else
@@ -166,11 +166,28 @@ public class DanmakuDisplayer : MonoBehaviour
         while (_messages.Count > ChatLineCount)
             _messages.RemoveAt(0);
 
-        GenChatTexts();
+        // GenChatTexts();
 
-        RefreshTexts();
+        if (!_needRefresh)
+        {
+            lock (_needRefreshlock)
+            {
+                _needRefresh = true;
+            }
+        }
+
     }
-    // TODO: 优化，使 AddMsg 线程安全
+    // TODO: 优化，使 AddMsg 线程安全 maybe use UnityEvent
+    private bool _needRefresh = false;
+    private object _needRefreshlock = new object();
+    private void Update()
+    {
+        lock (_needRefreshlock)
+        {
+            if (_needRefresh)
+                RefreshTexts();
+        }
+    }
     private static readonly object RefreshLocker = new object();
     private void RefreshTexts()
     {
