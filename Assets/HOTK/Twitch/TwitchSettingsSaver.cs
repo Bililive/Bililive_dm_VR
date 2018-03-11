@@ -55,13 +55,16 @@ public static class TwitchSettingsSaver
         switch (mode)
         {
             case 1: // Legacy Savefile compatibility
-                Logger4UIScripts.Log.Invoke("Upgrading Legacy Profile Save Data.", Logger4UIScripts.LogColor.Blue);
+                Logger4UIScripts.Log.Invoke("已从旧版本配置文件更新。", Logger4UIScripts.LogColor.Blue);
+                // Logger4UIScripts.Log.Invoke("Upgrading Legacy Profile Save Data.", Logger4UIScripts.LogColor.Blue);
                 break;
             case 2:
-                Logger4UIScripts.Log.Invoke("Profile deleted.", Logger4UIScripts.LogColor.Blue);
+                Logger4UIScripts.Log.Invoke("配置已删除。", Logger4UIScripts.LogColor.Blue);
+                // Logger4UIScripts.Log.Invoke("Profile deleted.", Logger4UIScripts.LogColor.Blue);
                 break;
             default:
-                Logger4UIScripts.Log.Invoke("Saved " + SavedProfiles.Count + " profile(s).", Logger4UIScripts.LogColor.Blue);
+                Logger4UIScripts.Log.Invoke("保存了 " + SavedProfiles.Count + " 个配置。", Logger4UIScripts.LogColor.Blue);
+                // Logger4UIScripts.Log.Invoke("Saved " + SavedProfiles.Count + " profile(s).", Logger4UIScripts.LogColor.Blue);
                 break;
         }
     }
@@ -83,7 +86,8 @@ public static class TwitchSettingsSaver
         {
             Current = CurrentProgramSettings.LastProfile;
         }
-        Logger4UIScripts.Log.Invoke("Loaded program settings.", Logger4UIScripts.LogColor.Blue);
+        Logger4UIScripts.Log.Invoke("已加载程序配置。", Logger4UIScripts.LogColor.Blue);
+        // Logger4UIScripts.Log.Invoke("Loaded program settings.", Logger4UIScripts.LogColor.Blue);
     }
 
     public static void SaveProgramSettings()
@@ -101,7 +105,8 @@ public static class TwitchSettingsSaver
         var file = File.Create(ProgramSettingsFileName);
         bf.Serialize(file, CurrentProgramSettings);
         file.Close();
-        Logger4UIScripts.Log.Invoke("Saved program settings.", Logger4UIScripts.LogColor.Blue);
+        Logger4UIScripts.Log.Invoke("已保存程序配置。", Logger4UIScripts.LogColor.Blue);
+        // Logger4UIScripts.Log.Invoke("Saved program settings.", Logger4UIScripts.LogColor.Blue);
     }
 
     public static void LoadProfiles()
@@ -113,13 +118,15 @@ public static class TwitchSettingsSaver
             filename = OriginalProfilesFileName;
             if (!File.Exists(filename)) return;
             legacy = true;
-            Logger4UIScripts.Log.Invoke("Found Legacy Profile Save Data: " + filename, Logger4UIScripts.LogColor.Blue);
+            Logger4UIScripts.Log.Invoke("找到了旧版配置文件: " + filename, Logger4UIScripts.LogColor.Blue);
+            // Logger4UIScripts.Log.Invoke("Found Legacy Profile Save Data: " + filename, Logger4UIScripts.LogColor.Blue);
         }
         var bf = new BinaryFormatter();
         var file = File.Open(filename, FileMode.Open);
         SavedProfiles = (Dictionary<string, TwitchSettings>)bf.Deserialize(file);
         file.Close();
-        Logger4UIScripts.Log.Invoke("Loaded " + SavedProfiles.Count + " profile(s).", Logger4UIScripts.LogColor.Blue);
+        Logger4UIScripts.Log.Invoke("已加载 " + SavedProfiles.Count + " 个配置。", Logger4UIScripts.LogColor.Blue);
+        // Logger4UIScripts.Log.Invoke("Loaded " + SavedProfiles.Count + " profile(s).", Logger4UIScripts.LogColor.Blue);
 
         if (!legacy) return; // Legacy Savefile compatibility
         File.Move(OriginalProfilesFileName, OriginalProfilesFileName + ".bak");

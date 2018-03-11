@@ -62,7 +62,8 @@ public class DropdownSaveLoadController : MonoBehaviour
 
     private Dropdown _dropdown;
 
-    private static string NewString = "New..";
+    private static string NewString = "新建..";
+    //    private static string NewString = "New..";
 
     public void OnEnable()
     {
@@ -137,7 +138,8 @@ public class DropdownSaveLoadController : MonoBehaviour
         CancelConfirmingDelete();
         TwitchSettings settings;
         if (!TwitchSettingsSaver.SavedProfiles.TryGetValue(Dropdown.options[Dropdown.value].text, out settings)) return;
-        Logger4UIScripts.Log.Invoke(startup ? "Loading last used settings " + Dropdown.options[Dropdown.value].text : "Loading saved settings " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
+        Logger4UIScripts.Log.Invoke(startup ? "加载了上次使用的配置： " + Dropdown.options[Dropdown.value].text : "加载保存的配置： " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
+        // Logger4UIScripts.Log.Invoke(startup ? "Loading last used settings " + Dropdown.options[Dropdown.value].text : "Loading saved settings " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
         TwitchSettingsSaver.Current = Dropdown.options[Dropdown.value].text;
         if (!startup) TwitchSettingsSaver.SaveProgramSettings();
         if (!DanmakuDisplayer.Instance.Connected) UsernameField.text = settings.Username;
@@ -176,8 +178,10 @@ public class DropdownSaveLoadController : MonoBehaviour
     }
 
     private bool _confirmingDelete;
-    private string _deleteTextDefault = "Delete the selected profile.";
-    private string _deleteTextConfirm = "Really Delete?";
+    private string _deleteTextDefault = "删除选中的配置。";
+    private string _deleteTextConfirm = "真的要删除吗？";
+    // private string _deleteTextDefault = "Delete the selected profile.";
+    // private string _deleteTextConfirm = "Really Delete?";
 
     public void OnDeleteButtonTooltip(bool forced = false)
     {
@@ -231,7 +235,8 @@ public class DropdownSaveLoadController : MonoBehaviour
         {
             TwitchSettings settings;
             if (!TwitchSettingsSaver.SavedProfiles.TryGetValue(Dropdown.options[Dropdown.value].text, out settings)) return;
-            Logger4UIScripts.Log.Invoke("Overwriting saved settings " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
+            Logger4UIScripts.Log.Invoke("覆盖了配置 " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
+            // Logger4UIScripts.Log.Invoke("Overwriting saved settings " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
             settings.SaveFileVersion = TwitchSettings.CurrentSaveVersion;
 
             settings.Username = UsernameField.text;
@@ -264,7 +269,8 @@ public class DropdownSaveLoadController : MonoBehaviour
     {
         if (string.IsNullOrEmpty(SaveName.text) || TwitchSettingsSaver.SavedProfiles.ContainsKey(SaveName.text)) return;
         _savingNew = false;
-        Logger4UIScripts.Log.Invoke("Adding saved settings " + SaveName.text, Logger4UIScripts.LogColor.Blue);
+        Logger4UIScripts.Log.Invoke("新建了配置 " + SaveName.text, Logger4UIScripts.LogColor.Blue);
+        // Logger4UIScripts.Log.Invoke("Adding saved settings " + SaveName.text, Logger4UIScripts.LogColor.Blue);
         TwitchSettingsSaver.SavedProfiles.Add(SaveName.text, ConvertToTwitchSettings(OverlayToSave));
         TwitchSettingsSaver.SaveProfiles();
         SaveName.text = "";
