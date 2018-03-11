@@ -19,6 +19,9 @@ public class DanmakuReceiver : MonoBehaviour
     private TcpClient Client;
     private NetworkStream NetStream;
 
+    private Thread ReceiveMessageLoopThread;
+    private Thread HeartbeatLoopThread;
+
     public bool Connected { get; private set; }
     public Exception Error { get; private set; }
 
@@ -81,10 +84,12 @@ public class DanmakuReceiver : MonoBehaviour
             NetStream = Client.GetStream();
             SendSocketData(7, "{\"roomid\"=\"" + channelId + "\",\"uid\"=0}");
             Connected = true;
-            this.HeartbeatLoop();
-            var thread = new Thread(this.ReceiveMessageLoop);
-            thread.IsBackground = true;
-            thread.Start();
+            ReceiveMessageLoopThread = new Thread(this.ReceiveMessageLoop);
+            ReceiveMessageLoopThread.IsBackground = true;
+            ReceiveMessageLoopThread.Start();
+            HeartbeatLoopThread = new Thread(this.HeartbeatLoop);
+            HeartbeatLoopThread.IsBackground = true;
+            HeartbeatLoopThread.Start();
             return true;
         }
         catch (Exception ex)
@@ -109,6 +114,7 @@ public class DanmakuReceiver : MonoBehaviour
 
     private void ReceiveMessageLoop()
     {
+        Debug.Log("ReceiveMessageLoop Started!");
         try
         {
             var stableBuffer = new byte[Client.ReceiveBufferSize];
@@ -175,12 +181,21 @@ public class DanmakuReceiver : MonoBehaviour
 
     private void HeartbeatLoop()
     {
+        Debug.Log("HeartbeatLoop Started!");
         try
         {
             while (this.Connected)
             {
                 this.SendHeartbeat();
-                Thread.Sleep(3000);
+                for (int i = 0; i < 30; i++)
+                {
+                    Thread.Sleep(1000);//1s
+                    if (!Connected)
+                    {
+                        Debug.Log("HeartbeatLoop Break");
+                        break;
+                    }
+                }
             }
         }
         catch (Exception ex)

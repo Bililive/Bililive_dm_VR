@@ -63,12 +63,19 @@ public class DanmakuDisplayer : MonoBehaviour
         Receiver.LogMessage.AddListener(HandlerLogMessage);
 
         Logger4UIScripts.Log.AddListener((msg, color) =>
-        { AddMsg("系统", color.LogColor2Hex(), msg); });
+        { AddMsg("系统", msg, color.LogColor2Hex()); });
     }
 
     public void HandlerReceivedDanmaku(DanmakuModel model)
     {
-        // TODO
+        if (model.MsgType == MsgTypeEnum.Comment)
+        {
+            AddMsg(model.UserName, model.CommentText, "000000");
+        }
+        else
+        {
+            Debug.Log("Danmaku Received: " + model.MsgType.ToString());
+        }
     }
 
     public void HandlerReceivedRoomCount(uint viewer)
@@ -79,12 +86,41 @@ public class DanmakuDisplayer : MonoBehaviour
 
     public void HandlerDisconnected(Exception error)
     {
-        // TODO
+        AddMsg("系统", "被断开连接：" + error != null ? error.Message : "神秘错误", "FF0000");
     }
 
     public void HandlerLogMessage(string log)
     {
-        // TODO
+        AddMsg("系统", log, "CC0000");
+    }
+
+    public void ToggleConnect()
+    {
+        Debug.Log("ToggleConnect Clicked! with Connected:" + Connected);
+        if (!Connected)
+        {// do connect
+            int roomid = 0;
+            if (int.TryParse(RoomIDBox.text, out roomid) && roomid > 0)
+            {
+                if (Receiver.Connect(roomid))
+                {
+                    AddMsg("系统", "连接成功！", "00FF00");
+                }
+                else
+                {
+                    AddMsg("系统", "连接失败：" + Receiver.Error == null ? "神秘错误" : Receiver.Error.Message, "FF0000");
+                }
+            }
+            else
+            {
+                AddMsg("系统", "房间号是正整数");
+                RoomIDBox.text = string.Empty;
+            }
+        }
+        else
+        {// disconnect
+            Receiver.Disconnect();
+        }
     }
 
     public void Start()
@@ -124,7 +160,7 @@ public class DanmakuDisplayer : MonoBehaviour
         if (ViewerCountTextMesh != null) ViewerCountTextMesh.text = "";
     }
 
-    public void AddMsg(string author, string color, string message)
+    public void AddMsg(string author, string message, string color = "0066FF")
     {
         _messages.Add(new DanmakuMessage(author, color, message));
         while (_messages.Count > ChatLineCount)
