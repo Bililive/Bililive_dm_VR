@@ -9,7 +9,7 @@ public class DropdownSaveLoadController : MonoBehaviour
 {
     public HOTK_Overlay OverlayToSave;
 
-    public InputField UsernameField;
+    // public InputField UsernameField;
     public InputField ChannelField;
     public Material BackgroundMaterial;
 
@@ -142,7 +142,7 @@ public class DropdownSaveLoadController : MonoBehaviour
         // Logger4UIScripts.Log.Invoke(startup ? "Loading last used settings " + Dropdown.options[Dropdown.value].text : "Loading saved settings " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
         TwitchSettingsSaver.Current = Dropdown.options[Dropdown.value].text;
         if (!startup) TwitchSettingsSaver.SaveProgramSettings();
-        if (!DanmakuDisplayer.Instance.Connected) UsernameField.text = settings.Username;
+        // if (!DanmakuDisplayer.Instance.Connected) UsernameField.text = settings.Username;
         if (!DanmakuDisplayer.Instance.Connected) ChannelField.text = settings.Channel;
 
         XSlider.Slider.value = settings.X;
@@ -239,7 +239,7 @@ public class DropdownSaveLoadController : MonoBehaviour
             // Logger4UIScripts.Log.Invoke("Overwriting saved settings " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
             settings.SaveFileVersion = TwitchSettings.CurrentSaveVersion;
 
-            settings.Username = UsernameField.text;
+            // settings.Username = UsernameField.text;
             settings.Channel = ChannelField.text;
             settings.X = OverlayToSave.AnchorOffset.x; settings.Y = OverlayToSave.AnchorOffset.y; settings.Z = OverlayToSave.AnchorOffset.z;
             settings.RX = OverlayToSave.transform.eulerAngles.x; settings.RY = OverlayToSave.transform.eulerAngles.y; settings.RZ = OverlayToSave.transform.eulerAngles.z;
@@ -287,7 +287,7 @@ public class DropdownSaveLoadController : MonoBehaviour
         {
             SaveFileVersion = TwitchSettings.CurrentSaveVersion,
 
-            Username = UsernameField.text,
+            // Username = UsernameField.text,
             Channel = ChannelField.text,
             X = o.AnchorOffset.x,
             Y = o.AnchorOffset.y,
