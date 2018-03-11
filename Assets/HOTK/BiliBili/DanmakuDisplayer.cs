@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,9 +59,11 @@ public class DanmakuDisplayer : MonoBehaviour
         GenChatTexts();
 
         Receiver.ReceivedDanmaku.AddListener(HandlerReceivedDanmaku);
-        Receiver.ReceivedRoomCount.AddListener(HandlerReceivedRoomCount);
+        // Receiver.ReceivedRoomCount.AddListener(HandlerReceivedRoomCount);
         Receiver.Disconnected.AddListener(HandlerDisconnected);
         Receiver.LogMessage.AddListener(HandlerLogMessage);
+
+        StartCoroutine(UpdateViewerCount());
 
         Logger4UIScripts.Log.AddListener((msg, color) =>
         { AddMsg("系统", msg, color.LogColor2Hex()); });
@@ -82,6 +85,16 @@ public class DanmakuDisplayer : MonoBehaviour
     {
         if (ViewerCountTextMesh != null)
             ViewerCountTextMesh.text = string.Format("人气: {0}", viewer);
+    }
+
+    private IEnumerator UpdateViewerCount()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5);
+            if (ViewerCountTextMesh != null)
+                ViewerCountTextMesh.text = string.Format("人气: {0}", Receiver.ViewerCount);
+        }
     }
 
     public void HandlerDisconnected(Exception error)

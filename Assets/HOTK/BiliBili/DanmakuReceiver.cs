@@ -24,6 +24,7 @@ public class DanmakuReceiver : MonoBehaviour
 
     public bool Connected { get; private set; }
     public Exception Error { get; private set; }
+    public uint ViewerCount { get; private set; }
 
     public class ReceivedDanmakuEvent : UnityEngine.Events.UnityEvent<DanmakuModel> { }
     public ReceivedDanmakuEvent ReceivedDanmaku = new ReceivedDanmakuEvent();
@@ -86,7 +87,7 @@ public class DanmakuReceiver : MonoBehaviour
                 return false;
             }
             NetStream = Client.GetStream();
-            SendSocketData(7, "{\"roomid\":\"" + channelId + "\",\"uid\":\"0\"}");
+            SendSocketData(7, "{\"roomid\":" + channelId + ",\"uid\":0}");
             Connected = true;
             ReceiveMessageLoopThread = new Thread(this.ReceiveMessageLoop);
             ReceiveMessageLoopThread.IsBackground = true;
@@ -153,6 +154,7 @@ public class DanmakuReceiver : MonoBehaviour
                     case 2:
                         {
                             var viewer = BitConverter.ToUInt32(buffer.Take(4).Reverse().ToArray(), 0); //观众人数
+                            ViewerCount = viewer;
                             ReceivedRoomCount.Invoke(viewer);
                             break;
                         }
@@ -263,15 +265,9 @@ public class DanmakuReceiver : MonoBehaviour
 
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         Connected = false;
+        ViewerCount = 0;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
 }
