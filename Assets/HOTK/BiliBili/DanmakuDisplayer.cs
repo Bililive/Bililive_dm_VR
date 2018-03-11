@@ -73,7 +73,7 @@ public class DanmakuDisplayer : MonoBehaviour
     {
         if (model.MsgType == MsgTypeEnum.Comment)
         {
-            AddMsg(model.UserName, model.CommentText, "000000");
+            AddMsg(model.UserName, model.CommentText, "FFFFFF");
         }
         else
         {
