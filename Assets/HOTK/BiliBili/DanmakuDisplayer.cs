@@ -133,7 +133,9 @@ public class DanmakuDisplayer : MonoBehaviour
         else
         {// disconnect
             Receiver.Disconnect();
+            AddMsg("系统", "断开了连接");
         }
+        ConnectButtonText.text = Connected ? "断开连接" : "连接";
     }
 
     public void Start()

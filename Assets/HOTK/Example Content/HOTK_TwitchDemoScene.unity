@@ -476,7 +476,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the base position for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u7684\u603B\u4F53\u4F4D\u7F6E"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -2645,7 +2645,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the X axis rotation for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 X \u8F74\u4E0A\u7684\u65CB\u8F6C\u89D2\u5EA6"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -2879,7 +2879,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Z position offset for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 Z \u5750\u6807\u4E0A\u7684\u76F8\u5BF9\u4F4D\u7F6E"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -2969,7 +2969,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Save
+  m_Text: "\u4FDD\u5B58"
 --- !u!222 &294077894
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3349,7 +3349,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Cancels saving a new profile.
+            m_StringArgument: "\u53D6\u6D88\u4FDD\u5B58\u4E00\u4E2A\u65B0\u7684\u914D\u7F6E\u6587\u4EF6\u3002"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -3630,7 +3630,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the End Alpha value if animated.
+            m_StringArgument: "\u6B63\u9762\u770B\u8986\u76D6\u7A97\u65F6\u7684\u900F\u660E\u5EA6"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -3815,7 +3815,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the X position offset for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 X \u5750\u6807\u4E0A\u7684\u76F8\u5BF9\u4F4D\u7F6E"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -4307,7 +4307,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the name when saving a new profile.
+            m_StringArgument: "\u65B0\u5EFA\u914D\u7F6E\u6587\u4EF6\u65F6\u7684\u914D\u7F6E\u540D\u5B57\u3002"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -4884,9 +4884,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Load
-
-'
+  m_Text: "\u52A0\u8F7D"
 --- !u!222 &540755283
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5306,7 +5304,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Green in the overlay's background color.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u7684\u989C\u8272\uFF1A\u7EFF"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -5772,9 +5770,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Scale
-
-'
+  m_Text: "\u7F29\u653E"
 --- !u!222 &671786354
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5992,7 +5988,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Y position offset for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 Y \u5750\u6807\u4E0A\u7684\u76F8\u5BF9\u4F4D\u7F6E"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -6082,9 +6078,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Swap Controllers
-
-'
+  m_Text: "\u5207\u6362\u624B\u67C4\u65B9\u5411"
 --- !u!222 &702003886
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6315,7 +6309,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Alpha animation speed if animated.
+            m_StringArgument: "\u63A7\u5236\u900F\u660E\u5EA6\u52A8\u753B\u7684\u901F\u5EA6"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -6812,7 +6806,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Z position offset for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 Z \u5750\u6807\u4E0A\u7684\u76F8\u5BF9\u4F4D\u7F6E"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -7508,7 +7502,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Z axis rotation for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 Z \u8F74\u4E0A\u7684\u65CB\u8F6C\u89D2\u5EA6"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -7825,7 +7819,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New..
+  m_Text: "\u65B0\u5EFA.."
 --- !u!222 &925319149
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7973,7 +7967,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Delete
+  m_Text: "\u5220\u9664"
 --- !u!222 &962158492
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8408,7 +8402,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Scale animation speed if animated.
+            m_StringArgument: "\u63A7\u5236\u7F29\u653E\u52A8\u753B\u7684\u901F\u5EA6"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -8531,7 +8525,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: New..
+    - m_Text: "\u65B0\u5EFA.."
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8846,7 +8840,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Z axis rotation for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 Z \u8F74\u4E0A\u7684\u65CB\u8F6C\u89D2\u5EA6"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -9086,7 +9080,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Alpha in the overlay's background color.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u7684\u989C\u8272\uFF1A\u900F\u660E\u5EA6"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -9446,9 +9440,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Enter Name Here..
-
-'
+  m_Text: "\u5728\u8FD9\u91CC\u8F93\u5165\u914D\u7F6E\u6587\u4EF6\u540D"
 --- !u!222 &1071998490
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9704,9 +9696,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Enter Channel...
-
-'
+  m_Text: "\u8F93\u5165\u623F\u95F4\u53F7..."
 --- !u!222 &1121834430
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9924,7 +9914,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Y axis rotation for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 Y \u8F74\u4E0A\u7684\u65CB\u8F6C\u89D2\u5EA6"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -10109,7 +10099,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the X axis rotation for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 X \u8F74\u4E0A\u7684\u65CB\u8F6C\u89D2\u5EA6"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -10344,7 +10334,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the base offset for the controller overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u7684\u5927\u6982\u4F4D\u7F6E"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -10859,9 +10849,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Cancel
-
-'
+  m_Text: "\u53D6\u6D88"
 --- !u!222 &1260214277
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11029,7 +11017,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Blue in the overlay's background color.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u7684\u989C\u8272\uFF1A\u84DD"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -11431,7 +11419,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Red in the overlay's background color.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u7684\u989C\u8272\uFF1A\u7EA2"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -11664,8 +11652,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Alpha in the overlay (not animated) or
-              the Start Alpha (animated).
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u7684\u900F\u660E\u5EA6\uFF08\u52A8\u753B\u6548\u679C\uFF09"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -12121,7 +12108,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Saves a new profile.
+            m_StringArgument: "\u786E\u8BA4\u914D\u7F6E\u6587\u4EF6\u7684\u540D\u5B57\u5E76\u4FDD\u5B58\u3002"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -12625,8 +12612,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Animation setting when you look directly
-              at the overlay.
+            m_StringArgument: "\u63A7\u5236\u5F53\u4F60\u6B63\u9762\u770B\u8986\u76D6\u7A97\u65F6\u7684\u52A8\u753B\u6548\u679C\uFF08\u7F29\u653E\u3001\u900F\u660E\u5EA6\uFF09"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -12852,9 +12838,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Save
-
-'
+  m_Text: "\u786E\u8BA4\u4FDD\u5B58"
 --- !u!222 &1476283050
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13136,8 +13120,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Swaps which controller is treated as the left and which
-              as the right.
+            m_StringArgument: "\u5207\u6362\u5BF9\u5DE6\u53F3\u624B\u67C4\u7684\u5224\u65AD"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -13783,9 +13766,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Press to Connect
-
-'
+  m_Text: "\u8FDE\u63A5"
 --- !u!222 &1629859026
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14107,7 +14088,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Attempts to Connect or Disconnect from Twitch.
+            m_StringArgument: "\u70B9\u51FB\u6309\u94AE\u6765\u8FDE\u63A5\u6216\u65AD\u5F00VR\u5F39\u5E55\u59EC"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -14340,8 +14321,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Scale in the overlay (not animated) or
-              the Start Scale (animated).
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u7684\u5927\u5C0F\u6BD4\u4F8B\uFF08\u52A8\u753B\u6548\u679C\uFF09"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -14686,7 +14666,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Alpha
+  m_Text: "\u900F\u660E\u5EA6"
 --- !u!222 &1683039410
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14904,7 +14884,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the X position offset for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 X \u5750\u6807\u4E0A\u7684\u76F8\u5BF9\u4F4D\u7F6E"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -15225,7 +15205,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Y axis rotation for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 Y \u8F74\u4E0A\u7684\u65CB\u8F6C\u89D2\u5EA6"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -16056,8 +16036,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Channel used to connect to Twitch. Enter
-              just the channel name here, not the full URL.
+            m_StringArgument: "B\u7AD9\u76F4\u64AD\u95F4\u7684\u623F\u95F4\u53F7\u3002\u4E0D\u652F\u6301\u77ED\u53F7"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -16698,7 +16677,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the End Scale value if animated.
+            m_StringArgument: "\u6B63\u9762\u770B\u8986\u76D6\u7A97\u65F6\u7684\u7F29\u653E\u5927\u5C0F"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -17414,8 +17393,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Saves the selected profile. Select "New.." and press
-              this to save a new profile.
+            m_StringArgument: "\u4FDD\u5B58\u5F53\u524D\u7684\u914D\u7F6E\u3002\u9009\u62E9\u201C\u65B0\u5EFA..\u201D\u7136\u540E\u6309\u4E0B\u8FD9\u4E2A\u6309\u94AE\u6765\u65B0\u5EFA\u914D\u7F6E\u6587\u4EF6\u3002"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
@@ -17600,7 +17578,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Controls the Y position offset for the overlay.
+            m_StringArgument: "\u63A7\u5236\u8986\u76D6\u7A97\u5728 Y \u5750\u6807\u4E0A\u7684\u76F8\u5BF9\u4F4D\u7F6E"
             m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
