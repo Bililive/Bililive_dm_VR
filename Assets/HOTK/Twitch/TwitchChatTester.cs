@@ -11,10 +11,10 @@ using Debug = UnityEngine.Debug;
 [RequireComponent(typeof(TwitchIRC), typeof(TextMesh))]
 public class TwitchChatTester : MonoBehaviour
 {
-    public static TwitchChatTester Instance
-    {
-        get { return _instance ?? (_instance = FindObjectOfType<TwitchChatTester>()); }
-    }
+    //public static TwitchChatTester Instance
+    //{
+     //   get { return _instance ?? (_instance = FindObjectOfType<TwitchChatTester>()); }
+    //}
     private static TwitchChatTester _instance;
 
     public int ChatLineCount = 27; // Max line count for our display

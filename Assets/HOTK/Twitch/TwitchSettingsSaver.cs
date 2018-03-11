@@ -55,13 +55,13 @@ public static class TwitchSettingsSaver
         switch (mode)
         {
             case 1: // Legacy Savefile compatibility
-                TwitchChatTester.Instance.AddSystemNotice("Upgrading Legacy Profile Save Data.");
+                Logger4UIScripts.Log.Invoke("Upgrading Legacy Profile Save Data.", Logger4UIScripts.LogColor.Blue);
                 break;
             case 2:
-                TwitchChatTester.Instance.AddSystemNotice("Profile deleted.");
+                Logger4UIScripts.Log.Invoke("Profile deleted.", Logger4UIScripts.LogColor.Blue);
                 break;
             default:
-                TwitchChatTester.Instance.AddSystemNotice("Saved " + SavedProfiles.Count + " profile(s).");
+                Logger4UIScripts.Log.Invoke("Saved " + SavedProfiles.Count + " profile(s).", Logger4UIScripts.LogColor.Blue);
                 break;
         }
     }
@@ -83,7 +83,7 @@ public static class TwitchSettingsSaver
         {
             Current = CurrentProgramSettings.LastProfile;
         }
-        TwitchChatTester.Instance.AddSystemNotice("Loaded program settings.");
+        Logger4UIScripts.Log.Invoke("Loaded program settings.", Logger4UIScripts.LogColor.Blue);
     }
 
     public static void SaveProgramSettings()
@@ -101,7 +101,7 @@ public static class TwitchSettingsSaver
         var file = File.Create(ProgramSettingsFileName);
         bf.Serialize(file, CurrentProgramSettings);
         file.Close();
-        TwitchChatTester.Instance.AddSystemNotice("Saved program settings.");
+        Logger4UIScripts.Log.Invoke("Saved program settings.", Logger4UIScripts.LogColor.Blue);
     }
 
     public static void LoadProfiles()
@@ -113,13 +113,13 @@ public static class TwitchSettingsSaver
             filename = OriginalProfilesFileName;
             if (!File.Exists(filename)) return;
             legacy = true;
-            TwitchChatTester.Instance.AddSystemNotice("Found Legacy Profile Save Data: " + filename);
+            Logger4UIScripts.Log.Invoke("Found Legacy Profile Save Data: " + filename, Logger4UIScripts.LogColor.Blue);
         }
         var bf = new BinaryFormatter();
         var file = File.Open(filename, FileMode.Open);
         SavedProfiles = (Dictionary<string, TwitchSettings>)bf.Deserialize(file);
         file.Close();
-        TwitchChatTester.Instance.AddSystemNotice("Loaded " + SavedProfiles.Count + " profile(s).");
+        Logger4UIScripts.Log.Invoke("Loaded " + SavedProfiles.Count + " profile(s).", Logger4UIScripts.LogColor.Blue);
 
         if (!legacy) return; // Legacy Savefile compatibility
         File.Move(OriginalProfilesFileName, OriginalProfilesFileName + ".bak");

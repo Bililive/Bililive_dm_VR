@@ -9,7 +9,7 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
 
     public static HOTK_TrackedDeviceManager Instance
     {
-        get { return _instance ?? (_instance = new GameObject("HOTK_TrackedDeviceManager", typeof(HOTK_TrackedDeviceManager)) {hideFlags = HideFlags.HideInHierarchy}.GetComponent<HOTK_TrackedDeviceManager>()); }
+        get { return _instance ?? (_instance = new GameObject("HOTK_TrackedDeviceManager", typeof(HOTK_TrackedDeviceManager)) { hideFlags = HideFlags.HideInHierarchy }.GetComponent<HOTK_TrackedDeviceManager>()); }
     }
 
     public uint LeftIndex
@@ -68,7 +68,7 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
         SteamVR_Utils.Event.Send("new_poses", _poses);
         SteamVR_Utils.Event.Send("new_poses_applied");
     }
-    
+
     /// <summary>
     /// Attempt to find the HMD.
     /// </summary>
@@ -279,7 +279,7 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
     /// <param name="text"></param>
     void Log(string text, params object[] vars)
     {
-        TwitchChatTester.Instance.AddSystemNotice(vars == null ? text : string.Format(text, vars));
+        Logger4UIScripts.Log.Invoke(vars == null ? text : string.Format(text, vars), Logger4UIScripts.LogColor.Blue);
     }
 
     /// <summary>
@@ -288,7 +288,7 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
     /// <param name="text"></param>
     void LogWarning(string text, params object[] vars)
     {
-        TwitchChatTester.Instance.AddSystemNotice(vars == null ? text : string.Format(text, vars), TwitchIRC.NoticeColor.Yellow);
+        Logger4UIScripts.Log.Invoke(vars == null ? text : string.Format(text, vars), Logger4UIScripts.LogColor.Yellow);
     }
 
     /// <summary>
@@ -297,6 +297,6 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
     /// <param name="text"></param>
     void LogError(string text, params object[] vars)
     {
-        TwitchChatTester.Instance.AddSystemNotice(vars == null ? text : string.Format(text, vars), TwitchIRC.NoticeColor.Red);
+        Logger4UIScripts.Log.Invoke(vars == null ? text : string.Format(text, vars), Logger4UIScripts.LogColor.Red);
     }
 }

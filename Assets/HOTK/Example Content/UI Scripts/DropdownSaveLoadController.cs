@@ -137,11 +137,11 @@ public class DropdownSaveLoadController : MonoBehaviour
         CancelConfirmingDelete();
         TwitchSettings settings;
         if (!TwitchSettingsSaver.SavedProfiles.TryGetValue(Dropdown.options[Dropdown.value].text, out settings)) return;
-        TwitchChatTester.Instance.AddSystemNotice(startup ? "Loading last used settings " + Dropdown.options[Dropdown.value].text : "Loading saved settings " + Dropdown.options[Dropdown.value].text);
+        Logger4UIScripts.Log.Invoke(startup ? "Loading last used settings " + Dropdown.options[Dropdown.value].text : "Loading saved settings " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
         TwitchSettingsSaver.Current = Dropdown.options[Dropdown.value].text;
         if (!startup) TwitchSettingsSaver.SaveProgramSettings();
-        if (!TwitchChatTester.Instance.Connected) UsernameField.text = settings.Username;
-        if (!TwitchChatTester.Instance.Connected) ChannelField.text = settings.Channel;
+        if (!DanmakuDisplayer.Instance.Connected) UsernameField.text = settings.Username;
+        if (!DanmakuDisplayer.Instance.Connected) ChannelField.text = settings.Channel;
 
         XSlider.Slider.value = settings.X;
         YSlider.Slider.value = settings.Y;
@@ -231,7 +231,7 @@ public class DropdownSaveLoadController : MonoBehaviour
         {
             TwitchSettings settings;
             if (!TwitchSettingsSaver.SavedProfiles.TryGetValue(Dropdown.options[Dropdown.value].text, out settings)) return;
-            TwitchChatTester.Instance.AddSystemNotice("Overwriting saved settings " + Dropdown.options[Dropdown.value].text);
+            Logger4UIScripts.Log.Invoke("Overwriting saved settings " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
             settings.SaveFileVersion = TwitchSettings.CurrentSaveVersion;
 
             settings.Username = UsernameField.text;
@@ -264,7 +264,7 @@ public class DropdownSaveLoadController : MonoBehaviour
     {
         if (string.IsNullOrEmpty(SaveName.text) || TwitchSettingsSaver.SavedProfiles.ContainsKey(SaveName.text)) return;
         _savingNew = false;
-        TwitchChatTester.Instance.AddSystemNotice("Adding saved settings " + SaveName.text);
+        Logger4UIScripts.Log.Invoke("Adding saved settings " + SaveName.text, Logger4UIScripts.LogColor.Blue);
         TwitchSettingsSaver.SavedProfiles.Add(SaveName.text, ConvertToTwitchSettings(OverlayToSave));
         TwitchSettingsSaver.SaveProfiles();
         SaveName.text = "";
