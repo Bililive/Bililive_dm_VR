@@ -21,12 +21,12 @@ public class DropdownSaveLoadController : MonoBehaviour
     public RotationMatchSlider RYSlider;
     public RotationMatchSlider RZSlider;
 
-    public DropdownMatchFileOptions ChatSoundDropdown;
-    public VolumeMatchSlider VolumeSlider;
-    public PitchMatchSlider PitchSlider;
-    public DropdownMatchFileOptions NewFollowerSoundDropdown;
-    public VolumeMatchSlider NewFollowerVolumeSlider;
-    public PitchMatchSlider NewFollowerPitchSlider;
+    // public DropdownMatchFileOptions ChatSoundDropdown;
+    // public VolumeMatchSlider VolumeSlider;
+    // public PitchMatchSlider PitchSlider;
+    // public DropdownMatchFileOptions NewFollowerSoundDropdown;
+    // public VolumeMatchSlider NewFollowerVolumeSlider;
+    // public PitchMatchSlider NewFollowerPitchSlider;
 
     public DropdownMatchEnumOptions DeviceDropdown;
     public DropdownMatchEnumOptions PointDropdown;
@@ -151,24 +151,6 @@ public class DropdownSaveLoadController : MonoBehaviour
         RYSlider.Slider.value = settings.RY;
         RZSlider.Slider.value = settings.RZ;
 
-        if (settings.SaveFileVersion >= 1) // Save File compatability
-        {
-            VolumeSlider.Slider.value = settings.Volume;
-            VolumeSlider.OnSliderEndDrag(false);
-            PitchSlider.Slider.value = settings.Pitch;
-            PitchSlider.OnSliderEndDrag(false);
-        }
-        ChatSoundDropdown.SetToOption(settings.SaveFileVersion >= 1 ? (settings.SaveFileVersion >= 2 ? settings.ChatSound : settings.ChatSound + ".wav") : "gui-sound-effects-031.wav", !startup); // Save File compatability
-
-        if (settings.SaveFileVersion >= 4) // Save File compatability
-        {
-            NewFollowerVolumeSlider.Slider.value = settings.FollowerVolume;
-            NewFollowerVolumeSlider.OnSliderEndDrag(false);
-            NewFollowerPitchSlider.Slider.value = settings.FollowerPitch;
-            NewFollowerPitchSlider.OnSliderEndDrag(false);
-        }
-        NewFollowerSoundDropdown.SetToOption(settings.SaveFileVersion >= 4 ? settings.FollowerSound : "gui-sound-effects-038.wav"); // Save File compatability
-
         DeviceDropdown.SetToOption(settings.Device.ToString());
         PointDropdown.SetToOption(settings.Point.ToString());
         AnimationDropdown.SetToOption(settings.Animation.ToString());
@@ -257,14 +239,6 @@ public class DropdownSaveLoadController : MonoBehaviour
             settings.X = OverlayToSave.AnchorOffset.x; settings.Y = OverlayToSave.AnchorOffset.y; settings.Z = OverlayToSave.AnchorOffset.z;
             settings.RX = OverlayToSave.transform.eulerAngles.x; settings.RY = OverlayToSave.transform.eulerAngles.y; settings.RZ = OverlayToSave.transform.eulerAngles.z;
 
-            settings.ChatSound = ChatSoundDropdown.Dropdown.options[ChatSoundDropdown.Dropdown.value].text;
-            settings.Volume = VolumeSlider.Slider.value;
-            settings.Pitch = PitchSlider.Slider.value;
-
-            settings.FollowerSound = NewFollowerSoundDropdown.Dropdown.options[NewFollowerSoundDropdown.Dropdown.value].text;
-            settings.FollowerVolume = NewFollowerVolumeSlider.Slider.value;
-            settings.FollowerPitch = NewFollowerPitchSlider.Slider.value;
-
             settings.Device = OverlayToSave.AnchorDevice;
             settings.Point = OverlayToSave.AnchorPoint;
             settings.Animation = OverlayToSave.AnimateOnGaze;
@@ -315,14 +289,6 @@ public class DropdownSaveLoadController : MonoBehaviour
             RX = o.transform.eulerAngles.x,
             RY = o.transform.eulerAngles.y,
             RZ = o.transform.eulerAngles.z,
-
-            ChatSound = ChatSoundDropdown.Dropdown.options[ChatSoundDropdown.Dropdown.value].text,
-            Volume = VolumeSlider.Slider.value,
-            Pitch = PitchSlider.Slider.value,
-
-            FollowerSound = NewFollowerSoundDropdown.Dropdown.options[NewFollowerSoundDropdown.Dropdown.value].text,
-            FollowerVolume = NewFollowerVolumeSlider.Slider.value,
-            FollowerPitch = NewFollowerPitchSlider.Slider.value,
 
             Device = o.AnchorDevice,
             Point = o.AnchorPoint,

@@ -22,10 +22,10 @@ public class TwitchSettings
     public string Channel;
     public float X, Y, Z;
     public float RX, RY, RZ;
-    public string ChatSound;
-    public float Volume, Pitch;
-    public string FollowerSound;
-    public float FollowerVolume, FollowerPitch;
+    // public string ChatSound;
+    // public float Volume, Pitch;
+    // public string FollowerSound;
+    // public float FollowerVolume, FollowerPitch;
     public HOTK_Overlay.AttachmentDevice Device;
     public HOTK_Overlay.AttachmentPoint Point;
     public HOTK_Overlay.AnimationType Animation;
