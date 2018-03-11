@@ -14580,7 +14580,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1665705335}
+      - m_Target: {fileID: 0}
         m_MethodName: ToggleConnect
         m_Mode: 1
         m_Arguments:
@@ -14942,8 +14942,6 @@ GameObject:
   - 4: {fileID: 1665705331}
   - 23: {fileID: 1665705333}
   - 102: {fileID: 1665705332}
-  - 114: {fileID: 1665705334}
-  - 114: {fileID: 1665705335}
   - 114: {fileID: 1665705337}
   - 114: {fileID: 1665705336}
   m_Layer: 8
@@ -15014,49 +15012,6 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!114 &1665705334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1665705330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 457e2a32ec071854b9d3a1b024bde3cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Oauth: 
-  NickName: 
-  ChannelName: 
---- !u!114 &1665705335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1665705330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11a05107905e02d41a842e90c88867da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ChatLineCount: 27
-  UsernameBox: {fileID: 173375416}
-  OAuthBox: {fileID: 764841549}
-  ChannelBox: {fileID: 1907632660}
-  ConnectButton: {fileID: 1650492840}
-  ConnectButtonText: {fileID: 1629859025}
-  TextMeshBase: {fileID: 223690097}
-  ChatTextMeshes: []
-  ChatTextRenderers: []
-  ViewerCountTextMesh: {fileID: 884454292}
-  ChannelNameTextMesh: {fileID: 1209028646}
-  IncomingMessageSoundSource1: {fileID: 255063675}
-  IncomingMessageSoundSource2: {fileID: 255063677}
-  IncomingMessageSoundSource3: {fileID: 255063676}
-  IncomingMessageSoundSource4: {fileID: 255063680}
-  IncomingMessageSoundSource5: {fileID: 255063679}
-  IncomingMessageSoundSource6: {fileID: 255063678}
-  NewFollowerSoundSource: {fileID: 255063681}
 --- !u!114 &1665705336
 MonoBehaviour:
   m_ObjectHideFlags: 0
