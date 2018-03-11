@@ -77,7 +77,8 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
         var system = OpenVR.System;
         if (system == null)
         {
-            LogError("OpenVR System not found.");
+            LogError("未找到 VR 系统。");
+            // LogError("OpenVR System not found.");
             return;
         }
 
@@ -96,7 +97,8 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
         }
         if (_hmdIndex != OpenVR.k_unTrackedDeviceIndexInvalid)
         {
-            Log("Found HMD ( Device: {0} )", _hmdIndex);
+            // Log("Found HMD ( Device: {0} )", _hmdIndex);
+            Log("找到头戴显示器 ( 设备: {0} )", _hmdIndex);
         }
     }
 
@@ -115,7 +117,8 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
         var system = OpenVR.System;
         if (system == null)
         {
-            LogError("OpenVR System not found.");
+            LogError("未找到 VR 系统。");
+            // LogError("OpenVR System not found.");
             return;
         }
         if (_noControllersCount >= 10)
@@ -130,7 +133,7 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
             return;
         }
 
-        if (_noControllersCount == 0) Log("Searching for Controllers..");
+        if (_noControllersCount == 0) Log("正在查找手柄.."); //Log("Searching for Controllers..");
         _leftIndex = system.GetTrackedDeviceIndexForControllerRole(ETrackedControllerRole.LeftHand);
         CallIndexChanged(ETrackedControllerRole.LeftHand, _leftIndex);
         _rightIndex = system.GetTrackedDeviceIndexForControllerRole(ETrackedControllerRole.RightHand);
@@ -139,12 +142,15 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
 
         if (_leftIndex != OpenVR.k_unTrackedDeviceIndexInvalid && _rightIndex != OpenVR.k_unTrackedDeviceIndexInvalid) // Both controllers are assigned!
         {
-            Log("Found Controller ( Device: {0} ): Right", _rightIndex);
-            Log("Found Controller ( Device: {0} ): Left", _leftIndex);
+            Log("找到手柄 ( 设备: {0} ): 右", _rightIndex);
+            Log("找到手柄 ( 设备: {0} ): 左", _leftIndex);
+            // Log("Found Controller ( Device: {0} ): Right", _rightIndex);
+            // Log("Found Controller ( Device: {0} ): Left", _leftIndex);
         }
         else if (_leftIndex != OpenVR.k_unTrackedDeviceIndexInvalid && _rightIndex == OpenVR.k_unTrackedDeviceIndexInvalid) // Left controller is assigned but right is missing
         {
-            Log("Found Controller ( Device: {0} ): Left", _leftIndex);
+            Log("找到手柄 ( 设备: {0} ): 左", _leftIndex);
+            //Log("Found Controller ( Device: {0} ): Left", _leftIndex);
             for (uint i = 0; i < OpenVR.k_unMaxTrackedDeviceCount; i++)
             {
                 if (i == _leftIndex || system.GetTrackedDeviceClass(i) != ETrackedDeviceClass.Controller)
@@ -153,14 +159,16 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
                 }
                 _rightIndex = i;
                 CallIndexChanged(ETrackedControllerRole.RightHand, _rightIndex);
-                Log("Found Controller ( Device: {0} ): Right", _rightIndex);
+                Log("找到手柄 ( 设备: {0} ): 右", _rightIndex);
+                // Log("Found Controller ( Device: {0} ): Right", _rightIndex);
                 break;
             }
             CallControllersUpdated();
         }
         else if (_leftIndex == OpenVR.k_unTrackedDeviceIndexInvalid && _rightIndex != OpenVR.k_unTrackedDeviceIndexInvalid) // Right controller is assigned but left is missing
         {
-            Log("Found Controller ( Device: {0} ): Right", _rightIndex);
+            Log("找到手柄 ( 设备: {0} ): 右", _rightIndex);
+            // Log("Found Controller ( Device: {0} ): Right", _rightIndex);
             for (uint i = 0; i < OpenVR.k_unMaxTrackedDeviceCount; i++)
             {
                 if (i == _rightIndex || system.GetTrackedDeviceClass(i) != ETrackedDeviceClass.Controller)
@@ -169,14 +177,16 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
                 }
                 _leftIndex = i;
                 CallIndexChanged(ETrackedControllerRole.LeftHand, _leftIndex);
-                Log("Found Controller ( Device: {0} ): Left", _leftIndex);
+                Log("找到手柄 ( 设备: {0} ): 左", _leftIndex);
+                // Log("Found Controller ( Device: {0} ): Left", _leftIndex);
                 break;
             }
             CallControllersUpdated();
         }
         else if (_leftIndex == OpenVR.k_unTrackedDeviceIndexInvalid && _rightIndex == OpenVR.k_unTrackedDeviceIndexInvalid) // Both controllers are unassigned
         {
-            if (_noControllersCount == 0) LogWarning("SteamVR Reports No Assigned Controllers..! Searching..");
+            if (_noControllersCount == 0) LogWarning("SteamVR 报告没有已分配的手柄..!搜索中..");
+            // LogWarning("SteamVR Reports No Assigned Controllers..! Searching..");
             var foundUnassigned = 0;
             var slots = new uint[2];
             // Sort through all the devices until we find two controllers
@@ -190,16 +200,19 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
                 {
                     case ETrackedControllerRole.LeftHand:
                         _leftIndex = i;
-                        Log("Found Controller ( Device: {0} ): Left", _leftIndex);
+                        Log("找到手柄 ( 设备: {0} ): 左", _leftIndex);
+                        // Log("Found Controller ( Device: {0} ): Left", _leftIndex);
                         CallIndexChanged(ETrackedControllerRole.LeftHand, _leftIndex);
                         break;
                     case ETrackedControllerRole.RightHand:
                         _rightIndex = i;
-                        Log("Found Controller ( Device: {0} ): Right", _rightIndex);
+                        Log("找到手柄 ( 设备: {0} ): 右", _rightIndex);
+                        // Log("Found Controller ( Device: {0} ): Right", _rightIndex);
                         CallIndexChanged(ETrackedControllerRole.RightHand, _rightIndex);
                         break;
                     case ETrackedControllerRole.Invalid:
-                        Log("Found Controller ( Device: {0} ): Unassigned", i);
+                        Log("找到手柄 ( 设备: {0} ): 未分配", i);
+                        // Log("Found Controller ( Device: {0} ): Unassigned", i);
                         if (foundUnassigned <= 1)
                             slots[foundUnassigned++] = i;
                         break;
@@ -213,7 +226,8 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
             switch (foundUnassigned)
             {
                 case 2:
-                    LogWarning("Found Two Unassigned Controllers! Randomly Assigning!");
+                    LogWarning("找到两个未分配左右的手柄! 随机分配中!");
+                    // LogWarning("Found Two Unassigned Controllers! Randomly Assigning!");
                     _rightIndex = slots[0];
                     CallIndexChanged(ETrackedControllerRole.RightHand, _rightIndex);
                     _leftIndex = slots[1];
@@ -223,26 +237,31 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
                     if (_leftIndex == OpenVR.k_unTrackedDeviceIndexInvalid &&
                        _rightIndex != OpenVR.k_unTrackedDeviceIndexInvalid)
                     {
-                        LogWarning("Only Found One Unassigned Controller, and Right was already assigned! Assigning To Left!");
+                        LogWarning("找到了一个未分配的手柄，但是右手柄已经分配了！未分配的手柄分配为左手柄！");
+                        // LogWarning("Only Found One Unassigned Controller, and Right was already assigned! Assigning To Left!");
                         _leftIndex = slots[0];
                         CallIndexChanged(ETrackedControllerRole.LeftHand, _leftIndex);
                         _noControllersCount = 10;
                     }
                     else
                     {
-                        LogWarning("Only Found One Unassigned Controller! Assigning To Right!");
+                        LogWarning("找到了一个未分配的手柄! 分配为右手柄!");
+                        // LogWarning("Only Found One Unassigned Controller! Assigning To Right!");
                         _rightIndex = slots[0];
                         CallIndexChanged(ETrackedControllerRole.RightHand, _rightIndex);
                         _noControllersCount = 10;
                     }
                     break;
                 case 0:
-                    if (_noControllersCount == 0) LogWarning("Couldn't Find Any Unassigned Controllers!");
+                    if (_noControllersCount == 0) LogWarning("找不到任何未分配的手柄！");
+                    // LogWarning("Couldn't Find Any Unassigned Controllers!");
                     _noControllersCount++;
                     if (_noControllersCount >= 10)
                     {
-                        LogError("Controllers not found!");
-                        LogError("Please connect the controllers and restart!");
+                        LogError("未找到手柄！");
+                        LogError("请连接手柄，然后重启！"); //TODO: 不需要重启就可以识别新连接的手柄
+                        //LogError("Controllers not found!");
+                        //LogError("Please connect the controllers and restart!");
                     }
                     break;
                 default:
