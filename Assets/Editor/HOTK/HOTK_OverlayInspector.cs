@@ -25,14 +25,14 @@ public class HOTK_OverlayInspector : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("OverlayTexture"), new GUIContent() {text = "Texture"});
             
             EditorGUILayout.PropertyField(serializedObject.FindProperty("AnimateOnGaze"));
-            if (overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.Alpha || overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.AlphaAndScale)
+            if (overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.透明度 || overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.透明度和大小)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("Alpha"), new GUIContent() { text = "Alpha Start" });
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("Alpha2"), new GUIContent() { text = "Alpha End" });
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("AlphaSpeed"), new GUIContent() { text = "Alpha Speed" });
             }
             else EditorGUILayout.PropertyField(serializedObject.FindProperty("Alpha"));
-            if (overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.Scale || overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.AlphaAndScale)
+            if (overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.大小 || overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.透明度和大小)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("Scale"), new GUIContent() { text = "Scale Start" });
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("Scale2"), new GUIContent() { text = "Scale End" });
@@ -62,8 +62,8 @@ public class HOTK_OverlayInspector : Editor
         if (overlay.ShowSettingsAttachment)
         {
             EditorGUILayout.PropertyField(serializedObject.FindProperty("AnchorDevice"), new GUIContent() { text = "Anchor Point" });
-            if (overlay.AnchorDevice != HOTK_Overlay.AttachmentDevice.Screen &&
-                overlay.AnchorDevice != HOTK_Overlay.AttachmentDevice.World)
+            if (overlay.AnchorDevice != HOTK_Overlay.AttachmentDevice.显示器 &&
+                overlay.AnchorDevice != HOTK_Overlay.AttachmentDevice.世界)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("AnchorPoint"), new GUIContent() { text = "Base Position" });
             }

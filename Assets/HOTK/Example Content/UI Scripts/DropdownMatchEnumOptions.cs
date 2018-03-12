@@ -50,22 +50,22 @@ public class DropdownMatchEnumOptions : MonoBehaviour
     public void SwapControllers()
     {
         if (HOTK_TrackedDeviceManager.Instance.LeftIndex != OpenVR.k_unTrackedDeviceIndexInvalid && HOTK_TrackedDeviceManager.Instance.RightIndex != OpenVR.k_unTrackedDeviceIndexInvalid) return; // If both controllers are found, don't swap selected name
-        if (Dropdown.options[Dropdown.value].text == HOTK_Overlay.AttachmentDevice.LeftController.ToString()) SetToRightController = true;
-        else if (Dropdown.options[Dropdown.value].text == HOTK_Overlay.AttachmentDevice.RightController.ToString()) SetToLeftController = true;
+        if (Dropdown.options[Dropdown.value].text == HOTK_Overlay.AttachmentDevice.左手柄.ToString()) SetToRightController = true;
+        else if (Dropdown.options[Dropdown.value].text == HOTK_Overlay.AttachmentDevice.右手柄.ToString()) SetToLeftController = true;
     }
 
     private void UpdateDeviceDropdown()
     {
         var strings = new List<string>
         {
-            HOTK_Overlay.AttachmentDevice.World.ToString(), HOTK_Overlay.AttachmentDevice.Screen.ToString()
+            HOTK_Overlay.AttachmentDevice.世界.ToString(), HOTK_Overlay.AttachmentDevice.显示器.ToString()
         };
-        if (HOTK_TrackedDeviceManager.Instance.LeftIndex != OpenVR.k_unTrackedDeviceIndexInvalid) strings.Add(HOTK_Overlay.AttachmentDevice.LeftController.ToString());
-        if (HOTK_TrackedDeviceManager.Instance.RightIndex != OpenVR.k_unTrackedDeviceIndexInvalid) strings.Add(HOTK_Overlay.AttachmentDevice.RightController.ToString());
+        if (HOTK_TrackedDeviceManager.Instance.LeftIndex != OpenVR.k_unTrackedDeviceIndexInvalid) strings.Add(HOTK_Overlay.AttachmentDevice.左手柄.ToString());
+        if (HOTK_TrackedDeviceManager.Instance.RightIndex != OpenVR.k_unTrackedDeviceIndexInvalid) strings.Add(HOTK_Overlay.AttachmentDevice.右手柄.ToString());
         Dropdown.ClearOptions();
         Dropdown.AddOptions(strings);
-        if (SetToRightController) Dropdown.value = strings.IndexOf(HOTK_Overlay.AttachmentDevice.RightController.ToString());
-        else if (SetToLeftController) Dropdown.value = strings.IndexOf(HOTK_Overlay.AttachmentDevice.LeftController.ToString());
+        if (SetToRightController) Dropdown.value = strings.IndexOf(HOTK_Overlay.AttachmentDevice.右手柄.ToString());
+        else if (SetToLeftController) Dropdown.value = strings.IndexOf(HOTK_Overlay.AttachmentDevice.左手柄.ToString());
         else Dropdown.value = strings.IndexOf(Overlay.AnchorDevice.ToString());
         SetToRightController = false;
         SetToLeftController = false;

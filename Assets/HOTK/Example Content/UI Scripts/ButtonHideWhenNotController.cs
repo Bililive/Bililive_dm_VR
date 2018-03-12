@@ -23,12 +23,12 @@ public class ButtonHideWhenNotController : MonoBehaviour
                 Enum.Parse(typeof (HOTK_Overlay.AttachmentDevice), LinkedDropdown.options[LinkedDropdown.value].text);
         switch (dev)
         {
-            case HOTK_Overlay.AttachmentDevice.LeftController:
-            case HOTK_Overlay.AttachmentDevice.RightController:
+            case HOTK_Overlay.AttachmentDevice.左手柄:
+            case HOTK_Overlay.AttachmentDevice.右手柄:
                 Button.interactable = true;
             break;
-            case HOTK_Overlay.AttachmentDevice.Screen:
-            case HOTK_Overlay.AttachmentDevice.World:
+            case HOTK_Overlay.AttachmentDevice.显示器:
+            case HOTK_Overlay.AttachmentDevice.世界:
             default:
                 Button.interactable = false;
                 break;

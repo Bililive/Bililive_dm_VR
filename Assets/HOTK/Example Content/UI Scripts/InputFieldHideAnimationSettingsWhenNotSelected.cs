@@ -21,7 +21,7 @@ public class InputFieldHideAnimationSettingsWhenNotSelected : MonoBehaviour
         var anim = (HOTK_Overlay.AnimationType)Enum.Parse(typeof(HOTK_Overlay.AnimationType), Dropdown.options[Dropdown.value].text);
         if (Setting == SettingValue.Alpha)
         {
-            if (anim != HOTK_Overlay.AnimationType.Alpha && anim != HOTK_Overlay.AnimationType.AlphaAndScale)
+            if (anim != HOTK_Overlay.AnimationType.透明度 && anim != HOTK_Overlay.AnimationType.透明度和大小)
             {
                 InputField.interactable = false;
             }
@@ -32,7 +32,7 @@ public class InputFieldHideAnimationSettingsWhenNotSelected : MonoBehaviour
         }
         else if(Setting == SettingValue.Scale)
         {
-            if (anim != HOTK_Overlay.AnimationType.Scale && anim != HOTK_Overlay.AnimationType.AlphaAndScale)
+            if (anim != HOTK_Overlay.AnimationType.大小 && anim != HOTK_Overlay.AnimationType.透明度和大小)
             {
                 InputField.interactable = false;
             }
