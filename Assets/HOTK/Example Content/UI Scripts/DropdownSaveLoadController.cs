@@ -67,21 +67,21 @@ public class DropdownSaveLoadController : MonoBehaviour
 
     public void OnEnable()
     {
-        if (TwitchSettingsSaver.CurrentProgramSettings == null) TwitchSettingsSaver.LoadProgramSettings();
+        if (SettingsSaver.CurrentProgramSettings == null) SettingsSaver.LoadProgramSettings();
         ReloadOptions();
-        if (TwitchSettingsSaver.CurrentProgramSettings != null && !string.IsNullOrEmpty(TwitchSettingsSaver.CurrentProgramSettings.LastProfile)) OnLoadPressed(true);
+        if (SettingsSaver.CurrentProgramSettings != null && !string.IsNullOrEmpty(SettingsSaver.CurrentProgramSettings.LastProfile)) OnLoadPressed(true);
     }
 
     private void ReloadOptions()
     {
         Dropdown.ClearOptions();
         var strings = new List<string> { NewString };
-        strings.AddRange(TwitchSettingsSaver.SavedProfiles.Select(config => config.Key));
+        strings.AddRange(SettingsSaver.SavedProfiles.Select(config => config.Key));
 
         Dropdown.AddOptions(strings);
 
         // If no settings loaded yet, select "New"
-        if (string.IsNullOrEmpty(TwitchSettingsSaver.Current))
+        if (string.IsNullOrEmpty(SettingsSaver.Current))
         {
             Dropdown.value = 0;
             OnValueChanges();
@@ -90,7 +90,7 @@ public class DropdownSaveLoadController : MonoBehaviour
         {
             for (var i = 0; i < Dropdown.options.Count; i++)
             {
-                if (Dropdown.options[i].text != TwitchSettingsSaver.Current) continue;
+                if (Dropdown.options[i].text != SettingsSaver.Current) continue;
                 Dropdown.value = i;
                 OnValueChanges();
                 break;
@@ -136,12 +136,12 @@ public class DropdownSaveLoadController : MonoBehaviour
     public void OnLoadPressed(bool startup = false) // Loads an existing save
     {
         CancelConfirmingDelete();
-        TwitchSettings settings;
-        if (!TwitchSettingsSaver.SavedProfiles.TryGetValue(Dropdown.options[Dropdown.value].text, out settings)) return;
+        ProfileSettings settings;
+        if (!SettingsSaver.SavedProfiles.TryGetValue(Dropdown.options[Dropdown.value].text, out settings)) return;
         Logger4UIScripts.Log.Invoke(startup ? "加载了上次使用的配置： " + Dropdown.options[Dropdown.value].text : "加载保存的配置： " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
         // Logger4UIScripts.Log.Invoke(startup ? "Loading last used settings " + Dropdown.options[Dropdown.value].text : "Loading saved settings " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
-        TwitchSettingsSaver.Current = Dropdown.options[Dropdown.value].text;
-        if (!startup) TwitchSettingsSaver.SaveProgramSettings();
+        SettingsSaver.Current = Dropdown.options[Dropdown.value].text;
+        if (!startup) SettingsSaver.SaveProgramSettings();
         // if (!DanmakuDisplayer.Instance.Connected) UsernameField.text = settings.Username;
         if (!DanmakuDisplayer.Instance.Connected) ChannelField.text = settings.Channel;
 
@@ -214,7 +214,7 @@ public class DropdownSaveLoadController : MonoBehaviour
         }
         else
         {
-            TwitchSettingsSaver.DeleteProfile(Dropdown.options[Dropdown.value].text);
+            SettingsSaver.DeleteProfile(Dropdown.options[Dropdown.value].text);
             CancelConfirmingDelete();
             ReloadOptions();
         }
@@ -233,11 +233,11 @@ public class DropdownSaveLoadController : MonoBehaviour
         }
         else // Overwrite an existing save
         {
-            TwitchSettings settings;
-            if (!TwitchSettingsSaver.SavedProfiles.TryGetValue(Dropdown.options[Dropdown.value].text, out settings)) return;
+            ProfileSettings settings;
+            if (!SettingsSaver.SavedProfiles.TryGetValue(Dropdown.options[Dropdown.value].text, out settings)) return;
             Logger4UIScripts.Log.Invoke("覆盖了配置 " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
             // Logger4UIScripts.Log.Invoke("Overwriting saved settings " + Dropdown.options[Dropdown.value].text, Logger4UIScripts.LogColor.Blue);
-            settings.SaveFileVersion = TwitchSettings.CurrentSaveVersion;
+            settings.SaveFileVersion = ProfileSettings.CurrentSaveVersion;
 
             // settings.Username = UsernameField.text;
             settings.Channel = ChannelField.text;
@@ -256,7 +256,7 @@ public class DropdownSaveLoadController : MonoBehaviour
 
             settings.AlphaStart = OverlayToSave.Alpha; settings.AlphaEnd = OverlayToSave.Alpha2; settings.AlphaSpeed = OverlayToSave.AlphaSpeed;
             settings.ScaleStart = OverlayToSave.Scale; settings.ScaleEnd = OverlayToSave.Scale2; settings.ScaleSpeed = OverlayToSave.ScaleSpeed;
-            TwitchSettingsSaver.SaveProfiles();
+            SettingsSaver.SaveProfiles();
         }
     }
 
@@ -267,12 +267,12 @@ public class DropdownSaveLoadController : MonoBehaviour
 
     public void OnSaveNewPressed()
     {
-        if (string.IsNullOrEmpty(SaveName.text) || TwitchSettingsSaver.SavedProfiles.ContainsKey(SaveName.text)) return;
+        if (string.IsNullOrEmpty(SaveName.text) || SettingsSaver.SavedProfiles.ContainsKey(SaveName.text)) return;
         _savingNew = false;
         Logger4UIScripts.Log.Invoke("新建了配置 " + SaveName.text, Logger4UIScripts.LogColor.Blue);
         // Logger4UIScripts.Log.Invoke("Adding saved settings " + SaveName.text, Logger4UIScripts.LogColor.Blue);
-        TwitchSettingsSaver.SavedProfiles.Add(SaveName.text, ConvertToTwitchSettings(OverlayToSave));
-        TwitchSettingsSaver.SaveProfiles();
+        SettingsSaver.SavedProfiles.Add(SaveName.text, ConvertToTwitchSettings(OverlayToSave));
+        SettingsSaver.SaveProfiles();
         SaveName.text = "";
         ReloadOptions();
     }
@@ -280,12 +280,12 @@ public class DropdownSaveLoadController : MonoBehaviour
     /// <summary>
     /// Create a new Save
     /// </summary>
-    private TwitchSettings ConvertToTwitchSettings(HOTK_Overlay o) // Create a new save state
+    private ProfileSettings ConvertToTwitchSettings(HOTK_Overlay o) // Create a new save state
     {
         var backgroundColor = GetMaterialTexture().GetPixel(0, 0);
-        return new TwitchSettings()
+        return new ProfileSettings()
         {
-            SaveFileVersion = TwitchSettings.CurrentSaveVersion,
+            SaveFileVersion = ProfileSettings.CurrentSaveVersion,
 
             // Username = UsernameField.text,
             Channel = ChannelField.text,

@@ -12,13 +12,13 @@ public class ProgramSettings
 }
 
 [System.Serializable]
-public class TwitchSettings
+public class ProfileSettings
 {
     public const uint CurrentSaveVersion = 4;
 
     public uint SaveFileVersion;
 
-    public string Username;
+    // public string Username;
     public string Channel;
     public float X, Y, Z;
     public float RX, RY, RZ;
@@ -36,7 +36,8 @@ public class TwitchSettings
     public float ScaleStart, ScaleEnd, ScaleSpeed;
 }
 
-public static class TwitchSettingsSaver
+
+public static class SettingsSaver
 {
     public static string ProgramSettingsFileName = Application.persistentDataPath + "/programSettings.gd";
     public static string ProfilesFileName = Application.persistentDataPath + "/savedProfiles.gd";
@@ -44,7 +45,7 @@ public static class TwitchSettingsSaver
 
     public static string Current;
     public static ProgramSettings CurrentProgramSettings;
-    public static Dictionary<string, TwitchSettings> SavedProfiles = new Dictionary<string, TwitchSettings>();
+    public static Dictionary<string, ProfileSettings> SavedProfiles = new Dictionary<string, ProfileSettings>();
 
     public static void SaveProfiles(int mode = -1)
     {
@@ -123,7 +124,7 @@ public static class TwitchSettingsSaver
         }
         var bf = new BinaryFormatter();
         var file = File.Open(filename, FileMode.Open);
-        SavedProfiles = (Dictionary<string, TwitchSettings>)bf.Deserialize(file);
+        SavedProfiles = (Dictionary<string, ProfileSettings>)bf.Deserialize(file);
         file.Close();
         Logger4UIScripts.Log.Invoke("已加载 " + SavedProfiles.Count + " 个配置。", Logger4UIScripts.LogColor.Blue);
         // Logger4UIScripts.Log.Invoke("Loaded " + SavedProfiles.Count + " profile(s).", Logger4UIScripts.LogColor.Blue);
