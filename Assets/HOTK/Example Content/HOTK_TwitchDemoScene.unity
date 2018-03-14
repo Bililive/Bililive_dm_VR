@@ -8588,7 +8588,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OverlayToSave: {fileID: 312921294}
-  UsernameField: {fileID: 0}
   ChannelField: {fileID: 1907632660}
   BackgroundMaterial: {fileID: 2100000, guid: f92252e0d20a9da42861f7d0e298bfec, type: 2}
   XSlider: {fileID: 347486092}
@@ -14384,7 +14383,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1665705330}
-  m_Text: Hello World
+  m_Text: 
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
