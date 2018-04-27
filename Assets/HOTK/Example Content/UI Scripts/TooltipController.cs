@@ -33,7 +33,7 @@ public class TooltipController : MonoBehaviour
 	    _tooltip = Instantiate(TooltipPrefab);
         _tooltip.transform.SetParent(Canvas.transform);
 	    _tooltipRectTransform = _tooltip.GetComponent<RectTransform>();
-        _tooltipText = _tooltip.transform.FindChild("Text").gameObject.GetComponent<Text>();
+        _tooltipText = _tooltip.transform.Find("Text").gameObject.GetComponent<Text>();
         SetTooltipText("");
     }
 	
