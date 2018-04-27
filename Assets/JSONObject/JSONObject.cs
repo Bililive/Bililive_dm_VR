@@ -3,7 +3,7 @@
 #define USEFLOAT	//Use floats for numbers instead of doubles	(enable if you're getting too many significant digits in string output)
 //#define POOLING	//Currently using a build setting for this one (also it's experimental)
 
-#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_5_3_OR_NEWER
+#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_2017 || UNITY_5_3_OR_NEWER
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 #endif
@@ -275,7 +275,7 @@ public class JSONObject : IEnumerable {
 			if(strict) {
 				if(str[0] != '[' && str[0] != '{') {
 					type = Type.NULL;
-#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_5_3_OR_NEWER
+#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_2017 || UNITY_5_3_OR_NEWER
 					Debug.LogWarning
 #else
 					Debug.WriteLine
@@ -364,7 +364,7 @@ public class JSONObject : IEnumerable {
 								type = Type.NUMBER;
 							} catch(System.FormatException) {
 								type = Type.NULL;
-#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_5_3_OR_NEWER
+#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_2017 || UNITY_5_3_OR_NEWER
 								Debug.LogWarning
 #else
 								Debug.WriteLine
@@ -695,7 +695,7 @@ public class JSONObject : IEnumerable {
 			}
 		} else if(left.type == Type.ARRAY && right.type == Type.ARRAY) {
 			if(right.Count > left.Count) {
-#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_5_3_OR_NEWER
+#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_2017 || UNITY_5_3_OR_NEWER
 				Debug.LogError
 #else
 				Debug.WriteLine
@@ -754,7 +754,7 @@ public class JSONObject : IEnumerable {
 	IEnumerable StringifyAsync(int depth, StringBuilder builder, bool pretty = false) {	//Convert the JSONObject into a string
 		//Profiler.BeginSample("JSONprint");
 		if(depth++ > MAX_DEPTH) {
-#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_5_3_OR_NEWER
+#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_2017 || UNITY_5_3_OR_NEWER
 			Debug.Log
 #else
 			Debug.WriteLine
@@ -900,7 +900,7 @@ public class JSONObject : IEnumerable {
 	void Stringify(int depth, StringBuilder builder, bool pretty = false) {	//Convert the JSONObject into a string
 		//Profiler.BeginSample("JSONprint");
 		if(depth++ > MAX_DEPTH) {
-#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_5_3_OR_NEWER
+#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_2017 || UNITY_5_3_OR_NEWER
 			Debug.Log
 #else
 			Debug.WriteLine
@@ -1030,7 +1030,7 @@ public class JSONObject : IEnumerable {
 		//Profiler.EndSample();
 	}
 	#endregion
-#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_5_3_OR_NEWER
+#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_2017 || UNITY_5_3_OR_NEWER
 	public static implicit operator WWWForm(JSONObject obj) {
 		WWWForm form = new WWWForm();
 		for(int i = 0; i < obj.list.Count; i++) {
@@ -1079,7 +1079,7 @@ public class JSONObject : IEnumerable {
 					case Type.NUMBER: result.Add(keys[i], val.n + ""); break;
 					case Type.BOOL: result.Add(keys[i], val.b + ""); break;
 					default:
-#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_5_3_OR_NEWER
+#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_2017 || UNITY_5_3_OR_NEWER
 						Debug.LogWarning
 #else
 						Debug.WriteLine
@@ -1090,7 +1090,7 @@ public class JSONObject : IEnumerable {
 			}
 			return result;
 		}
-#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_5_3_OR_NEWER
+#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5 || UNITY_2017 || UNITY_5_3_OR_NEWER
 		Debug.Log
 #else
 		Debug.WriteLine

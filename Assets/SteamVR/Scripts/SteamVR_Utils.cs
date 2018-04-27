@@ -484,7 +484,7 @@ public static class SteamVR_Utils
 	{
 #if (UNITY_5_0 || UNITY_5_1)
 		GL.IssuePluginEvent(eventID);
-#elif (UNITY_5_2 || UNITY_5_3)
+#elif (UNITY_5_2 || UNITY_2017 || UNITY_5_3)
 		GL.IssuePluginEvent(SteamVR.Unity.GetRenderEventFunc(), eventID);
 #endif
 	}
