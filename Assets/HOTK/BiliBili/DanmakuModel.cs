@@ -214,7 +214,7 @@ public class DanmakuModel
                     UserName = obj["data"]["uname"].str;
                     UserID = (int)obj["data"]["uid"].i;
                     isVIP = true;
-                    isAdmin = obj["data"]["isadmin"].str == "1";
+                    // isAdmin = obj["data"]["isadmin"].str == "1";
                     break;
 
                 }

@@ -115,13 +115,14 @@ public class DanmakuDisplayer : MonoBehaviour
             int roomid = 0;
             if (int.TryParse(RoomIDBox.text, out roomid) && roomid > 0)
             {
-                if (Receiver.Connect(roomid))
+                if(Receiver.Connect(roomid))
                 {
                     AddMsg("系统", "连接成功！", "00FF00");
                 }
                 else
                 {
                     AddMsg("系统", "连接失败：" + (Receiver.Error == null ? "神秘错误" : Receiver.Error.Message), "FF0000");
+                    Debug.LogError("连接失败" + Receiver.Error.ToString());
                 }
             }
             else

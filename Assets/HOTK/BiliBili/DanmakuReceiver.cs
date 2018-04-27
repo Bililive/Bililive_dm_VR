@@ -42,47 +42,55 @@ public class DanmakuReceiver : MonoBehaviour
     {
         try
         {
-            if (this.Connected) throw new InvalidOperationException();
+            if(this.Connected)
+                throw new InvalidOperationException();
             int channelId = roomId;
 
-            try
-            {
-                var request2 = WebRequest.Create(CIDInfoUrl + channelId);
-                request2.Timeout = 2000;
-                var response2 = request2.GetResponse();
-                using (var stream = response2.GetResponseStream())
-                {
-                    using (var sr = new StreamReader(stream))
-                    {
-                        var text = sr.ReadToEnd();
-                        var xml = "<root>" + text + "</root>";
-                        XmlDocument doc = new XmlDocument();
-                        doc.LoadXml(xml);
-                        ChatHost = doc["root"]["dm_server"].InnerText;
-                        ChatPort = int.Parse(doc["root"]["dm_port"].InnerText);
-                    }
-                }
-            }
-            catch (WebException ex)
-            {
-                HttpWebResponse errorResponse = ex.Response as HttpWebResponse;
-                if (errorResponse.StatusCode == HttpStatusCode.NotFound)
-                { // 直播间不存在（HTTP 404）
-                    LogMessage.Invoke("该直播间疑似不存在，弹幕姬只支持使用原房间号连接");
-                }
-                else
-                { // B站服务器响应错误
-                    LogMessage.Invoke("B站服务器响应弹幕服务器地址出错，尝试使用常见地址连接");
-                }
-            }
-            catch (Exception)
-            { // 其他错误（XML解析错误？）
-                LogMessage.Invoke("获取弹幕服务器地址时出现未知错误，尝试使用常见地址连接");
-            }
+            // try
+            // {
+            //     var www = new WWW(CIDInfoUrl + channelId);
+            //     var xml = "<root>" + www.text + "</root>";
+            //     XmlDocument doc = new XmlDocument();
+            //     doc.LoadXml(xml);
+            //     ChatHost = doc["root"]["dm_server"].InnerText;
+            //     ChatPort = int.Parse(doc["root"]["dm_port"].InnerText);
+            //     // var request2 = WebRequest.Create(CIDInfoUrl + channelId);
+            //     // request2.Timeout = 2000;
+            //     // var response2 = request2.GetResponse();
+            //     // using (var stream = response2.GetResponseStream())
+            //     // {
+            //     //     using (var sr = new StreamReader(stream))
+            //     //     {
+            //     //         var text = sr.ReadToEnd();
+            //     //         var xml = "<root>" + text + "</root>";
+            //     //         XmlDocument doc = new XmlDocument();
+            //     //         doc.LoadXml(xml);
+            //     //         ChatHost = doc["root"]["dm_server"].InnerText;
+            //     //         ChatPort = int.Parse(doc["root"]["dm_port"].InnerText);
+            //     //     }
+            //     // }
+            // }
+            // catch(WebException ex)
+            // {
+            //     HttpWebResponse errorResponse = ex.Response as HttpWebResponse;
+            //     if(errorResponse.StatusCode == HttpStatusCode.NotFound)
+            //     { // 直播间不存在（HTTP 404）
+            //         LogMessage.Invoke("该直播间疑似不存在，弹幕姬只支持使用原房间号连接");
+            //     }
+            //     else
+            //     { // B站服务器响应错误
+            //         LogMessage.Invoke("B站服务器响应弹幕服务器地址出错，尝试使用常见地址连接");
+            //     }
+            // }
+            // catch(Exception ex)
+            // { // 其他错误（XML解析错误？）
+            //     LogMessage.Invoke("获取弹幕服务器地址时出现未知错误，尝试使用常见地址连接");
+            //     Debug.LogError(ex.ToString());
+            // }
 
             Client = new TcpClient();
             Client.Connect(ChatHost, ChatPort);
-            if (!Client.Connected)
+            if(!Client.Connected)
             {
                 return false;
             }
@@ -97,7 +105,7 @@ public class DanmakuReceiver : MonoBehaviour
             HeartbeatLoopThread.Start();
             return true;
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
             this.Error = ex;
             return false;
@@ -111,7 +119,7 @@ public class DanmakuReceiver : MonoBehaviour
         {
             Client.Close();
         }
-        catch (Exception)
+        catch(Exception)
         { }
 
         NetStream = null;
@@ -123,14 +131,14 @@ public class DanmakuReceiver : MonoBehaviour
         try
         {
             var stableBuffer = new byte[Client.ReceiveBufferSize];
-            while (this.Connected)
+            while(this.Connected)
             {
 
                 NetStream.ReadB(stableBuffer, 0, 4);
                 var packetlength = BitConverter.ToInt32(stableBuffer, 0);
                 packetlength = IPAddress.NetworkToHostOrder(packetlength);
 
-                if (packetlength < 16)
+                if(packetlength < 16)
                     throw new NotSupportedException("协议失败: (L:" + packetlength + ")");
 
                 NetStream.ReadB(stableBuffer, 0, 2);//magic
@@ -142,12 +150,12 @@ public class DanmakuReceiver : MonoBehaviour
                 Console.WriteLine(typeId);
                 NetStream.ReadB(stableBuffer, 0, 4);//magic, params?
                 var playloadlength = packetlength - 16;
-                if (playloadlength == 0)
+                if(playloadlength == 0)
                     continue;//没有内容了
                 typeId = typeId - 1;//和反编译的代码对应 
                 var buffer = new byte[playloadlength];
                 NetStream.ReadB(buffer, 0, playloadlength);
-                switch (typeId)
+                switch(typeId)
                 {
                     case 0:
                     case 1:
@@ -166,7 +174,7 @@ public class DanmakuReceiver : MonoBehaviour
                             {
                                 ReceivedDanmaku.Invoke(new DanmakuModel(json));
                             }
-                            catch (Exception)
+                            catch(Exception)
                             { } // ignored
                             break;
                         }
@@ -178,7 +186,7 @@ public class DanmakuReceiver : MonoBehaviour
                 }
             }
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
             this.Error = ex;
             _disconnect();
@@ -190,13 +198,13 @@ public class DanmakuReceiver : MonoBehaviour
         Debug.Log("HeartbeatLoop Started!");
         try
         {
-            while (this.Connected)
+            while(this.Connected)
             {
                 this.SendHeartbeat();
-                for (int i = 0; i < 30; i++)
+                for(int i = 0; i < 30; i++)
                 {
                     Thread.Sleep(1000);//1s
-                    if (!Connected)
+                    if(!Connected)
                     {
                         Debug.Log("HeartbeatLoop Break");
                         break;
@@ -204,7 +212,7 @@ public class DanmakuReceiver : MonoBehaviour
                 }
             }
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
             this.Error = ex;
             _disconnect();
@@ -213,7 +221,7 @@ public class DanmakuReceiver : MonoBehaviour
 
     private void _disconnect()
     {
-        if (Connected)
+        if(Connected)
         {
             Debug.Log("Disconnected");
             Connected = false;
@@ -237,12 +245,12 @@ public class DanmakuReceiver : MonoBehaviour
     private void SendSocketData(int packetlength, short magic, short ver, int action, int param = 1, string body = "")
     {
         var playload = Encoding.UTF8.GetBytes(body);
-        if (packetlength == 0)
+        if(packetlength == 0)
         {
             packetlength = playload.Length + 16;
         }
         var buffer = new byte[packetlength];
-        using (var ms = new MemoryStream(buffer))
+        using(var ms = new MemoryStream(buffer))
         {
             var b = BitConverter.GetBytes(buffer.Length).ToBE();
             ms.Write(b, 0, 4);
@@ -254,7 +262,7 @@ public class DanmakuReceiver : MonoBehaviour
             ms.Write(b, 0, 4);
             b = BitConverter.GetBytes(param).ToBE();
             ms.Write(b, 0, 4);
-            if (playload.Length > 0)
+            if(playload.Length > 0)
             {
                 ms.Write(playload, 0, playload.Length);
             }
