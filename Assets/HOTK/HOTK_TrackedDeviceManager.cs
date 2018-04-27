@@ -65,8 +65,10 @@ public class HOTK_TrackedDeviceManager : MonoBehaviour
         var compositor = OpenVR.Compositor;
         if (compositor == null) return;
         compositor.GetLastPoses(_poses, _gamePoses);
-        SteamVR_Utils.Event.Send("new_poses", _poses);
-        SteamVR_Utils.Event.Send("new_poses_applied");
+        // SteamVR_Utils.Event.Send("new_poses", _poses);
+        // SteamVR_Utils.Event.Send("new_poses_applied");
+        SteamVR_Events.NewPoses.Invoke(_poses);
+        SteamVR_Events.NewPosesApplied.Invoke();
     }
 
     /// <summary>

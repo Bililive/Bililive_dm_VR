@@ -4,6 +4,8 @@ using Valve.VR;
 
 public class HOTK_TrackedDevice : MonoBehaviour
 {
+    SteamVR_Events.Action newPosesAppliedAction;
+
     public enum EIndex
     {
         None = -1,
@@ -39,7 +41,7 @@ public class HOTK_TrackedDevice : MonoBehaviour
 
     private EType _type;
 
-    private void OnNewPoses(params object[] args)
+    private void OnNewPoses(TrackedDevicePose_t[] poses)
     {
         if (_type != Type)
         {
@@ -77,9 +79,8 @@ public class HOTK_TrackedDevice : MonoBehaviour
         if (Index == EIndex.None)
             return;
 
-        var i = (int) Index;
+        var i = (int)Index;
 
-        var poses = (TrackedDevicePose_t[]) args[0];
         if (poses.Length <= i)
             return;
 
@@ -92,10 +93,10 @@ public class HOTK_TrackedDevice : MonoBehaviour
         IsValid = true;
 
         var pose = new SteamVR_Utils.RigidTransform(poses[i].mDeviceToAbsoluteTracking);
-        
+
         if (Origin != null)
         {
-            pose = new SteamVR_Utils.RigidTransform(Origin)*pose;
+            pose = new SteamVR_Utils.RigidTransform(Origin) * pose;
             pose.pos.x *= Origin.localScale.x;
             pose.pos.y *= Origin.localScale.y;
             pose.pos.z *= Origin.localScale.z;
@@ -107,6 +108,11 @@ public class HOTK_TrackedDevice : MonoBehaviour
             transform.localPosition = pose.pos;
             transform.localRotation = pose.rot;
         }
+    }
+
+    public void Awake()
+    {
+        newPosesAppliedAction = SteamVR_Events.NewPosesAction(OnNewPoses);
     }
 
     public void Start()
@@ -121,7 +127,7 @@ public class HOTK_TrackedDevice : MonoBehaviour
         {
             Reset();
         }
-        else if(Type == EType.RightController && role == ETrackedControllerRole.RightHand)
+        else if (Type == EType.RightController && role == ETrackedControllerRole.RightHand)
         {
             Reset();
         }
@@ -130,12 +136,14 @@ public class HOTK_TrackedDevice : MonoBehaviour
     public void OnEnable()
     {
         Reset();
-        SteamVR_Utils.Event.Listen("new_poses", OnNewPoses);
+        // SteamVR_Utils.Event.Listen("new_poses", OnNewPoses);
+        newPosesAppliedAction.Enable(true);
     }
 
     public void OnDisable()
     {
-        SteamVR_Utils.Event.Remove("new_poses", OnNewPoses);
+        // SteamVR_Utils.Event.Remove("new_poses", OnNewPoses);
+        newPosesAppliedAction.Enable(false);
         Reset();
     }
 
