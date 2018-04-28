@@ -72,9 +72,11 @@ public class SteamVR : System.IDisposable
 				return null;
 			}
 
-			// Verify common interfaces are valid.
+            OpenVR.Init(ref error, EVRApplicationType.VRApplication_Overlay);
 
-			OpenVR.GetGenericInterface(OpenVR.IVRCompositor_Version, ref error);
+            // Verify common interfaces are valid.
+
+            OpenVR.GetGenericInterface(OpenVR.IVRCompositor_Version, ref error);
 			if (error != EVRInitError.None)
 			{
 				ReportError(error);
@@ -249,8 +251,8 @@ public class SteamVR : System.IDisposable
 
 	private SteamVR()
 	{
-		hmd = OpenVR.System;
-		Debug.Log("Connected to " + hmd_TrackingSystemName + ":" + hmd_SerialNumber);
+        hmd = OpenVR.System;
+	    Debug.Log("Connected to " + hmd_TrackingSystemName + ":" + hmd_SerialNumber);
 
 		compositor = OpenVR.Compositor;
 		overlay = OpenVR.Overlay;
