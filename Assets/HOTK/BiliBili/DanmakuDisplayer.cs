@@ -100,6 +100,7 @@ public class DanmakuDisplayer : MonoBehaviour
     public void HandlerDisconnected(Exception error)
     {
         AddMsg("系统", "被断开连接：" + (error != null ? error.Message : "神秘错误"), "FF0000");
+        ClearViewerCountAndChannelName("被断开连接");
     }
 
     public void HandlerLogMessage(string log)
@@ -115,9 +116,10 @@ public class DanmakuDisplayer : MonoBehaviour
             int roomid = 0;
             if (int.TryParse(RoomIDBox.text, out roomid) && roomid > 0)
             {
-                if(Receiver.Connect(roomid))
+                if (Receiver.Connect(roomid))
                 {
                     AddMsg("系统", "连接成功！", "00FF00");
+                    ClearViewerCountAndChannelName("已连接到 " + roomid);
                 }
                 else
                 {
@@ -135,13 +137,14 @@ public class DanmakuDisplayer : MonoBehaviour
         {// disconnect
             Receiver.Disconnect();
             AddMsg("系统", "断开了连接");
+            ClearViewerCountAndChannelName("断开了连接");
         }
         ConnectButtonText.text = Connected ? "断开连接" : "连接";
     }
 
     public void Start()
     {
-        ClearViewerCountAndChannelName("Disconnected");
+        ClearViewerCountAndChannelName("未连接");
         StartCoroutine("SyncWithSteamVR");
     }
 
@@ -173,7 +176,7 @@ public class DanmakuDisplayer : MonoBehaviour
     private void ClearViewerCountAndChannelName(string channelText = null)
     {
         if (ChannelNameTextMesh != null) ChannelNameTextMesh.text = (channelText ?? "");
-        if (ViewerCountTextMesh != null) ViewerCountTextMesh.text = "";
+        // if (ViewerCountTextMesh != null) ViewerCountTextMesh.text = "";
     }
 
     public void AddMsg(string author, string message, string color = "0066FF")
