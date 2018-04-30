@@ -31,15 +31,47 @@ public class SteamVR_Camera : MonoBehaviour
 
 	public bool wireframe = false;
 
-	static public float sceneResolutionScale
-	{
-		get { return UnityEngine.XR.XRSettings.eyeTextureResolutionScale; }
-		set { UnityEngine.XR.XRSettings.eyeTextureResolutionScale = value; }
-	}
+    /* *
+     * https://docs.unity3d.com/ScriptReference/XR.XRSettings-eyeTextureResolutionScale.html
+     * 
+     * Controls the actual size of eye textures as a multiplier of the device's default resolution.
+     * 
+     * A value of 1.0 will use the default eye texture resolution specified by the XR device.
+     * Values less than 1.0 will use lower resolution eye textures,
+     * which can possibly improve performance at the expense of a less sharp image.
+     * Values greater than 1.0 will use higher resolution eye textures,
+     * which can potentially result in a sharper image at the cost of performance and memory.
+     * 
+     * This will always reallocate eye textures, which can be an expensive operation.
+     * For dynamically changing eye render resolution on the fly, consider using XRSettings.renderViewportScale instead.
+     * 
+     * 禁用这个功能，不修改
+     * */
 
-	#region Enable / Disable
 
-	void OnDisable()
+    // static public float sceneResolutionScale
+    // {
+    // 	get { return UnityEngine.XR.XRSettings.eyeTextureResolutionScale; }
+    // 	set { UnityEngine.XR.XRSettings.eyeTextureResolutionScale = value; }
+    // }
+
+    static private float _sceneResolutionScale = 1.0f;
+
+    static public float sceneResolutionScale
+    {
+        get { return _sceneResolutionScale; }
+        set
+        {
+            if (_sceneResolutionScale == value)
+                return;
+            Debug.LogFormat("SteamVR_Camera.sceneResolutionScale changed from {0} to {1}", _sceneResolutionScale, value);
+            _sceneResolutionScale = value;
+        }
+    }
+
+    #region Enable / Disable
+
+    void OnDisable()
 	{
 		SteamVR_Render.Remove(this);
 	}
