@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bililive_dm_VR.Desktop", "Bililive_dm_VR.Desktop\Bililive_dm_VR.Desktop.csproj", "{09D24ECC-D07A-436B-9C0D-81FA79C972C9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09D24ECC-D07A-436B-9C0D-81FA79C972C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09D24ECC-D07A-436B-9C0D-81FA79C972C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09D24ECC-D07A-436B-9C0D-81FA79C972C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09D24ECC-D07A-436B-9C0D-81FA79C972C9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A28AE84F-FD80-4A83-B63A-7D5B686F9DE8}
+	EndGlobalSection
+EndGlobal
