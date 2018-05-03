@@ -5,5 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/HOTK/Example Content/HOTK_TwitchDemoScene.unity
+    guid: d1defc434452f5b478b19909d1e5fc8b
+  - enabled: 1
+    path: Assets/Main.unity
+    guid: 2d5b4b87b41060249a556e12b5b05b47
