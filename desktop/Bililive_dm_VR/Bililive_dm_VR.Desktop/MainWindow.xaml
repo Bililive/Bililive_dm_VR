@@ -15,9 +15,128 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid x:Name="Unity" Width="400" Height="400" VerticalAlignment="Center" HorizontalAlignment="Center"></Grid>
-        
-        
+
+        <Grid Margin="15" Grid.Column="1">
+            <Viewbox Stretch="None">
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <!-- <Setter Property="HorizontalAlignment" Value="Center"/>-->
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                        <Style x:Key="SettingSingleItem" TargetType="StackPanel">
+                            <Setter Property="Orientation" Value="Horizontal"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="20,2,0,0"/>
+                        </Style>
+                        <Style x:Key="SettingSubItem" TargetType="StackPanel">
+                            <Setter Property="Orientation" Value="Vertical"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="20,0,0,0"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <TextBlock HorizontalAlignment="Left" FontSize="16">
+                        设置
+                    </TextBlock>
+
+                    <StackPanel Style="{StaticResource SettingSingleItem}">
+                        <TextBlock>房间号</TextBlock>
+                        <TextBox Width="70"/>
+                        <Button Margin="5,0" Padding="10,0">连接</Button>
+                        <Button Margin="0" Padding="10,0">断开</Button>
+                    </StackPanel>
+
+                    <StackPanel Style="{StaticResource SettingSubItem}">
+                        <TextBlock>
+                            悬浮窗
+                        </TextBlock>
+                        <StackPanel  Style="{StaticResource SettingSingleItem}">
+                            <TextBlock>
+                                固定到
+                            </TextBlock>
+                            <ComboBox SelectedIndex="0">
+                                <ComboBoxItem>右手柄</ComboBoxItem>
+                            </ComboBox>
+                            <ComboBox SelectedIndex="0">
+                                <ComboBoxItem>下侧反手</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel  Style="{StaticResource SettingSingleItem}">
+                            <TextBlock>
+                                偏移坐标
+                            </TextBlock>
+                            <TextBox Width="30">0</TextBox>
+                            <TextBox Width="30">0</TextBox>
+                            <TextBox Width="30">0</TextBox>
+                        </StackPanel>
+                        <StackPanel  Style="{StaticResource SettingSingleItem}">
+                            <TextBlock>
+                                透明度
+                            </TextBlock>
+                            <TextBox Width="30">20</TextBox>
+                        </StackPanel>
+                        <StackPanel  Style="{StaticResource SettingSingleItem}">
+                            <TextBlock>
+                                缩放倍数
+                            </TextBlock>
+                            <TextBox Width="30">0.5</TextBox>
+                        </StackPanel>
+                        <StackPanel  Style="{StaticResource SettingSingleItem}">
+                            <TextBlock>
+                                显示颜色
+                            </TextBlock>
+                            <TextBlock>【这里放颜色选择器】</TextBlock>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource SettingSubItem}">
+                            <TextBlock>
+                                当看向悬浮框时
+                            </TextBlock>
+                            <StackPanel  Style="{StaticResource SettingSingleItem}">
+                                <TextBlock>
+                                动作
+                                </TextBlock>
+                                <ComboBox SelectedIndex="0">
+                                    <ComboBoxItem>缩放+透明度</ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel  Style="{StaticResource SettingSingleItem}">
+                                <TextBlock>
+                                动作后透明度
+                                </TextBlock>
+                                <TextBox Width="30">90</TextBox>
+                            </StackPanel>
+                            <StackPanel  Style="{StaticResource SettingSingleItem}">
+                                <TextBlock>
+                               动作后缩放倍数
+                                </TextBlock>
+                                <TextBox Width="30">1</TextBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Style="{StaticResource SettingSubItem}">
+                        <TextBlock>
+                            弹幕接收
+                        </TextBlock>
+                        <StackPanel Style="{StaticResource SettingSingleItem}">
+                            <TextBlock VerticalAlignment="Top" Margin="5">
+                                显示内容
+                            </TextBlock>
+                            <ListBox SelectionMode="Multiple">
+                                <ListBoxItem>弹幕</ListBoxItem>
+                                <ListBoxItem>礼物</ListBoxItem>
+                                <ListBoxItem>进入直播间</ListBoxItem>
+                                <ListBoxItem>直播间关闭</ListBoxItem>
+                            </ListBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                </StackPanel>
+            </Viewbox>
+        </Grid>
     </Grid>
 </Window>

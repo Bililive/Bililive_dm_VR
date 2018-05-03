@@ -23,7 +23,14 @@ namespace Bililive_dm_VR.Desktop
         public MainWindow()
         {
             InitializeComponent();
-            Unity.Children.Add(new UnityHost(Unity.ActualWidth, Unity.ActualHeight));
+
+            bool runUnity = true;
+
+#if DEBUG
+            // runUnity = false;
+#endif
+            if (runUnity)
+                Unity.Children.Add(new UnityHost(Unity.ActualWidth, Unity.ActualHeight));
         }
     }
 }
