@@ -4,19 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bililive_dm_VR.Desktop"
+        xmlns:model="clr-namespace:Bililive_dm_VR.Desktop.Model"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
-        <Grid x:Name="Unity" Width="400" Height="400" VerticalAlignment="Center" HorizontalAlignment="Center"></Grid>
+        <Viewbox StretchDirection="Both" Stretch="UniformToFill">
+            <Grid Background="Gray" x:Name="Unity" MinHeight="400" MinWidth="400" VerticalAlignment="Center" HorizontalAlignment="Center"></Grid>
+        </Viewbox>
 
         <Grid Margin="15" Grid.Column="1">
             <Viewbox Stretch="None">
@@ -58,12 +60,8 @@
                             <TextBlock>
                                 固定到
                             </TextBlock>
-                            <ComboBox SelectedIndex="0">
-                                <ComboBoxItem>右手柄</ComboBoxItem>
-                            </ComboBox>
-                            <ComboBox SelectedIndex="0">
-                                <ComboBoxItem>下侧反手</ComboBoxItem>
-                            </ComboBox>
+                            <ComboBox ItemsSource="{Binding Source={local:Enumeration {x:Type model:MountDevice}}}" SelectedValue="{Binding TODO}" Width="70" Margin="5,0" DisplayMemberPath="Description" SelectedValuePath="Value"/>
+                            <ComboBox ItemsSource="{Binding Source={local:Enumeration {x:Type model:MountLocation}}}" SelectedValue="{Binding TODO}" Width="80" DisplayMemberPath="Description" SelectedValuePath="Value"/>
                         </StackPanel>
                         <StackPanel  Style="{StaticResource SettingSingleItem}">
                             <TextBlock>
