@@ -33,3 +33,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+CSharp70Support/unityVersion.txt
+CSharp70Support/langVersion.txt
+compilation.log
