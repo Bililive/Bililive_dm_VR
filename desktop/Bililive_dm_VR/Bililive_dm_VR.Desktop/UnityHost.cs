@@ -15,13 +15,16 @@ namespace Bililive_dm_VR.Desktop
         private IntPtr hwndHost;
         private int hostHeight, hostWidth;
 
+        private string args;
+
         private Process process;
         private IntPtr unityHWND = IntPtr.Zero;
 
-        public UnityHost(double width, double height)
+        public UnityHost(double width, double height, string arguments)
         {
             hostHeight = (int)height;
             hostWidth = (int)width;
+            args = arguments;
         }
 
 
@@ -44,7 +47,7 @@ namespace Bililive_dm_VR.Desktop
                 process = Process.Start(new ProcessStartInfo()
                 {
                     FileName = "Bililive_dm_VR.Renderer.exe",
-                    Arguments = "-parentHWND " + hwndHost.ToInt32(),
+                    Arguments = "-parentHWND " + hwndHost.ToInt32() + " " + args,
                     UseShellExecute = true,
                     CreateNoWindow = true
                 });

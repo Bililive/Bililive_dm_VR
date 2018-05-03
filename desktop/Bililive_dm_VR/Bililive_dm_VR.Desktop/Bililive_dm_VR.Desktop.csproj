@@ -144,6 +144,7 @@
     <Compile Include="Model\Profile.cs" />
     <Compile Include="Model\RpcCommand.cs" />
     <Compile Include="Model\ProfileCommand.cs" />
+    <Compile Include="RpcServer.cs" />
     <Compile Include="UnityHost.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
