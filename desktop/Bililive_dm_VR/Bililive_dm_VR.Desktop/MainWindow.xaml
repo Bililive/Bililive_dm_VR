@@ -48,7 +48,7 @@
                     <StackPanel Style="{StaticResource SettingSingleItem}">
                         <TextBlock>房间号</TextBlock>
                         <TextBox Width="70"/>
-                        <Button Margin="5,0" Padding="10,0">连接</Button>
+                        <Button Margin="5,0" Padding="10,0" Click="Button_Click">连接</Button>
                         <Button Margin="0" Padding="10,0">断开</Button>
                     </StackPanel>
 

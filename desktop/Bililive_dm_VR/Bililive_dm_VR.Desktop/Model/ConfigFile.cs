@@ -29,17 +29,16 @@ namespace Bililive_dm_VR.Desktop.Model
         /// 配置列表
         /// </summary>
         [FieldOrder(3)]
-        [SerializeUntil((byte)0)]
         [SerializeWhen(nameof(Version), 1)]
         [ItemLength(nameof(ProfileCount))]
-        [FieldChecksum(nameof(Checksum), Mode = ChecksumMode.Xor)]
+        // [FieldChecksum(nameof(Checksum), Mode = ChecksumMode.Xor)]
         public List<Profile> Profiles { get; set; } = null;
 
         /// <summary>
         /// 校验位 
         /// </summary>
-        [FieldOrder(4)]
-        [SerializeWhen(nameof(Version), 1)]
-        public byte Checksum { get; set; }
+        // [FieldOrder(4)]
+        // [SerializeWhen(nameof(Version), 1)]
+        // public byte Checksum { get; set; }
     }
 }

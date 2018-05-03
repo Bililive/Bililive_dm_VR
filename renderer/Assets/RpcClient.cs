@@ -1,8 +1,12 @@
-﻿using System;
+﻿using Bililive_dm_VR.Desktop.Model;
+using BinarySerialization;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.Pipes;
 using System.Linq;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -10,12 +14,15 @@ public class RpcClient : MonoBehaviour
 {
 
     private NamedPipeClientStream clientStream;
+    private static readonly BinarySerializer binarySerializer = new BinarySerializer() { Encoding = Encoding.UTF8, Endianness = Endianness.Big };
 
     private void Awake()
     {
         Debug.Log(Environment.CommandLine);
 
-        string server = Environment.GetCommandLineArgs().FirstOrDefault(str => str.StartsWith("bililivevrdm"));
+        // string server = Environment.GetCommandLineArgs().FirstOrDefault(str => str.StartsWith("bililivevrdm"));
+
+        string server = "bililivevrdm1472026309";
 
         if (string.IsNullOrWhiteSpace(server))
         {
@@ -24,7 +31,7 @@ public class RpcClient : MonoBehaviour
             return;
         }
 
-        clientStream = new NamedPipeClientStream(server);
+        clientStream = new NamedPipeClientStream(".", server, PipeDirection.In);
         clientStream.Connect(1000);
         if (!clientStream.IsConnected)
         {
@@ -33,6 +40,37 @@ public class RpcClient : MonoBehaviour
             return;
         }
 
+        new Thread(ReadLoop) { Name = "RpcReadLoop", IsBackground = true }.Start();
+    }
+
+    private void ReadLoop(object obj)
+    {
+        try
+        {
+            do
+            {
+                var command = binarySerializer.Deserialize<RpcCommand>(clientStream);
+                Debug.Log("收到 Command");
+                switch (command.Command)
+                {
+                    case ConnectionCommand connectionCommand:
+                        Debug.Log("连接断开直播间" + connectionCommand.Connect + connectionCommand.RoomId);
+                        break;
+                    case ProfileCommand profileCommand:
+                        Debug.Log("收到 profile command");
+                        break;
+                    default:
+                        Debug.Log("收到了一个奇怪的 Command " + command.CommandType);
+                        break;
+                }
+            } while (true);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
+            Debug.Log("Rpc 错误 退出");
+            Shutdown();
+        }
     }
 
     private void Shutdown()

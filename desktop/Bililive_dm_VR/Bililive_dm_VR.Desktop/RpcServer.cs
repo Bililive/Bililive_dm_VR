@@ -1,6 +1,7 @@
 ﻿using Bililive_dm_VR.Desktop.Model;
 using BinarySerialization;
 using System;
+using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace Bililive_dm_VR.Desktop
         {
             bs = binarySerializer;
             PipeName = "bililivevrdm" + new Random().Next().ToString();
-            namedPipeServerStream = new NamedPipeServerStream(PipeName);
+            namedPipeServerStream = new NamedPipeServerStream(PipeName, PipeDirection.Out);
             Task.Run(() => namedPipeServerStream.WaitForConnection());
         }
 
@@ -26,7 +27,14 @@ namespace Bililive_dm_VR.Desktop
             if (!namedPipeServerStream.IsConnected)
                 return false;
 
-            bs.Serialize(namedPipeServerStream, new RpcCommand() { Command = command });
+            var stream = new MemoryStream();
+
+            bs.Serialize(stream, new RpcCommand() { Command = command });
+
+            stream.WriteTo(namedPipeServerStream);
+
+            namedPipeServerStream.Flush();
+
             return true;
         }
 
