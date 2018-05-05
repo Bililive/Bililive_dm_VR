@@ -74,7 +74,7 @@ PlayerSettings:
   Force IOS Speakers When Recording: 0
   deferSystemGesturesMode: 0
   hideHomeButton: 0
-  submitAnalytics: 1
+  submitAnalytics: 0
   usePlayerLog: 1
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
@@ -559,12 +559,13 @@ PlayerSettings:
   scriptingBackend:
     Android: 0
     Metro: 2
-    Standalone: 0
+    Standalone: 1
     WP8: 2
     WebGL: 1
     WebPlayer: 0
     iOS: 1
-  il2cppCompilerConfiguration: {}
+  il2cppCompilerConfiguration:
+    Standalone: 1
   incrementalIl2cppBuild:
     iOS: 1
   allowUnsafeCode: 0

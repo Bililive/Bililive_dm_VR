@@ -1,8 +1,10 @@
-﻿using net.r_eg.Conari;
+﻿using EasyHook;
+using net.r_eg.Conari;
 using net.r_eg.Conari.Types;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
@@ -30,8 +32,28 @@ namespace Bililive_dm_VR.Desktop
             args = arguments;
         }
 
-        // [DllImport("UnityPlayer.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        // private static extern int UnityMain(IntPtr hInstance, IntPtr hPrevInstance, [MarshalAs(UnmanagedType.LPWStr)] string lpCmdLine, int nShowCmd);
+        [DllImport("Kernel32.dll", CallingConvention = CallingConvention.StdCall, SetLastError = true, EntryPoint = "LoadLibraryW")]
+        private extern static IntPtr LoadLibraryW([MarshalAs(UnmanagedType.LPWStr)]string file);
+
+        [DllImport("Kernel32.dll", CallingConvention = CallingConvention.StdCall, SetLastError = true, EntryPoint = "VirtualProtect")]
+        private extern static int VirtualProtect(IntPtr pBaseAddr, int size, int newProtect, out int oldProtect);
+
+        [DllImport("Kernel32.dll", CallingConvention = CallingConvention.StdCall, SetLastError = true, EntryPoint = "VirtualAlloc")]
+        private extern static IntPtr VirtualAlloc(IntPtr pBase, int size, int memtype, int protect);
+
+        [DllImport("UnityPlayer.dll")]
+        private static extern int UnityMain(IntPtr hInstance, IntPtr hPrevInstance, [MarshalAs(UnmanagedType.LPWStr)] string lpCmdLine, int nShowCmd);
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.LPTStr)]
+        delegate string GetCommandLineDelegate();
+
+
+        static string CommandLineValue = "";
+        static string GetCommandLineHook()
+        {
+            return CommandLineValue;
+        }
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)
         {
@@ -50,19 +72,56 @@ namespace Bililive_dm_VR.Desktop
             try
             {
 
-                ConariL unityPlayer = new ConariL("UnityPlayer.dll");
+                // ConariL unityPlayer = new ConariL("UnityPlayer.dll");
 
                 IntPtr hInstance = Marshal.GetHINSTANCE(typeof(UnityHost).Module);
                 IntPtr hPrevInstance = IntPtr.Zero;
-                string lpCmdLine_raw = "Bililive_dm_VR.Renderer.exe -parentHWND" + hwndHost.ToInt32() + " " + args;
+                string lpCmdLine_raw = "Bililive_dm_VR.Renderer.exe -parentHWND " + hwndHost.ToInt32() + " " + args;
                 var lpCmdLine = new UnmanagedString(lpCmdLine_raw, UnmanagedString.SType.Unicode);
                 int nShowCmd = 0;
 
-                var unityMain = unityPlayer.bind<Func<IntPtr, IntPtr, IntPtr, int, int>>("UnityMain");
+                // var unityMain = unityPlayer.bind<Func<IntPtr, IntPtr, IntPtr, int, int>>("UnityMain");
 
                 new Thread(() =>
                 {
-                    int result = unityMain(hInstance, hPrevInstance, lpCmdLine.Pointer, nShowCmd);
+                    //mov eax, xxxxxx   
+                    //ret C3
+
+                    // IntPtr pBaseAddr = LoadLibraryW("UnityPlayer.dll");
+                    // IntPtr pHookAddr = new IntPtr(pBaseAddr.ToInt64() + 0x010fd658);
+                    // 
+                    // IntPtr pCmdLine = Marshal.AllocCoTaskMem(lpCmdLine_raw.Length * 2 + 2);
+                    // Marshal.Copy(Encoding.Unicode.GetBytes(lpCmdLine_raw), 0, pCmdLine, lpCmdLine_raw.Length * 2);
+                    // 
+                    // byte[] funcBytes = new byte[] {
+                    //     0x48, 0xB8,
+                    //     (byte)((pCmdLine.ToInt64() >> 0) & 0xff),
+                    //     (byte)((pCmdLine.ToInt64() >> 8) & 0xff),
+                    //     (byte)((pCmdLine.ToInt64() >> 16) & 0xff),
+                    //     (byte)((pCmdLine.ToInt64() >> 24) & 0xff),
+                    //     (byte)((pCmdLine.ToInt64() >> 32) & 0xff),
+                    //     (byte)((pCmdLine.ToInt64() >> 40) & 0xff),
+                    //     (byte)((pCmdLine.ToInt64() >> 48) & 0xff),
+                    //     (byte)((pCmdLine.ToInt64() >> 56) & 0xff),
+                    //     0xc3
+                    // };
+                    // 
+                    // IntPtr FP = VirtualAlloc(IntPtr.Zero, 12, 0x1000, 0x40);
+                    // Marshal.Copy(funcBytes, 0, FP, funcBytes.Length);
+                    // 
+                    // IntPtr[] getCmdLineFP = new IntPtr[1];
+                    // getCmdLineFP[0] = FP;
+                    // 
+                    // int oldProtect, useless;
+                    // VirtualProtect(pHookAddr, 8, 4, out oldProtect);
+                    // Marshal.Copy(getCmdLineFP, 0, pHookAddr, 1);
+                    // VirtualProtect(pHookAddr, 8, oldProtect, out useless);
+
+                    // CommandLineValue = lpCmdLine_raw;
+                    // var hook = LocalHook.Create(LocalHook.GetProcAddress("kernel32.dll", "GetCommandLineW"), new GetCommandLineDelegate(GetCommandLineHook), null);
+                    // hook.ThreadACL.SetExclusiveACL(new int[] { });
+
+                    int result = UnityMain(hInstance, hPrevInstance, lpCmdLine_raw, nShowCmd);
                     MessageBox.Show("Unity Quit: " + result);
                 })
                 {

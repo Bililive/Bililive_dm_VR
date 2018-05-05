@@ -16,12 +16,23 @@ public class RpcClient : MonoBehaviour
     private NamedPipeClientStream clientStream;
     private static readonly BinarySerializer binarySerializer = new BinarySerializer() { Encoding = Encoding.UTF8, Endianness = Endianness.Big };
 
+    private void OnGUI()
+    {
+        int w = Screen.width, h = Screen.height;
+        GUIStyle style = new GUIStyle();
+        Rect rect = new Rect(0, h * 3 / 100, w, h * 3 / 100);
+        style.alignment = TextAnchor.UpperLeft;
+        style.fontSize = h * 3 / 100;
+        style.normal.textColor = new Color(0.0f, 0.0f, 0.5f, 1.0f);
+        GUI.Label(rect, Environment.CommandLine, style);
+    }
+
     private void Awake()
     {
         Debug.Log(Environment.CommandLine);
 
         // string server = Environment.GetCommandLineArgs().FirstOrDefault(str => str.StartsWith("bililivevrdm"));
-
+        return;
         string server = "bililivevrdm1472026309";
 
         if (string.IsNullOrWhiteSpace(server))
