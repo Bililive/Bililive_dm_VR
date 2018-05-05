@@ -1,6 +1,9 @@
-﻿using System;
+﻿using net.r_eg.Conari;
+using net.r_eg.Conari.Types;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -27,6 +30,8 @@ namespace Bililive_dm_VR.Desktop
             args = arguments;
         }
 
+        // [DllImport("UnityPlayer.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        // private static extern int UnityMain(IntPtr hInstance, IntPtr hPrevInstance, [MarshalAs(UnmanagedType.LPWStr)] string lpCmdLine, int nShowCmd);
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)
         {
@@ -44,15 +49,36 @@ namespace Bililive_dm_VR.Desktop
 
             try
             {
-                process = Process.Start(new ProcessStartInfo()
-                {
-                    FileName = "Bililive_dm_VR.Renderer.exe",
-                    Arguments = "-parentHWND " + hwndHost.ToInt32() + " " + args,
-                    UseShellExecute = true,
-                    CreateNoWindow = true
-                });
 
-                process.WaitForInputIdle();
+                ConariL unityPlayer = new ConariL("UnityPlayer.dll");
+
+                IntPtr hInstance = Marshal.GetHINSTANCE(typeof(UnityHost).Module);
+                IntPtr hPrevInstance = IntPtr.Zero;
+                string lpCmdLine_raw = "Bililive_dm_VR.Renderer.exe -parentHWND" + hwndHost.ToInt32() + " " + args;
+                var lpCmdLine = new UnmanagedString(lpCmdLine_raw, UnmanagedString.SType.Unicode);
+                int nShowCmd = 0;
+
+                var unityMain = unityPlayer.bind<Func<IntPtr, IntPtr, IntPtr, int, int>>("UnityMain");
+
+                new Thread(() =>
+                {
+                    int result = unityMain(hInstance, hPrevInstance, lpCmdLine.Pointer, nShowCmd);
+                    MessageBox.Show("Unity Quit: " + result);
+                })
+                {
+                    Name = "UnityMain",
+                    IsBackground = true,
+                }.Start();
+
+                // process = Process.Start(new ProcessStartInfo()
+                // {
+                //     FileName = "Bililive_dm_VR.Renderer.exe",
+                //     Arguments = "-parentHWND " + hwndHost.ToInt32() + " " + args,
+                //     UseShellExecute = true,
+                //     CreateNoWindow = true
+                // });
+                // 
+                // process.WaitForInputIdle();
                 // Doesn't work for some reason ?!
                 //unityHWND = process.MainWindowHandle;
                 EnumChildWindows(hwndHost, WindowEnum, IntPtr.Zero);

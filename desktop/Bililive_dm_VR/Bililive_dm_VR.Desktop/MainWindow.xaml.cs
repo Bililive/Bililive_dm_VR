@@ -106,7 +106,7 @@ namespace Bililive_dm_VR.Desktop
         {
             bool runUnity = true;
 #if DEBUG
-            runUnity = false;
+            // runUnity = false;
 #endif
             if (runUnity)
                 Unity.Children.Add(new UnityHost(Unity.ActualWidth, Unity.ActualHeight, server.PipeName));
