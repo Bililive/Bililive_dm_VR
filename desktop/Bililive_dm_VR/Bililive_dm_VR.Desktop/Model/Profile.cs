@@ -23,65 +23,82 @@ namespace Bililive_dm_VR.Desktop.Model
         public MountLocation MountLocation { get; set; }
 
         /// <summary>
-        /// 偏移坐标X
+        /// 偏移坐标 X
         /// </summary>
         [FieldOrder(3)]
-        public int OffsetX { get; set; }
+        public float OffsetX { get; set; }
 
         /// <summary>
-        /// 偏移坐标Y
+        /// 偏移坐标 Y
         /// </summary>
         [FieldOrder(4)]
-        public int OffsetY { get; set; }
+        public float OffsetY { get; set; }
 
         /// <summary>
-        /// 偏移坐标Z
+        /// 偏移坐标 Z
         /// </summary>
         [FieldOrder(5)]
-        public int OffsetZ { get; set; }
+        public float OffsetZ { get; set; }
 
         /// <summary>
-        /// 透明度 ( 0 - 100 )
+        /// 旋转 X
         /// </summary>
         [FieldOrder(6)]
+        public float RotationX { get; set; }
+
+        /// <summary>
+        /// 旋转 Y
+        /// </summary>
+        [FieldOrder(7)]
+        public float RotationY { get; set; }
+
+        /// <summary>
+        /// 旋转 Z
+        /// </summary>
+        [FieldOrder(8)]
+        public float RotationZ { get; set; }
+
+        /// <summary>
+        /// 透明度 ( 0 .. 100 )
+        /// </summary>
+        [FieldOrder(9)]
         public int Alpha { get; set; }
 
         /// <summary>
-        /// 缩放倍数 ( 100% )
+        /// 缩放倍数 ( 1% .. 100% )
         /// </summary>
-        [FieldOrder(7)]
+        [FieldOrder(10)]
         public int Scale { get; set; }
 
         /// <summary>
         /// 颜色 ( AARRGGBB )
         /// </summary>
-        [FieldOrder(8)]
+        [FieldOrder(11)]
         public int Color { get; set; }
 
         /// <summary>
         /// 动作类型
         /// </summary>
-        [FieldOrder(9)]
-        public AnimationType AnimationType { get; set; }
+        [FieldOrder(12)]
+        public AnimationType AnimateOnGaze { get; set; }
 
         /// <summary>
-        /// 动作后透明度
+        /// 动作后透明度 ( 0% .. 100% )
         /// </summary>
-        [FieldOrder(10)]
+        [FieldOrder(13)]
         public int AnimationAlpha { get; set; }
 
         /// <summary>
         /// 动作后缩放倍数
         /// </summary>
-        [FieldOrder(11)]
+        [FieldOrder(14)]
         public int AnimationScale { get; set; }
 
         /// <summary>
         /// 显示的消息类型
         /// </summary>
-        [FieldOrder(12)]
-        public MessageType MessageType { get; set; }
-
+        [FieldOrder(15)]
+        public OverlayMessageType MessageType { get; set; }
 
     }
 }

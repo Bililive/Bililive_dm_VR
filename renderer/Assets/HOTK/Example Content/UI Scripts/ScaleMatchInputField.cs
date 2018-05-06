@@ -24,10 +24,10 @@ public class ScaleMatchInputField : MonoBehaviour
                 InputField.text = Overlay.Scale.ToString();
                 break;
             case InputValue.ScaleEnd:
-                InputField.text = Overlay.Scale2.ToString();
+                InputField.text = Overlay.AnimationScale.ToString();
                 break;
             case InputValue.ScaleSpeed:
-                InputField.text = Overlay.ScaleSpeed.ToString();
+                InputField.text = Overlay.AnimationScaleSpeed.ToString();
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -45,10 +45,10 @@ public class ScaleMatchInputField : MonoBehaviour
                 Overlay.Scale = f;
                 break;
             case InputValue.ScaleEnd:
-                Overlay.Scale2 = f;
+                Overlay.AnimationScale = f;
                 break;
             case InputValue.ScaleSpeed:
-                Overlay.ScaleSpeed = f;
+                Overlay.AnimationScaleSpeed = f;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

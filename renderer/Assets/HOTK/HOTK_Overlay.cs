@@ -16,19 +16,19 @@ public class HOTK_Overlay : MonoBehaviour
     [Tooltip("The texture that will be drawn for the Overlay.")]
     public Texture OverlayTexture;
     [Tooltip("How, if at all, the Overlay is animated when being looked at.")]
-    public AnimationType AnimateOnGaze = AnimationType.无;
+    public AnimationType AnimateOnGaze = AnimationType.None;
     [Tooltip("The alpha at which the Overlay will be drawn.")]
     public float Alpha = 1.0f;			// opacity 0..1
     [Tooltip("The alpha at which the Overlay will be drawn.")]
-    public float Alpha2 = 1.0f;			// opacity 0..1 - Only used for AnimateOnGaze
+    public float AnimationAlpha = 1.0f;			// opacity 0..1 - Only used for AnimateOnGaze
     [Tooltip("The speed the Alpha changes at.")]
-    public float AlphaSpeed = 0.01f;
+    public float AnimationAlphaSpeed = 0.01f;
     [Tooltip("The scale at which the Overlay will be drawn.")]
     public float Scale = 1.0f;			// size of overlay view
     [Tooltip("The scale at which the Overlay will be drawn.")]
-    public float Scale2 = 1.0f;			// size of overlay view - Only used for AnimateOnGaze
+    public float AnimationScale = 1.0f;			// size of overlay view - Only used for AnimateOnGaze
     [Tooltip("The speed the Scale changes at.")]
-    public float ScaleSpeed = 0.1f;
+    public float AnimationScaleSpeed = 0.1f;
     [Tooltip("This causes the Overlay to draw directly to the screen, instead of to the VRCompositor.")]
     public bool Highquality;            // Only one Overlay can be HQ at a time
     [Tooltip("This causes the Overlay to draw with Anti-Aliasing. Requires High Quality.")]
@@ -42,11 +42,13 @@ public class HOTK_Overlay : MonoBehaviour
     public VROverlayInputMethod InputMethod = VROverlayInputMethod.None;
 
     [Tooltip("Controls where the Overlay will be drawn.")]
-    public AttachmentDevice AnchorDevice = AttachmentDevice.显示器;
+    public MountDevice AnchorDevice = MountDevice.Screen;
     [Tooltip("Controls the base offset for the Overlay.")]
-    public AttachmentPoint AnchorPoint = AttachmentPoint.中心;
+    public MountLocation AnchorPoint = MountLocation.Center;
     [Tooltip("Controls the offset for the Overlay.")]
     public Vector3 AnchorOffset = Vector3.zero;
+
+    public Vector3 AnchorRotation { get => transform.eulerAngles; set => transform.eulerAngles = value; }
     #endregion
 
     #region Interal Vars
@@ -59,8 +61,8 @@ public class HOTK_Overlay : MonoBehaviour
 
     private Texture _overlayTexture;                    // These are used to cache values and check for changes
     private Vector4 _uvOffset = Vector4.zero;
-    private AttachmentDevice _anchorDevice;             // These are used to cache values and check for changes
-    private AttachmentPoint _anchorPoint;               // These are used to cache values and check for changes
+    private MountDevice _anchorDevice;             // These are used to cache values and check for changes
+    private MountLocation _anchorPoint;               // These are used to cache values and check for changes
     private Vector3 _anchorOffset = Vector3.zero;       // These are used to cache values and check for changes
     private Vector3 _objectPosition = Vector3.zero;     // These are used to cache values and check for changes
     private Quaternion _anchorRotation = Quaternion.identity;   // These are used to cache values and check for changes
@@ -99,7 +101,7 @@ public class HOTK_Overlay : MonoBehaviour
         // Check if our Overlay's Alpha or Scale changed
         CheckOverlayAlphaAndScale(ref changed);
         // Check if our Overlay is being Gazed at, or has been recently and is still animating
-        if (AnimateOnGaze != AnimationType.无) UpdateGaze(ref changed);
+        if (AnimateOnGaze != AnimationType.None) UpdateGaze(ref changed);
         // Check if our Overlay's HighQuality, AntiAlias, or Curved setting changed
         CheckHighQualityChanged(ref changed);
         // Update our Overlay if anything has changed
@@ -117,13 +119,13 @@ public class HOTK_Overlay : MonoBehaviour
     // If the controller we are tracking changes index, update
     private void OnControllerIndexChanged(ETrackedControllerRole role, uint index)
     {
-        if (_anchorDevice == AttachmentDevice.左手柄 && role == ETrackedControllerRole.LeftHand)
+        if (_anchorDevice == MountDevice.LeftController && role == ETrackedControllerRole.LeftHand)
         {
-            _anchorDevice = AttachmentDevice.世界; // This will trick the system into reattaching the overlay
+            _anchorDevice = MountDevice.World; // This will trick the system into reattaching the overlay
         }
-        else if (_anchorDevice == AttachmentDevice.右手柄 && role == ETrackedControllerRole.RightHand)
+        else if (_anchorDevice == MountDevice.RightController && role == ETrackedControllerRole.RightHand)
         {
-            _anchorDevice = AttachmentDevice.世界; // This will trick the system into reattaching the overlay
+            _anchorDevice = MountDevice.World; // This will trick the system into reattaching the overlay
         }
     }
 
@@ -167,7 +169,7 @@ public class HOTK_Overlay : MonoBehaviour
     /// </summary>
     /// <param name="device"></param>
     /// <param name="point"></param>
-    public void AttachTo(AttachmentDevice device, AttachmentPoint point = AttachmentPoint.中心)
+    public void AttachTo(MountDevice device, MountLocation point = MountLocation.Center)
     {
         AttachTo(device, 1f, Vector3.zero, point);
     }
@@ -178,7 +180,7 @@ public class HOTK_Overlay : MonoBehaviour
     /// <param name="device"></param>
     /// <param name="scale"></param>
     /// <param name="point"></param>
-    public void AttachTo(AttachmentDevice device, float scale, AttachmentPoint point = AttachmentPoint.中心)
+    public void AttachTo(MountDevice device, float scale, MountLocation point = MountLocation.Center)
     {
         AttachTo(device, scale, Vector3.zero, point);
     }
@@ -190,7 +192,7 @@ public class HOTK_Overlay : MonoBehaviour
     /// <param name="scale"></param>
     /// <param name="offset"></param>
     /// <param name="point"></param>
-    public void AttachTo(AttachmentDevice device, float scale, Vector3 offset, AttachmentPoint point = AttachmentPoint.中心)
+    public void AttachTo(MountDevice device, float scale, Vector3 offset, MountLocation point = MountLocation.Center)
     {
         // Update Overlay Anchor position
         GetOverlayPosition();
@@ -207,21 +209,21 @@ public class HOTK_Overlay : MonoBehaviour
         // Attach Overlay
         switch (device)
         {
-            case AttachmentDevice.显示器:
+            case MountDevice.Screen:
                 _anchor = OpenVR.k_unTrackedDeviceIndexInvalid;
                 OverlayReference.transform.localPosition = -offset;
                 OverlayReference.transform.localRotation = Quaternion.identity;
                 break;
-            case AttachmentDevice.世界:
+            case MountDevice.World:
                 _anchor = OpenVR.k_unTrackedDeviceIndexInvalid;
                 OverlayReference.transform.localPosition = -offset;
                 OverlayReference.transform.localRotation = Quaternion.identity;
                 break;
-            case AttachmentDevice.左手柄:
+            case MountDevice.LeftController:
                 _anchor = HOTK_TrackedDeviceManager.Instance.LeftIndex;
                 AttachToController(point, offset);
                 break;
-            case AttachmentDevice.右手柄:
+            case MountDevice.RightController:
                 _anchor = HOTK_TrackedDeviceManager.Instance.RightIndex;
                 AttachToController(point, offset);
                 break;
@@ -235,45 +237,45 @@ public class HOTK_Overlay : MonoBehaviour
     /// </summary>
     /// <param name="point"></param>
     /// <param name="offset"></param>
-    private void AttachToController(AttachmentPoint point, Vector3 offset)
+    private void AttachToController(MountLocation point, Vector3 offset)
     {
         float dx = offset.x, dy = offset.y, dz = offset.z;
         // Offset our position based on the Attachment Point
         switch (point)
         {
-            case AttachmentPoint.中心:
+            case MountLocation.Center:
                 break;
-            case AttachmentPoint.顶端:
+            case MountLocation.FlatAbove:
                 dz += 0.05f;
                 break;
-            case AttachmentPoint.底端:
+            case MountLocation.FlatBelow:
                 dz -= 0.18f;
                 break;
-            case AttachmentPoint.底端反手:
+            case MountLocation.FlatBelowFlipped:
                 dz += 0.18f;
                 break;
-            case AttachmentPoint.上侧:
+            case MountLocation.Above:
                 dz -= 0.01f;
                 break;
-            case AttachmentPoint.上侧反手:
+            case MountLocation.AboveFlipped:
                 dz += 0.01f;
                 break;
-            case AttachmentPoint.下侧:
+            case MountLocation.Below:
                 dz += 0.1f;
                 break;
-            case AttachmentPoint.下侧反手:
+            case MountLocation.BelowFlipped:
                 dz -= 0.1f;
                 break;
-            case AttachmentPoint.上:
+            case MountLocation.Up:
                 dy += 0.5f;
                 break;
-            case AttachmentPoint.下:
+            case MountLocation.Down:
                 dy -= 0.5f;
                 break;
-            case AttachmentPoint.左:
+            case MountLocation.Left:
                 dx -= 0.5f;
                 break;
-            case AttachmentPoint.右:
+            case MountLocation.Right:
                 dx += 0.5f;
                 break;
             default:
@@ -286,29 +288,29 @@ public class HOTK_Overlay : MonoBehaviour
         // Some Axis are flipped here to reorient the offset
         switch (point)
         {
-            case AttachmentPoint.顶端:
-            case AttachmentPoint.底端:
+            case MountLocation.FlatAbove:
+            case MountLocation.FlatBelow:
                 pos = new Vector3(dx, dy, dz);
                 break;
-            case AttachmentPoint.底端反手:
+            case MountLocation.FlatBelowFlipped:
                 pos = new Vector3(dx, -dy, -dz);
                 rot = Quaternion.AngleAxis(180f, new Vector3(1f, 0f, 0f));
                 break;
-            case AttachmentPoint.中心:
-            case AttachmentPoint.上侧:
-            case AttachmentPoint.下侧:
+            case MountLocation.Center:
+            case MountLocation.Above:
+            case MountLocation.Below:
                 pos = new Vector3(dx, -dz, dy);
                 rot = Quaternion.AngleAxis(90f, new Vector3(1f, 0f, 0f));
                 break;
-            case AttachmentPoint.上:
-            case AttachmentPoint.下:
-            case AttachmentPoint.左:
-            case AttachmentPoint.右:
+            case MountLocation.Up:
+            case MountLocation.Down:
+            case MountLocation.Left:
+            case MountLocation.Right:
                 pos = new Vector3(dx, -dz, dy);
                 rot = Quaternion.AngleAxis(90f, new Vector3(1f, 0f, 0f));
                 break;
-            case AttachmentPoint.上侧反手:
-            case AttachmentPoint.下侧反手:
+            case MountLocation.AboveFlipped:
+            case MountLocation.BelowFlipped:
                 pos = new Vector3(-dx, dz, dy);
                 rot = Quaternion.AngleAxis(90f, new Vector3(1f, 0f, 0f)) * Quaternion.AngleAxis(180f, new Vector3(0f, 1f, 0f));
                 break;
@@ -323,7 +325,7 @@ public class HOTK_Overlay : MonoBehaviour
 
     private void CheckOverlayAlphaAndScale(ref bool changed)
     {
-        if (AnimateOnGaze != AnimationType.透明度 && AnimateOnGaze != AnimationType.透明度和大小)
+        if (AnimateOnGaze != AnimationType.Alpha && AnimateOnGaze != AnimationType.AlphaAndScale)
         {
             if (_alpha != Alpha) // Loss of precision but it should work
             {
@@ -331,7 +333,7 @@ public class HOTK_Overlay : MonoBehaviour
                 changed = true;
             }
         }
-        if (AnimateOnGaze != AnimationType.大小 && AnimateOnGaze != AnimationType.透明度和大小)
+        if (AnimateOnGaze != AnimationType.Scale && AnimateOnGaze != AnimationType.AlphaAndScale)
         {
             if (_scale != Scale) // Loss of precision but it should work
             {
@@ -359,7 +361,7 @@ public class HOTK_Overlay : MonoBehaviour
     /// <returns></returns>
     private void CheckOverlayPositionChanged(ref bool changed)
     {
-        if (AnchorDevice == AttachmentDevice.左手柄 || AnchorDevice == AttachmentDevice.右手柄) return; // Controller overlays do not adjust with gameObject transform
+        if (AnchorDevice == MountDevice.LeftController || AnchorDevice == MountDevice.RightController) return; // Controller overlays do not adjust with gameObject transform
         if (_objectPosition == gameObject.transform.localPosition) return;
         _objectPosition = gameObject.transform.localPosition;
         changed = true;
@@ -504,72 +506,72 @@ public class HOTK_Overlay : MonoBehaviour
     {
         if (hit)
         {
-            if (AnimateOnGaze == AnimationType.透明度 || AnimateOnGaze == AnimationType.透明度和大小)
+            if (AnimateOnGaze == AnimationType.Alpha || AnimateOnGaze == AnimationType.AlphaAndScale)
             {
-                if (_alpha < Alpha2)
+                if (_alpha < AnimationAlpha)
                 {
-                    _alpha += AlphaSpeed;
+                    _alpha += AnimationAlphaSpeed;
                     changed = true;
-                    if (_alpha > Alpha2)
-                        _alpha = Alpha2;
+                    if (_alpha > AnimationAlpha)
+                        _alpha = AnimationAlpha;
                 }
-                else if (_alpha > Alpha2)
+                else if (_alpha > AnimationAlpha)
                 {
-                    _alpha -= AlphaSpeed;
+                    _alpha -= AnimationAlphaSpeed;
                     changed = true;
-                    if (_alpha < Alpha2)
-                        _alpha = Alpha2;
+                    if (_alpha < AnimationAlpha)
+                        _alpha = AnimationAlpha;
                 }
             }
-            if (AnimateOnGaze == AnimationType.大小 || AnimateOnGaze == AnimationType.透明度和大小)
+            if (AnimateOnGaze == AnimationType.Scale || AnimateOnGaze == AnimationType.AlphaAndScale)
             {
-                if (_scale < Scale2)
+                if (_scale < AnimationScale)
                 {
-                    _scale += ScaleSpeed;
+                    _scale += AnimationScaleSpeed;
                     changed = true;
-                    if (_scale > Scale2)
-                        _scale = Scale2;
+                    if (_scale > AnimationScale)
+                        _scale = AnimationScale;
                 }
-                else if (_scale > Scale2)
+                else if (_scale > AnimationScale)
                 {
-                    _scale -= ScaleSpeed;
+                    _scale -= AnimationScaleSpeed;
                     changed = true;
-                    if (_scale < Scale2)
-                        _scale = Scale2;
+                    if (_scale < AnimationScale)
+                        _scale = AnimationScale;
                 }
             }
         }
         else
         {
-            if (AnimateOnGaze == AnimationType.透明度 || AnimateOnGaze == AnimationType.透明度和大小)
+            if (AnimateOnGaze == AnimationType.Alpha || AnimateOnGaze == AnimationType.AlphaAndScale)
             {
                 if (_alpha > Alpha)
                 {
-                    _alpha -= AlphaSpeed;
+                    _alpha -= AnimationAlphaSpeed;
                     changed = true;
                     if (_alpha < Alpha)
                         _alpha = Alpha;
                 }
                 else if (_alpha < Alpha)
                 {
-                    _alpha += AlphaSpeed;
+                    _alpha += AnimationAlphaSpeed;
                     changed = true;
                     if (_alpha > Alpha)
                         _alpha = Alpha;
                 }
             }
-            if (AnimateOnGaze == AnimationType.大小 || AnimateOnGaze == AnimationType.透明度和大小)
+            if (AnimateOnGaze == AnimationType.Scale || AnimateOnGaze == AnimationType.AlphaAndScale)
             {
                 if (_scale > Scale)
                 {
-                    _scale -= ScaleSpeed;
+                    _scale -= AnimationScaleSpeed;
                     changed = true;
                     if (_scale < Scale)
                         _scale = Scale;
                 }
                 else if (_scale < Scale)
                 {
-                    _scale += ScaleSpeed;
+                    _scale += AnimationScaleSpeed;
                     changed = true;
                     if (_scale > Scale)
                         _scale = Scale;
@@ -620,8 +622,8 @@ public class HOTK_Overlay : MonoBehaviour
             overlay.SetOverlayColor(_handle, 1f, 1f, 1f);
             //overlay.SetOverlayGamma(_handle, 2.2f); // Doesn't exist yet :(
             overlay.SetOverlayTexture(_handle, ref tex);
-            overlay.SetOverlayAlpha(_handle, AnimateOnGaze == AnimationType.透明度 || AnimateOnGaze == AnimationType.透明度和大小 ? _alpha : Alpha);
-            overlay.SetOverlayWidthInMeters(_handle, AnimateOnGaze == AnimationType.大小 || AnimateOnGaze == AnimationType.透明度和大小 ? _scale : Scale);
+            overlay.SetOverlayAlpha(_handle, AnimateOnGaze == AnimationType.Alpha || AnimateOnGaze == AnimationType.AlphaAndScale ? _alpha : Alpha);
+            overlay.SetOverlayWidthInMeters(_handle, AnimateOnGaze == AnimationType.Scale || AnimateOnGaze == AnimationType.AlphaAndScale ? _scale : Scale);
             overlay.SetOverlayAutoCurveDistanceRangeInMeters(_handle, CurvedRange.x, CurvedRange.y);
 
             var textureBounds = new VRTextureBounds_t
@@ -645,7 +647,7 @@ public class HOTK_Overlay : MonoBehaviour
                 var t = GetOverlayPosition();
                 overlay.SetOverlayTransformTrackedDeviceRelative(_handle, _anchor, ref t);
             }
-            else if (AnchorDevice == AttachmentDevice.世界) // Attached to World
+            else if (AnchorDevice == MountDevice.World) // Attached to World
             {
                 var t = GetOverlayPosition();
                 overlay.SetOverlayTransformAbsolute(_handle, SteamVR_Render.instance.trackingSpace, ref t);
@@ -736,124 +738,6 @@ public class HOTK_Overlay : MonoBehaviour
         public Vector3 Normal;
         public Vector2 UVs;
         public float Distance;
-    }
-
-    /// <summary>
-    /// Used to determine where an Overlay should be attached.
-    /// </summary>
-    public enum AttachmentDevice
-    {
-        /// <summary>
-        /// Attempts to attach the Overlay to the World
-        /// </summary>
-        世界,
-        // World,
-        /// <summary>
-        /// Attempts to attach the Overlay to the Screen / HMD
-        /// </summary>
-        显示器,
-        // Screen,
-        /// <summary>
-        /// Attempts to attach the Overlay to the Left Controller
-        /// </summary>
-        左手柄,
-        // LeftController,
-        /// <summary>
-        /// Attempts to attach the Overlay to the Right Controller
-        /// </summary>
-        右手柄,
-        // RightController,
-    }
-
-    /// <summary>
-    /// Used when attaching Overlays to Controllers, to determine the base attachment offset.
-    /// </summary>
-    public enum AttachmentPoint
-    {
-        /// <summary>
-        /// Directly in the center at (0, 0, 0), facing upwards through the Trackpad.
-        /// </summary>
-        中心,
-        // Center,
-        /// <summary>
-        /// At the end of the controller, like a staff ornament, facing towards the center.
-        /// </summary>
-        顶端,
-        // FlatAbove,
-        /// <summary>
-        /// At the bottom of the controller, facing away from the center.
-        /// </summary>
-        底端,
-        // FlatBelow,
-        /// <summary>
-        /// At the bottom of the controller, facing towards the center.
-        /// </summary>
-        底端反手,
-        // FlatBelowFlipped,
-        /// <summary>
-        /// Just above the Trackpad, facing away from the center.
-        /// </summary>
-        上侧,
-        // Above,
-        /// <summary>
-        /// Just above thr Trackpad, facing the center.
-        /// </summary>
-        上侧反手,
-        // AboveFlipped,
-        /// <summary>
-        /// Just below the Trigger, facing the center.
-        /// </summary>
-        下侧,
-        // Below,
-        /// <summary>
-        /// Just below the Trigger, facing away from the center.
-        /// </summary>
-        下侧反手,
-        // BelowFlipped,
-        /// <summary>
-        /// When holding the controller out vertically, Like "Center", but "Up", above the controller.
-        /// </summary>
-        上,
-        // Up,
-        /// <summary>
-        /// When holding the controller out vertically, Like "Center", but "Down", below the controller.
-        /// </summary>
-        下,
-        // Down,
-        /// <summary>
-        /// When holding the controller out vertically, Like "Center", but "Left", to the side of the controller.
-        /// </summary>
-        左,
-        // Left,
-        /// <summary>
-        /// When holding the controller out vertically, Like "Center", but "Right", to the side of the controller.
-        /// </summary>
-        右,
-        // Right,
-    }
-
-    public enum AnimationType
-    {
-        /// <summary>
-        /// Don't animate this Overlay.
-        /// </summary>
-        无,
-        // None,
-        /// <summary>
-        /// Animate this Overlay by changing its Alpha.
-        /// </summary>
-        透明度,
-        // Alpha,
-        /// <summary>
-        /// Animate this Overlay by scaling it.
-        /// </summary>
-        大小,
-        // Scale,
-        /// <summary>
-        /// Animate this Overlay by changing its Alpha and scaling it.
-        /// </summary>
-        透明度和大小,
-        // AlphaAndScale,
     }
     #endregion
 }

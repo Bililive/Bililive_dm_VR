@@ -18,7 +18,7 @@ namespace Bililive_dm_VR.Desktop
         {
             bs = binarySerializer;
             PipeName = "bililivevrdm" + new Random().Next().ToString();
-            namedPipeServerStream = new NamedPipeServerStream(PipeName, PipeDirection.Out);
+            namedPipeServerStream = new NamedPipeServerStream(PipeName);
             Task.Run(() => namedPipeServerStream.WaitForConnection());
         }
 

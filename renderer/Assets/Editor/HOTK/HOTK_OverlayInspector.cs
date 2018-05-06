@@ -25,18 +25,18 @@ public class HOTK_OverlayInspector : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("OverlayTexture"), new GUIContent() {text = "Texture"});
             
             EditorGUILayout.PropertyField(serializedObject.FindProperty("AnimateOnGaze"));
-            if (overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.透明度 || overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.透明度和大小)
+            if (overlay.AnimateOnGaze == AnimationType.Alpha || overlay.AnimateOnGaze == AnimationType.AlphaAndScale)
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("Alpha"), new GUIContent() { text = "Alpha Start" });
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("Alpha2"), new GUIContent() { text = "Alpha End" });
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("AlphaSpeed"), new GUIContent() { text = "Alpha Speed" });
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("Alpha"), new GUIContent() { text = "Alpha" });
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("AnimationAlpha"), new GUIContent() { text = "Alpha Animation" });
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("AnimationAlphaSpeed"), new GUIContent() { text = "Alpha Animation Speed" });
             }
             else EditorGUILayout.PropertyField(serializedObject.FindProperty("Alpha"));
-            if (overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.大小 || overlay.AnimateOnGaze == HOTK_Overlay.AnimationType.透明度和大小)
+            if (overlay.AnimateOnGaze == AnimationType.Scale || overlay.AnimateOnGaze == AnimationType.AlphaAndScale)
             {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("Scale"), new GUIContent() { text = "Scale Start" });
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("Scale2"), new GUIContent() { text = "Scale End" });
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("ScaleSpeed"), new GUIContent() { text = "Scale Speed" });
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("Scale"), new GUIContent() { text = "Scale" });
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("AnimationScale"), new GUIContent() { text = "Scale Animation" });
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("AnimationScaleSpeed"), new GUIContent() { text = "Scale Animation Speed" });
             }
             else EditorGUILayout.PropertyField(serializedObject.FindProperty("Scale"));
 
@@ -62,8 +62,8 @@ public class HOTK_OverlayInspector : Editor
         if (overlay.ShowSettingsAttachment)
         {
             EditorGUILayout.PropertyField(serializedObject.FindProperty("AnchorDevice"), new GUIContent() { text = "Anchor Point" });
-            if (overlay.AnchorDevice != HOTK_Overlay.AttachmentDevice.显示器 &&
-                overlay.AnchorDevice != HOTK_Overlay.AttachmentDevice.世界)
+            if (overlay.AnchorDevice != MountDevice.Screen &&
+                overlay.AnchorDevice != MountDevice.World)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("AnchorPoint"), new GUIContent() { text = "Base Position" });
             }

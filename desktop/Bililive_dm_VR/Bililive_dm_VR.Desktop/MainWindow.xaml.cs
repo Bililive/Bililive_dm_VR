@@ -95,7 +95,7 @@ namespace Bililive_dm_VR.Desktop
                         Name = "默认",
                         MountDevice = MountDevice.RightController,
                         MountLocation = MountLocation.BelowFlipped,
-                        AnimationType = AnimationType.AlphaAndScale,
+                        AnimateOnGaze = AnimationType.AlphaAndScale,
                         // TODO 
                     }
                 };

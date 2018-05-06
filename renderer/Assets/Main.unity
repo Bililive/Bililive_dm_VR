@@ -1550,6 +1550,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398db6e1ea38b8044b1e8e8db5262bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Overlay: {fileID: 312921294}
+  Background: {fileID: 2100000, guid: df59c4882ab50dc499a6396d6863a323, type: 2}
 --- !u!1 &222625819
 GameObject:
   m_ObjectHideFlags: 0
@@ -1583,7 +1585,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: f92252e0d20a9da42861f7d0e298bfec, type: 2}
+  - {fileID: 2100000, guid: df59c4882ab50dc499a6396d6863a323, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3244,7 +3246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7314d480a23bf4049a0a7aecc9c92ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Size: 50
+  Size: 800
 --- !u!114 &308587212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3292,7 +3294,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 0.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3333,7 +3335,7 @@ GameObject:
   - component: {fileID: 312921295}
   - component: {fileID: 312921294}
   m_Layer: 0
-  m_Name: Overlay (Twitch)
+  m_Name: Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3353,11 +3355,11 @@ MonoBehaviour:
   OverlayTexture: {fileID: 8400000, guid: 1bec8f214b1a1d7409be31951e52db12, type: 2}
   AnimateOnGaze: 3
   Alpha: 0.25
-  Alpha2: 1
-  AlphaSpeed: 0.02
+  AnimationAlpha: 1
+  AnimationAlphaSpeed: 0.01
   Scale: 0.1
-  Scale2: 0.25
-  ScaleSpeed: 0.1
+  AnimationScale: 1
+  AnimationScaleSpeed: 0.1
   Highquality: 0
   Antialias: 0
   Curved: 0
@@ -3418,8 +3420,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 312921293}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
-  m_LocalScale: {x: 16, y: 16, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3

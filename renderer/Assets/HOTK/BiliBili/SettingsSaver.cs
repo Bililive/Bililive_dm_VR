@@ -26,9 +26,9 @@ public class ProfileSettings
     // public float Volume, Pitch;
     // public string FollowerSound;
     // public float FollowerVolume, FollowerPitch;
-    public HOTK_Overlay.AttachmentDevice Device;
-    public HOTK_Overlay.AttachmentPoint Point;
-    public HOTK_Overlay.AnimationType Animation;
+    public MountDevice Device;
+    public MountLocation Point;
+    public AnimationType Animation;
 
     public float BackgroundR, BackgroundG, BackgroundB, BackgroundA;
 

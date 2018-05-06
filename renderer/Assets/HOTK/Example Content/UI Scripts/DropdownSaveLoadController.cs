@@ -254,8 +254,8 @@ public class DropdownSaveLoadController : MonoBehaviour
             settings.BackgroundB = backgroundColor.b;
             settings.BackgroundA = backgroundColor.a;
 
-            settings.AlphaStart = OverlayToSave.Alpha; settings.AlphaEnd = OverlayToSave.Alpha2; settings.AlphaSpeed = OverlayToSave.AlphaSpeed;
-            settings.ScaleStart = OverlayToSave.Scale; settings.ScaleEnd = OverlayToSave.Scale2; settings.ScaleSpeed = OverlayToSave.ScaleSpeed;
+            settings.AlphaStart = OverlayToSave.Alpha; settings.AlphaEnd = OverlayToSave.AnimationAlpha; settings.AlphaSpeed = OverlayToSave.AnimationAlphaSpeed;
+            settings.ScaleStart = OverlayToSave.Scale; settings.ScaleEnd = OverlayToSave.AnimationScale; settings.ScaleSpeed = OverlayToSave.AnimationScaleSpeed;
             SettingsSaver.SaveProfiles();
         }
     }
@@ -306,11 +306,11 @@ public class DropdownSaveLoadController : MonoBehaviour
             BackgroundA = backgroundColor.a,
 
             AlphaStart = o.Alpha,
-            AlphaEnd = o.Alpha2,
-            AlphaSpeed = o.AlphaSpeed,
+            AlphaEnd = o.AnimationAlpha,
+            AlphaSpeed = o.AnimationAlphaSpeed,
             ScaleStart = o.Scale,
-            ScaleEnd = o.Scale2,
-            ScaleSpeed = o.ScaleSpeed,
+            ScaleEnd = o.AnimationScale,
+            ScaleSpeed = o.AnimationScaleSpeed,
         };
     }
 

@@ -1,28 +1,25 @@
 ﻿using BinarySerialization;
 
-namespace Bililive_dm_VR.Desktop.Model
+public class RpcCommand
 {
-    public class RpcCommand
-    {
-        [FieldOrder(0)]
-        public CommandType CommandType { get; set; }
+    [FieldOrder(0)]
+    public CommandType CommandType { get; set; }
 
-        [FieldOrder(1)]
-        public int CommandSize { get; set; }
+    [FieldOrder(1)]
+    public int CommandSize { get; set; }
 
-        [FieldOrder(2)]
-        [FieldLength(nameof(CommandSize))]
-        [Subtype(nameof(CommandType), CommandType.Connection, typeof(ConnectionCommand))]
-        [Subtype(nameof(CommandType), CommandType.Profile, typeof(ProfileCommand))]
-        public Command Command { get; set; }
-    }
-
-    public enum CommandType : int
-    {
-        Default = 0,
-        Connection = 1,
-        Profile = 2,
-    }
-
-    public class Command { }
+    [FieldOrder(2)]
+    [FieldLength(nameof(CommandSize))]
+    [Subtype(nameof(CommandType), CommandType.Connection, typeof(ConnectionCommand))]
+    [Subtype(nameof(CommandType), CommandType.Profile, typeof(ProfileCommand))]
+    public Command Command { get; set; }
 }
+
+public enum CommandType : int
+{
+    Default = 0,
+    Connection = 1,
+    Profile = 2,
+}
+
+public class Command { }

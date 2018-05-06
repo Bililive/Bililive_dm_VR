@@ -24,10 +24,10 @@ public class AlphaMatchInputField : MonoBehaviour
                 InputField.text = Overlay.Alpha.ToString();
                 break;
             case InputValue.AlphaEnd:
-                InputField.text = Overlay.Alpha2.ToString();
+                InputField.text = Overlay.AnimationAlpha.ToString();
                 break;
             case InputValue.AlphaSpeed:
-                InputField.text = Overlay.AlphaSpeed.ToString();
+                InputField.text = Overlay.AnimationAlphaSpeed.ToString();
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -45,10 +45,10 @@ public class AlphaMatchInputField : MonoBehaviour
                 Overlay.Alpha = f;
                 break;
             case InputValue.AlphaEnd:
-                Overlay.Alpha2 = f;
+                Overlay.AnimationAlpha = f;
                 break;
             case InputValue.AlphaSpeed:
-                Overlay.AlphaSpeed = f;
+                Overlay.AnimationAlphaSpeed = f;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
