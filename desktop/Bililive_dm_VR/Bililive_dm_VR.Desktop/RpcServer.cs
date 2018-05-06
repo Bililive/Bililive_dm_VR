@@ -1,6 +1,7 @@
 ﻿using Bililive_dm_VR.Desktop.Model;
 using BinarySerialization;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
@@ -17,7 +18,11 @@ namespace Bililive_dm_VR.Desktop
         internal RpcServer(BinarySerializer binarySerializer)
         {
             bs = binarySerializer;
-            PipeName = "bililivevrdm" + new Random().Next().ToString();
+            PipeName = "bililivevrdm";
+            if (Debugger.IsAttached)
+                PipeName += "debug";
+            else
+                PipeName += new Random().Next().ToString();
             namedPipeServerStream = new NamedPipeServerStream(PipeName);
             Task.Run(() => namedPipeServerStream.WaitForConnection());
         }

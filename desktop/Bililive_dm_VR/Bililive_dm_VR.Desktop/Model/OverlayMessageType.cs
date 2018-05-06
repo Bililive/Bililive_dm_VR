@@ -3,7 +3,7 @@
 namespace Bililive_dm_VR.Desktop.Model
 {
     [Flags]
-    public enum MessageType : int
+    public enum OverlayMessageType : int
     {
         /// <summary>
         /// 无

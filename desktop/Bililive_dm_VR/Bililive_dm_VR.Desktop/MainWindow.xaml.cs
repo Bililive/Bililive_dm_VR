@@ -144,7 +144,55 @@ namespace Bililive_dm_VR.Desktop
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            server.Send(new ConnectionCommand() { Connect = true, RoomId = 123 });
+            // server.Send(new ConnectionCommand() { Connect = true, RoomId = 123 });
+            server.Send(new ProfileCommand()
+            {
+                Profile = new Profile()
+                {
+                    Name = "test1",
+                    Color = 0x0000ffcc,
+                    Alpha = 50,
+                    Scale = 50,
+                    MessageType = OverlayMessageType.Danmaku,
+                    AnimateOnGaze = AnimationType.Alpha,
+                    MountDevice = MountDevice.RightController,
+                    MountLocation = MountLocation.BelowFlipped,
+                    AnimationAlpha = 100,
+                    AnimationScale = 100,
+                    OffsetX = 0,
+                    OffsetY = 0,
+                    OffsetZ = 0,
+                    RotationX = 0,
+                    RotationY = 0,
+                    RotationZ = 0,
+                }
+            });
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            server.Send(new ProfileCommand()
+            {
+                Profile = new Profile()
+                {
+                    Name = "test2",
+                    Color = 0x0000ccff,
+                    Alpha = 50,
+                    Scale = 50,
+                    MessageType = OverlayMessageType.Danmaku,
+                    AnimateOnGaze = AnimationType.Alpha,
+                    MountDevice = MountDevice.LeftController,
+                    MountLocation = MountLocation.BelowFlipped,
+                    AnimationAlpha = 100,
+                    AnimationScale = 100,
+                    OffsetX = 0,
+                    OffsetY = 0,
+                    OffsetZ = 0,
+                    RotationX = 0,
+                    RotationY = 0,
+                    RotationZ = 0,
+                }
+            });
         }
     }
 }

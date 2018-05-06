@@ -138,7 +138,7 @@
     <Compile Include="Model\AnimationType.cs" />
     <Compile Include="Model\ConfigFile.cs" />
     <Compile Include="Model\ConnectionCommand.cs" />
-    <Compile Include="Model\MessageType.cs" />
+    <Compile Include="Model\OverlayMessageType.cs" />
     <Compile Include="Model\MountDevice.cs" />
     <Compile Include="Model\MountLocation.cs" />
     <Compile Include="Model\Profile.cs" />

@@ -23,10 +23,11 @@ public class RpcClient : MonoBehaviour
     {
         Debug.Log(Environment.CommandLine);
 
-        // string server = Environment.GetCommandLineArgs().FirstOrDefault(str => str.StartsWith("bililivevrdm"));
-        return;
+        string server = Environment.GetCommandLineArgs().FirstOrDefault(str => str.StartsWith("bililivevrdm"));
 
-        string server = "bililivevrdm1604005286";
+#if UNITY_EDITOR
+        server = "bililivevrdmdebug";
+#endif
 
         if (string.IsNullOrWhiteSpace(server))
         {
@@ -45,6 +46,19 @@ public class RpcClient : MonoBehaviour
         }
 
         new Thread(ReadLoop) { Name = "RpcReadLoop", IsBackground = true }.Start();
+    }
+
+    private void OnApplicationQuit()
+    {
+        if (clientStream != null)
+        {
+            try
+            {
+                clientStream.Close();
+                clientStream.Dispose();
+            }
+            catch (Exception) { }
+        }
     }
 
     private void Update()
@@ -77,7 +91,7 @@ public class RpcClient : MonoBehaviour
                         Debug.Log("收到了一个奇怪的 Command " + command.CommandType);
                         break;
                 }
-            } while (true);
+            } while ((clientStream?.IsConnected ?? false) && (clientStream?.CanRead ?? false));
         }
         catch (Exception ex)
         {
@@ -94,12 +108,12 @@ public class RpcClient : MonoBehaviour
         Overlay.AnchorOffset = new Vector3(profile.OffsetX, profile.OffsetY, profile.OffsetZ);
         Overlay.AnchorRotation = new Vector3(profile.RotationX, profile.RotationY, profile.RotationZ);
 
-        Overlay.Alpha = profile.Alpha;
-        Overlay.Scale = profile.Scale;
+        Overlay.Alpha = profile.Alpha / 100f;
+        Overlay.Scale = profile.Scale / 100f;
 
         Overlay.AnimateOnGaze = profile.AnimateOnGaze;
-        Overlay.AnimationAlpha = profile.AnimationAlpha;
-        Overlay.AnimationScale = profile.AnimationScale;
+        Overlay.AnimationAlpha = profile.AnimationAlpha / 100f;
+        Overlay.AnimationScale = profile.AnimationScale / 100f;
 
         SetBackgroundColor(profile.Color);
     }
