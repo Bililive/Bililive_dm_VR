@@ -3,10 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Bililive_dm_VR.Desktop"
         xmlns:model="clr-namespace:Bililive_dm_VR.Desktop.Model"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        mc:Ignorable="d" ResizeMode="NoResize"
+        Title="MainWindow" Height="500" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <local:IntColorBrushValueConverter x:Key="ICBVC"/>
+            <local:IntPercentValueConverter x:Key="IPVC"/>
+            <local:EnumFlagsValuveConverter x:Key="EFVC"/>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -17,7 +25,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Viewbox StretchDirection="Both" Stretch="UniformToFill">
-            <Grid Background="Gray" x:Name="Unity" MinHeight="400" MinWidth="400" VerticalAlignment="Center" HorizontalAlignment="Center"></Grid>
+            <Grid Background="Gray" x:Name="Unity" MinHeight="400" MinWidth="400" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Viewbox>
 
         <Grid Margin="15" Grid.Column="1">
@@ -47,89 +55,113 @@
 
                     <StackPanel Style="{StaticResource SettingSingleItem}">
                         <TextBlock>房间号</TextBlock>
-                        <TextBox Width="70"/>
-                        <Button Margin="5,0" Padding="10,0" Click="Button_Click">连接</Button>
-                        <Button Margin="0" Padding="10,0" Click="Button_Click_1">断开</Button>
+                        <TextBox Width="70" Text="{Binding RoomId,ValidatesOnExceptions=True}"/>
+                        <Button Margin="5,0" Padding="10,0" Click="Connect">连接</Button>
+                        <Button Margin="0" Padding="10,0" Click="Disconnect">断开</Button>
                     </StackPanel>
 
-                    <StackPanel Style="{StaticResource SettingSubItem}">
-                        <TextBlock>
-                            悬浮窗
-                        </TextBlock>
-                        <StackPanel  Style="{StaticResource SettingSingleItem}">
-                            <TextBlock>
-                                固定到
-                            </TextBlock>
-                            <ComboBox ItemsSource="{Binding Source={local:Enumeration {x:Type model:MountDevice}}}" SelectedValue="{Binding TODO}" Width="70" Margin="5,0" DisplayMemberPath="Description" SelectedValuePath="Value"/>
-                            <ComboBox ItemsSource="{Binding Source={local:Enumeration {x:Type model:MountLocation}}}" SelectedValue="{Binding TODO}" Width="80" DisplayMemberPath="Description" SelectedValuePath="Value"/>
+                    <StackPanel Style="{StaticResource SettingSingleItem}">
+                        <ComboBox Margin="5,0" ItemsSource="{Binding Profiles}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedProfile}" MinWidth="70" x:Name="ProfileComboBox"/>
+                        <Button Margin="5,0" Padding="5,0" Click="CreateNewProfile">添加新配置</Button>
+                        <Button Margin="5,0" Padding="5,0" Click="RemoveCurrentProfile">删除当前配置</Button>
+                    </StackPanel>
+
+                    <StackPanel Style="{StaticResource SettingSubItem}" DataContext="{Binding SelectedProfile}">
+
+                        <StackPanel Style="{StaticResource SettingSingleItem}">
+                            <TextBlock>配置名字</TextBlock>
+                            <TextBox Text="{Binding Name}" MinWidth="80"/>
                         </StackPanel>
-                        <StackPanel  Style="{StaticResource SettingSingleItem}">
-                            <TextBlock>
-                                偏移坐标
-                            </TextBlock>
-                            <TextBox Width="30">0</TextBox>
-                            <TextBox Width="30">0</TextBox>
-                            <TextBox Width="30">0</TextBox>
-                        </StackPanel>
-                        <StackPanel  Style="{StaticResource SettingSingleItem}">
-                            <TextBlock>
-                                透明度
-                            </TextBlock>
-                            <TextBox Width="30">20</TextBox>
-                        </StackPanel>
-                        <StackPanel  Style="{StaticResource SettingSingleItem}">
-                            <TextBlock>
-                                缩放倍数
-                            </TextBlock>
-                            <TextBox Width="30">0.5</TextBox>
-                        </StackPanel>
-                        <StackPanel  Style="{StaticResource SettingSingleItem}">
-                            <TextBlock>
-                                显示颜色
-                            </TextBlock>
-                            <TextBlock>【这里放颜色选择器】</TextBlock>
-                        </StackPanel>
+
                         <StackPanel Style="{StaticResource SettingSubItem}">
                             <TextBlock>
-                                当看向悬浮框时
+                            悬浮窗
                             </TextBlock>
                             <StackPanel  Style="{StaticResource SettingSingleItem}">
                                 <TextBlock>
+                                固定到
+                                </TextBlock>
+                                <ComboBox ItemsSource="{Binding Source={local:Enumeration {x:Type model:MountDevice}}}" SelectedValue="{Binding MountDevice}" MinWidth="70" Margin="5,0" DisplayMemberPath="Description" SelectedValuePath="Value"/>
+                                <ComboBox ItemsSource="{Binding Source={local:Enumeration {x:Type model:MountLocation}}}" SelectedValue="{Binding MountLocation}" MinWidth="80" DisplayMemberPath="Description" SelectedValuePath="Value"/>
+                            </StackPanel>
+                            <StackPanel  Style="{StaticResource SettingSingleItem}">
+                                <TextBlock>
+                                偏移坐标
+                                </TextBlock>
+                                <xctk:SingleUpDown FormatString="F" Increment="0.05" MinWidth="55" Value="{Binding OffsetX}" Maximum="10" Minimum="-10"/>
+                                <xctk:SingleUpDown FormatString="F" Increment="0.05" MinWidth="55" Value="{Binding OffsetY}" Maximum="10" Minimum="-10"/>
+                                <xctk:SingleUpDown FormatString="F" Increment="0.05" MinWidth="55" Value="{Binding OffsetZ}" Maximum="10" Minimum="-10"/>
+                            </StackPanel>
+                            <StackPanel  Style="{StaticResource SettingSingleItem}">
+                                <TextBlock>
+                                旋转角度
+                                </TextBlock>
+                                <xctk:IntegerUpDown FormatString="N0" Increment="10" MinWidth="55" Value="{Binding RotationX}" Maximum="180" Minimum="-180"/>
+                                <xctk:IntegerUpDown FormatString="N0" Increment="10" MinWidth="55" Value="{Binding RotationY}" Maximum="180" Minimum="-180"/>
+                                <xctk:IntegerUpDown FormatString="N0" Increment="10" MinWidth="55" Value="{Binding RotationZ}" Maximum="180" Minimum="-180"/>
+                            </StackPanel>
+                            <StackPanel  Style="{StaticResource SettingSingleItem}">
+                                <TextBlock>
+                                透明度
+                                </TextBlock>
+                                <xctk:DoubleUpDown MinWidth="50" FormatString="P0" Value="{Binding Alpha,Converter={StaticResource IPVC}}" Minimum="0" Maximum="1" Increment="0.05"/>
+                            </StackPanel>
+                            <StackPanel  Style="{StaticResource SettingSingleItem}">
+                                <TextBlock>
+                                缩放比例
+                                </TextBlock>
+                                <xctk:DoubleUpDown MinWidth="50" FormatString="P0" Value="{Binding Scale,Converter={StaticResource IPVC}}" Minimum="0" Maximum="1" Increment="0.05"/>
+                            </StackPanel>
+                            <StackPanel  Style="{StaticResource SettingSingleItem}">
+                                <TextBlock>
+                                背景颜色
+                                </TextBlock>
+                                <Border Margin="5,0" BorderBrush="DarkGray" BorderThickness="2">
+                                    <TextBlock Margin="0" Width="30" Background="{Binding Color,Converter={StaticResource ICBVC}}"/>
+                                </Border>
+                                <Button Padding="5,0" Click="ChooseColor">选择颜色</Button>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource SettingSubItem}">
+                                <TextBlock>
+                                当看向悬浮框时
+                                </TextBlock>
+                                <StackPanel  Style="{StaticResource SettingSingleItem}">
+                                    <TextBlock>
                                 动作
-                                </TextBlock>
-                                <ComboBox SelectedIndex="0">
-                                    <ComboBoxItem>缩放+透明度</ComboBoxItem>
-                                </ComboBox>
-                            </StackPanel>
-                            <StackPanel  Style="{StaticResource SettingSingleItem}">
-                                <TextBlock>
+                                    </TextBlock>
+                                    <ComboBox ItemsSource="{Binding Source={local:Enumeration {x:Type model:AnimationType}}}" SelectedValue="{Binding AnimateOnGaze}" MinWidth="70" Margin="5,0" DisplayMemberPath="Description" SelectedValuePath="Value"/>
+                                </StackPanel>
+                                <StackPanel  Style="{StaticResource SettingSingleItem}">
+                                    <TextBlock>
                                 动作后透明度
-                                </TextBlock>
-                                <TextBox Width="30">90</TextBox>
-                            </StackPanel>
-                            <StackPanel  Style="{StaticResource SettingSingleItem}">
-                                <TextBlock>
+                                    </TextBlock>
+                                    <xctk:DoubleUpDown MinWidth="50" FormatString="P0" Value="{Binding AnimationAlpha,Converter={StaticResource IPVC}}" Minimum="0" Maximum="1" Increment="0.05"/>
+                                </StackPanel>
+                                <StackPanel  Style="{StaticResource SettingSingleItem}">
+                                    <TextBlock>
                                动作后缩放倍数
-                                </TextBlock>
-                                <TextBox Width="30">1</TextBox>
+                                    </TextBlock>
+                                    <xctk:DoubleUpDown MinWidth="50" FormatString="P0" Value="{Binding AnimationScale,Converter={StaticResource IPVC}}" Minimum="0" Maximum="1" Increment="0.05"/>
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                    </StackPanel>
 
-                    <StackPanel Style="{StaticResource SettingSubItem}">
-                        <TextBlock>
+                        <StackPanel Style="{StaticResource SettingSubItem}">
+                            <TextBlock>
                             弹幕接收
-                        </TextBlock>
-                        <StackPanel Style="{StaticResource SettingSingleItem}">
-                            <TextBlock VerticalAlignment="Top" Margin="5">
-                                显示内容
                             </TextBlock>
-                            <ListBox SelectionMode="Multiple">
-                                <ListBoxItem>弹幕</ListBoxItem>
-                                <ListBoxItem>礼物</ListBoxItem>
-                                <ListBoxItem>进入直播间</ListBoxItem>
-                                <ListBoxItem>直播间关闭</ListBoxItem>
-                            </ListBox>
+                            <StackPanel Style="{StaticResource SettingSingleItem}">
+                                <TextBlock VerticalAlignment="Top" Margin="5">
+                                显示内容
+                                </TextBlock>
+
+                                <StackPanel>
+                                    <CheckBox Content="弹幕消息" IsChecked="{Binding MessageType,Converter={StaticResource EFVC},ConverterParameter={x:Static model:OverlayMessageType.Danmaku}}"/>
+                                    <CheckBox Content="赠送礼物" IsChecked="{Binding MessageType,Converter={StaticResource EFVC},ConverterParameter={x:Static model:OverlayMessageType.Gift}}"/>
+                                    <CheckBox Content="进入直播间" IsChecked="{Binding MessageType,Converter={StaticResource EFVC},ConverterParameter={x:Static model:OverlayMessageType.Welcome}}"/>
+                                    <CheckBox Content="直播间关闭" IsChecked="{Binding MessageType,Converter={StaticResource EFVC},ConverterParameter={x:Static model:OverlayMessageType.StreamClose}}"/>
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Bililive_dm_VR.Desktop.Model
 {
@@ -8,23 +9,23 @@ namespace Bililive_dm_VR.Desktop.Model
         /// <summary>
         /// 无
         /// </summary>
-        None = 0,
+        [Description("无")] None = 0,
         /// <summary>
         /// 弹幕消息
         /// </summary>
-        Danmaku = 1 << 0,
+        [Description("弹幕消息")] Danmaku = 1 << 0,
         /// <summary>
         /// 赠送礼物
         /// </summary>
-        Gift = 1 << 1,
+        [Description("礼物")] Gift = 1 << 1,
         /// <summary>
         /// 进入直播间
         /// </summary>
-        Welcome = 1 << 2,
+        [Description("进入直播间")] Welcome = 1 << 2,
         /// <summary>
         /// 直播间关闭
         /// </summary>
-        StreamClose = 1 << 3,
+        [Description("直播间关闭")] StreamClose = 1 << 3,
 
     }
 }

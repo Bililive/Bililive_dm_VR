@@ -12,6 +12,7 @@ namespace Bililive_dm_VR.Desktop
     {
         private NamedPipeServerStream namedPipeServerStream;
         private BinarySerializer bs;
+        public event EventHandler Connected;
 
         public string PipeName { get; private set; }
 
@@ -24,7 +25,11 @@ namespace Bililive_dm_VR.Desktop
             else
                 PipeName += new Random().Next().ToString();
             namedPipeServerStream = new NamedPipeServerStream(PipeName);
-            Task.Run(() => namedPipeServerStream.WaitForConnection());
+            Task.Run(() =>
+            {
+                namedPipeServerStream.WaitForConnection();
+                Connected?.Invoke(this, new EventArgs());
+            });
         }
 
         internal bool Send(Command command)
@@ -43,5 +48,12 @@ namespace Bililive_dm_VR.Desktop
             return true;
         }
 
+        internal void Shutdown()
+        {
+            if (namedPipeServerStream.IsConnected)
+            {
+                namedPipeServerStream.Disconnect();
+            }
+        }
     }
 }

@@ -108,6 +108,34 @@ public class DanmakuDisplayer : MonoBehaviour
         AddMsg("系统", log, "CC0000");
     }
 
+    public void Connect(int roomid)
+    {
+        if (roomid > 0)
+        {
+            if (Receiver.Connect(roomid))
+            {
+                AddMsg("系统", "连接成功！", "00FF00");
+                ClearViewerCountAndChannelName("已连接到 " + roomid);
+            }
+            else
+            {
+                AddMsg("系统", "连接失败：" + (Receiver.Error == null ? "神秘错误" : Receiver.Error.Message), "FF0000");
+                Debug.LogError("连接失败" + Receiver.Error.ToString());
+            }
+        }
+        else
+        {
+            AddMsg("系统", "房间号是正整数");
+        }
+    }
+
+    public void Disconnect()
+    {
+        Receiver.Disconnect();
+        AddMsg("系统", "断开了连接");
+        ClearViewerCountAndChannelName("断开了连接");
+    }
+
     public void ToggleConnect()
     {
         Debug.Log("ToggleConnect Clicked! with Connected:" + Connected);

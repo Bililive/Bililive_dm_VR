@@ -1,12 +1,16 @@
 ﻿using Bililive_dm_VR.Desktop.Model;
 using BinarySerialization;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Bililive_dm_VR.Desktop
@@ -25,6 +29,23 @@ namespace Bililive_dm_VR.Desktop
         private RpcServer server;
 
         public ObservableCollection<Profile> Profiles { get; set; }
+        private Profile selectedProfile;
+        public Profile SelectedProfile
+        {
+            get { return selectedProfile; }
+            set
+            {
+                if (selectedProfile == value)
+                    return;
+                if (selectedProfile != null)
+                    selectedProfile.PropertyChanged -= SelectedProfile_PropertyChanged;
+                selectedProfile = value;
+                if (selectedProfile != null)
+                    selectedProfile.PropertyChanged += SelectedProfile_PropertyChanged;
+                NotifyPropertyChanged(nameof(SelectedProfile));
+            }
+        }
+        private void SelectedProfile_PropertyChanged(object sender, PropertyChangedEventArgs e) => NotifyPropertyChanged(nameof(SelectedProfile));
 
         private int _roomid;
         public int RoomId
@@ -34,6 +55,8 @@ namespace Bililive_dm_VR.Desktop
             {
                 if (value == _roomid)
                     return;
+                if (value < 1)
+                    throw new ArgumentOutOfRangeException(nameof(RoomId));
                 _roomid = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RoomId)));
             }
@@ -43,19 +66,38 @@ namespace Bililive_dm_VR.Desktop
         {
             InitializeComponent();
 
-            binarySerializer.MemberSerializing += OnMemberSerializing;
-            binarySerializer.MemberSerialized += OnMemberSerialized;
-            binarySerializer.MemberDeserializing += OnMemberDeserializing;
-            binarySerializer.MemberDeserialized += OnMemberDeserialized;
-
+            DataContext = this;
 
             LoadConfig();
 
+            Closing += MainWindow_Closing;
             Closed += MainWindow_Closed;
 
             LoadRpcServer();
 
+            PropertyChanged += MainWindow_PropertyChanged;
+            Profiles.CollectionChanged += Profiles_CollectionChanged;
+
             LoadRenderer();
+        }
+
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            server.Shutdown();
+        }
+
+        private void Profiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+            => ProfileComboBox.SelectedIndex = Profiles.Count - 1;
+
+        private void MainWindow_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SelectedProfile))
+            {
+                if (SelectedProfile != null)
+                {
+                    server.Send(new ProfileCommand() { Profile = SelectedProfile });
+                }
+            }
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)
@@ -75,6 +117,7 @@ namespace Bililive_dm_VR.Desktop
         private void LoadRpcServer()
         {
             server = new RpcServer(binarySerializer);
+            server.Connected += (sender, e) => server.Send(new ProfileCommand { Profile = SelectedProfile });
         }
 
         private void LoadConfig()
@@ -88,18 +131,10 @@ namespace Bililive_dm_VR.Desktop
             }
             catch (Exception)
             {
-                Profiles = new ObservableCollection<Profile>
-                {
-                    new Profile()
-                    {
-                        Name = "默认",
-                        MountDevice = MountDevice.RightController,
-                        MountLocation = MountLocation.BelowFlipped,
-                        AnimateOnGaze = AnimationType.AlphaAndScale,
-                        // TODO 
-                    }
-                };
+                Profiles = new ObservableCollection<Profile> { new Profile() };
             }
+            if (Profiles.Count > 0)
+                SelectedProfile = Profiles[Profiles.Count - 1];
         }
 
         private void LoadRenderer()
@@ -112,87 +147,65 @@ namespace Bililive_dm_VR.Desktop
                 Unity.Children.Add(new UnityHost(Unity.ActualWidth, Unity.ActualHeight, server.PipeName));
         }
 
-
-
         public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(params string[] propertyNames)
+        { if (PropertyChanged != null) foreach (string propertyName in propertyNames) PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
-
-        private static void OnMemberSerializing(object sender, MemberSerializingEventArgs e)
+        private void ChooseColor(object sender, RoutedEventArgs e)
         {
-            Debug.Write(string.Join("    ", Enumerable.Range(0, e.Context.Depth).Select(x => "")));
-            Debug.WriteLine("S-Start: {0} ({1}) @ {2}", e.MemberName, e.Context.Value ?? "null", e.Offset);
-        }
-
-        private static void OnMemberSerialized(object sender, MemberSerializedEventArgs e)
-        {
-            Debug.Write(string.Join("    ", Enumerable.Range(0, e.Context.Depth).Select(x => "")));
-            Debug.WriteLine("S-End: {0} ({1}) @ {2}", e.MemberName, e.Value ?? "null", e.Offset);
-        }
-
-        private static void OnMemberDeserializing(object sender, MemberSerializingEventArgs e)
-        {
-            Debug.Write(string.Join("    ", Enumerable.Range(0, e.Context.Depth).Select(x => "")));
-            Debug.WriteLine("D-Start: {0} ({1}) @ {2}", e.MemberName, e.Context.Value ?? "null", e.Offset);
-
-        }
-
-        private static void OnMemberDeserialized(object sender, MemberSerializedEventArgs e)
-        {
-            Debug.Write(string.Join("    ", Enumerable.Range(0, e.Context.Depth).Select(x => "")));
-            Debug.WriteLine("D-End: {0} ({1}) @ {2}", e.MemberName, e.Value ?? "null", e.Offset);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            // server.Send(new ConnectionCommand() { Connect = true, RoomId = 123 });
-            server.Send(new ProfileCommand()
+            var cp = new ColorPicker();
+            cp.Picker.SelectedColor = new System.Windows.Media.Color()
             {
-                Profile = new Profile()
+                R = (byte)((SelectedProfile.Color >> 24) & 0xff),
+                G = (byte)((SelectedProfile.Color >> 16) & 0xff),
+                B = (byte)((SelectedProfile.Color >> 8) & 0xff),
+                A = 0xff,
+            };
+            cp.ShowDialog();
+            var color = cp.Picker.SelectedColor.Value;
+            SelectedProfile.Color = (color.R << 24) + (color.G << 16) + (color.B << 8) + 0xff;
+        }
+
+        private void CreateNewProfile(object sender, RoutedEventArgs e)
+        {
+            Profiles.Add(new Profile());
+        }
+
+        private void RemoveCurrentProfile(object sender, RoutedEventArgs e)
+        {
+            if (SelectedProfile != null && Profiles.Count > 1)
+            {
+                Profiles.Remove(SelectedProfile);
+            }
+        }
+
+        private void Connect(object sender, RoutedEventArgs e)
+        {
+            Task.Run(() =>
+            {
+                try
                 {
-                    Name = "test1",
-                    Color = 0x0000ffcc,
-                    Alpha = 50,
-                    Scale = 50,
-                    MessageType = OverlayMessageType.Danmaku,
-                    AnimateOnGaze = AnimationType.Alpha,
-                    MountDevice = MountDevice.RightController,
-                    MountLocation = MountLocation.BelowFlipped,
-                    AnimationAlpha = 100,
-                    AnimationScale = 100,
-                    OffsetX = 0,
-                    OffsetY = 0,
-                    OffsetZ = 0,
-                    RotationX = 0,
-                    RotationY = 0,
-                    RotationZ = 0,
+                    var json = JObject.Parse(new WebClient() { Encoding = Encoding.UTF8, Headers = { { HttpRequestHeader.UserAgent, "Bililive_dm_VR (https://github.com/Bililive/Bililive_dm_VR)" } } }
+                    .DownloadString("https://api.live.bilibili.com/room/v1/Room/room_init?id=" + RoomId));
+                    if ((json?["code"]?.ToObject<int>() ?? -1) != 0)
+                    {
+                        MessageBox.Show("获取直播间信息错误" + Environment.NewLine + json?["message"]?.ToObject<string>() ?? json?["msg"]?.ToObject<string>() ?? string.Empty);
+                        return;
+                    }
+                    var real_roomid = json?["data"]?["room_id"]?.ToObject<int>() ?? -1;
+                    if (real_roomid > 0)
+                        server.Send(new ConnectionCommand { Connect = true, RoomId = real_roomid });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("发生了错误" + Environment.NewLine + ex.ToString());
                 }
             });
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Disconnect(object sender, RoutedEventArgs e)
         {
-            server.Send(new ProfileCommand()
-            {
-                Profile = new Profile()
-                {
-                    Name = "test2",
-                    Color = 0x0000ccff,
-                    Alpha = 50,
-                    Scale = 50,
-                    MessageType = OverlayMessageType.Danmaku,
-                    AnimateOnGaze = AnimationType.Alpha,
-                    MountDevice = MountDevice.LeftController,
-                    MountLocation = MountLocation.BelowFlipped,
-                    AnimationAlpha = 100,
-                    AnimationScale = 100,
-                    OffsetX = 0,
-                    OffsetY = 0,
-                    OffsetZ = 0,
-                    RotationX = 0,
-                    RotationY = 0,
-                    RotationZ = 0,
-                }
-            });
+            server.Send(new ConnectionCommand { Connect = false });
         }
     }
 }

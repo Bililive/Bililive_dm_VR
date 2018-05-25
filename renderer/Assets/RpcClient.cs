@@ -13,9 +13,10 @@ public class RpcClient : MonoBehaviour
 {
     public HOTK_Overlay Overlay;
     public Material Background;
-
+    public DanmakuDisplayer Displayer;
 
     private Profile new_profile = null;
+    private object profile_lock = new object();
     private NamedPipeClientStream clientStream;
     private static readonly BinarySerializer binarySerializer = new BinarySerializer() { Encoding = Encoding.UTF8, Endianness = Endianness.Big };
 
@@ -63,10 +64,13 @@ public class RpcClient : MonoBehaviour
 
     private void Update()
     {
-        if (new_profile != null)
+        lock (profile_lock)
         {
-            SetProfile(new_profile);
-            new_profile = null;
+            if (new_profile != null)
+            {
+                SetProfile(new_profile);
+                new_profile = null;
+            }
         }
     }
 
@@ -82,13 +86,25 @@ public class RpcClient : MonoBehaviour
                 {
                     case ConnectionCommand connectionCommand:
                         Debug.Log("连接断开直播间" + connectionCommand.Connect + connectionCommand.RoomId);
+                        if (connectionCommand.Connect)
+                        {
+                            Displayer.Connect(connectionCommand.RoomId);
+                        }
+                        else
+                        {
+                            Displayer.Disconnect();
+                        }
                         break;
                     case ProfileCommand profileCommand:
                         Debug.Log("收到 profile command");
-                        new_profile = profileCommand.Profile;
+                        lock (profile_lock)
+                        {
+                            new_profile = profileCommand.Profile;
+                        }
                         break;
                     default:
                         Debug.Log("收到了一个奇怪的 Command " + command.CommandType);
+                        Shutdown();
                         break;
                 }
             } while ((clientStream?.IsConnected ?? false) && (clientStream?.CanRead ?? false));
@@ -118,12 +134,11 @@ public class RpcClient : MonoBehaviour
         SetBackgroundColor(profile.Color);
     }
 
-    public void SetBackgroundColor(int argb)
+    public void SetBackgroundColor(int rgba)
     {
-        // byte a = (byte)((argb >> 6) & 0xff);
-        byte r = (byte)((argb >> 4) & 0xff);
-        byte g = (byte)((argb >> 2) & 0xff);
-        byte b = (byte)((argb >> 0) & 0xff);
+        byte r = (byte)((rgba >> 24) & 0xff);
+        byte g = (byte)((rgba >> 16) & 0xff);
+        byte b = (byte)((rgba >> 8) & 0xff);
 
         if (Background == null) return;
         var tex = (Background.mainTexture ?? (Background.mainTexture = GenerateBaseTexture())) as Texture2D;
@@ -160,6 +175,16 @@ public class RpcClient : MonoBehaviour
 
     private void Shutdown()
     {
+        try
+        {
+            if (clientStream != null)
+            {
+                clientStream.Close();
+                clientStream.Dispose();
+            }
+        }
+        catch (Exception) { }
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
