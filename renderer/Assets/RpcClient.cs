@@ -15,8 +15,10 @@ public class RpcClient : MonoBehaviour
     public Material Background;
     public DanmakuDisplayer Displayer;
 
+    private object command_lock = new object();
     private Profile new_profile = null;
-    private object profile_lock = new object();
+    private ConnectionCommand connectionCommand = null;
+
     private NamedPipeClientStream clientStream;
     private static readonly BinarySerializer binarySerializer = new BinarySerializer() { Encoding = Encoding.UTF8, Endianness = Endianness.Big };
 
@@ -64,12 +66,25 @@ public class RpcClient : MonoBehaviour
 
     private void Update()
     {
-        lock (profile_lock)
+        lock (command_lock)
         {
             if (new_profile != null)
             {
                 SetProfile(new_profile);
                 new_profile = null;
+            }
+
+            if (connectionCommand != null)
+            {
+                if (connectionCommand.Connect)
+                {
+                    Displayer.Connect(connectionCommand.RoomId);
+                }
+                else
+                {
+                    Displayer.Disconnect();
+                }
+                connectionCommand = null;
             }
         }
     }
@@ -86,18 +101,14 @@ public class RpcClient : MonoBehaviour
                 {
                     case ConnectionCommand connectionCommand:
                         Debug.Log("连接断开直播间" + connectionCommand.Connect + connectionCommand.RoomId);
-                        if (connectionCommand.Connect)
+                        lock (command_lock)
                         {
-                            Displayer.Connect(connectionCommand.RoomId);
-                        }
-                        else
-                        {
-                            Displayer.Disconnect();
+                            this.connectionCommand = connectionCommand;
                         }
                         break;
                     case ProfileCommand profileCommand:
                         Debug.Log("收到 profile command");
-                        lock (profile_lock)
+                        lock (command_lock)
                         {
                             new_profile = profileCommand.Profile;
                         }
