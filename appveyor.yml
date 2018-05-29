@@ -1,4 +1,29 @@
-image: Visual Studio 2017
+image:
+  - Visual Studio 2017
+  - Ubuntu
+
+environment:
+  APPVEYOR_YML_DISABLE_PS_LINUX: true
 
 install:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+services:
+  - docker # Ubuntu only
+
+build: # Windows only
+  project: .\desktop\Bililive_dm_VR\Bililive_dm_VR.sln
+  verbosity: minimal
+
+after_build:
+  - ps: .\CI\after_build.ps1
+
+for:
+-
+  matrix:
+    only:
+      - image: Ubuntu
+  build_script:
+  - sh: ./CI/build.sh
+
+
