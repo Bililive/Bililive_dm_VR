@@ -29,5 +29,6 @@ for:
   - sh: docker run -v /home/appveyor/projects/bililive-dm-vr:/src --rm -i robinryf/unity3d:2018_1_0f2 run-unity.sh "-quit -batchmode -executeMethod CIRunner.Build -projectPath /src/renderer"
   artifacts:
     - path: build
-
+  on_finish:
+    - sh: ./CI/block.sh
 
