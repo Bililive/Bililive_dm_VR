@@ -2,10 +2,10 @@
 using System.Linq;
 using UnityEditor;
 
-public class CIRunner
+class CIRunner
 {
     [MenuItem("Build/Windows Build")]
-    public static void Build()
+    static void Build()
     {
         string path = "../build";
         string[] scenes = new string[] { "Assets/Main.unity" };
