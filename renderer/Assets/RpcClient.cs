@@ -97,27 +97,37 @@ public class RpcClient : MonoBehaviour
             {
                 var command = binarySerializer.Deserialize<RpcCommand>(clientStream);
                 Debug.Log("收到 Command");
-                switch (command.Command)
+
+                switch (command.CommandType)
                 {
-                    case ConnectionCommand connectionCommand:
-                        Debug.Log("连接断开直播间" + connectionCommand.Connect + connectionCommand.RoomId);
-                        lock (command_lock)
+                    case CommandType.Connection:
                         {
-                            this.connectionCommand = connectionCommand;
+                            var connectionCommand = command.Command as ConnectionCommand;
+                            Debug.Log("连接断开直播间" + connectionCommand.Connect + connectionCommand.RoomId);
+                            lock (command_lock)
+                            {
+                                this.connectionCommand = connectionCommand;
+                            }
+                            break;
                         }
-                        break;
-                    case ProfileCommand profileCommand:
-                        Debug.Log("收到 profile command");
-                        lock (command_lock)
+                    case CommandType.Profile:
                         {
-                            new_profile = profileCommand.Profile;
+                            Debug.Log("收到 profile command");
+                            lock (command_lock)
+                            {
+                                new_profile = (command.Command as ProfileCommand)?.Profile;
+                            }
+                            break;
                         }
-                        break;
+                    case CommandType.Default:
                     default:
-                        Debug.Log("收到了一个奇怪的 Command " + command.CommandType);
-                        Shutdown();
-                        break;
+                        {
+                            Debug.Log("收到了一个奇怪的 Command " + command.CommandType);
+                            Shutdown();
+                            return;
+                        }
                 }
+
             } while ((clientStream?.IsConnected ?? false) && (clientStream?.CanRead ?? false));
         }
         catch (Exception ex)
