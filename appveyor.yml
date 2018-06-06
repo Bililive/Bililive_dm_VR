@@ -7,7 +7,7 @@ environment:
   APPVEYOR_SSH_KEY: ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArhYh73Bz81BYPM1DvWai9rytUPvYKpvwN6jLyOG0znUr7oDcc0gy5lGCnHGge5mo2l5IDrHrrplwqWWys0Tz/eJraqaiXDFpPQFK18ulLKBPA1tkMIq2s+cOKdKkPYoVRMKzpTa9jDZYaAcT7olw0hBdAQ6FmypjnsNWVzpjsqE/0w9PYlJNB/Fsh3nhi/I8QDy9MM8v6ZyUsQtLHlsGfO6GjeRWLr9IS6S/8RdX73pYGxIAM/4m02tcNdvqt9FMu7ufF0OCmg915EM2EGIuBinLPGG/v57GPtkJ1a4gzOJtJFEiNMPLXJj8iGElSjd6cRiSsXx6yee9zs96QutRwQ==
 
 install:
-  - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
+#  - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 #  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 services:
@@ -26,9 +26,9 @@ for:
     only:
       - image: Ubuntu
   build_script:
-  - sh: docker run -v /home/appveyor/projects/bililive-dm-vr:/src --rm -i robinryf/unity3d:2018_1_0f2 run-unity.sh "-quit -batchmode -executeMethod CIRunner.Build -projectPath /src/renderer"
+  - sh: docker run -v /home/appveyor/projects/bililive-dm-vr:/src --rm -i robinryf/unity3d:2018_1_0f2 run-unity.sh "-quit -batchmode -projectPath /src/renderer -executeMethod CI.CIRunner.Build"
   artifacts:
     - path: build
   on_finish:
-    - sh: ./CI/block.sh
+#   - sh: ./CI/block.sh
 
