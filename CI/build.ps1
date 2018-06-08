@@ -3,8 +3,8 @@ $ErrorActionPreference = "Stop"
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Unzip {
     param([string]$zipfile, [string]$outpath)
-    $absfile = Resolve-Path $zipfile
-    $abspath = Resolve-Path $outpath
+    $absfile = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($zipfile)
+    $abspath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($outpath)
     [System.IO.Compression.ZipFile]::ExtractToDirectory($absfile, $abspath)
 }
 
