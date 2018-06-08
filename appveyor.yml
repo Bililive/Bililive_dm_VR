@@ -21,8 +21,6 @@ for:
       - image: Visual Studio 2017
   build_script:
     - ps: .\CI\build.ps1
-  after_build:
-    - ps: .\CI\after_build.ps1
 
 artifacts:
   - path: build
