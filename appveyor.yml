@@ -19,9 +19,8 @@ for:
 - matrix:
     only:
       - image: Visual Studio 2017
-  build:
-    project: .\desktop\Bililive_dm_VR\Bililive_dm_VR.sln
-    verbosity: minimal
+  build_script:
+    - ps: .\CI\build.ps1
   after_build:
     - ps: .\CI\after_build.ps1
 
