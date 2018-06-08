@@ -3,7 +3,9 @@ $ErrorActionPreference = "Stop"
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Unzip {
     param([string]$zipfile, [string]$outpath)
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
+    $absfile = Resolve-Path $zipfile
+    $abspath = Resolve-Path $outpath
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($absfile, $abspath)
 }
 
 $basepath = Get-Location
@@ -26,8 +28,8 @@ if ($builderror) {
     Exit
 }
 
-$resultpath = './build/'
-$zipfilename = 'rendererbuild.zip'
+$resultpath = '.\build\'
+$zipfilename = '.\rendererbuild.zip'
 $wpfbuildpath = '.\desktop\Bililive_dm_VR\Bililive_dm_VR.Desktop\bin\Release\'
 
 $proj = Invoke-RestMethod -Method Get -Uri "https://ci.appveyor.com/api/projects/genteure/bililive-dm-vr/build/$env:APPVEYOR_BUILD_VERSION"
