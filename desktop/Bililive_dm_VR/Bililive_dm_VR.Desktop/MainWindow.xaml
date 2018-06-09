@@ -28,6 +28,22 @@
             <Grid Background="Gray" x:Name="Unity" MinHeight="400" MinWidth="400" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Viewbox>
 
+        <Grid Panel.ZIndex="99" Grid.ColumnSpan="99" Grid.RowSpan="99" Background="Wheat" Visibility="Collapsed" x:Name="OverlayOVRRuntimeNotInstalled">
+            <TextBlock FontSize="36" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+                你并没有安装 SteamVR
+                <LineBreak/>
+                VR弹幕姬需要安装 SteamVR 才能使用哦
+            </TextBlock>
+        </Grid>
+
+        <Grid Panel.ZIndex="99" Grid.ColumnSpan="99" Grid.RowSpan="99" Background="Wheat" Visibility="Collapsed" x:Name="OverlayOVRHmdNotPresent">
+            <TextBlock FontSize="36" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+                你并没有连接头戴显示器
+                <LineBreak/>
+                请先把头戴显示器连接到电脑
+            </TextBlock>
+        </Grid>
+        
         <Grid Margin="15" Grid.Column="1">
             <Viewbox Stretch="None">
                 <StackPanel>

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
 
 namespace Bililive_dm_VR.Desktop
@@ -13,5 +11,19 @@ namespace Bililive_dm_VR.Desktop
     /// </summary>
     public partial class App : Application
     {
+        [DllImport("kernel32", EntryPoint = "SetDllDirectoryW", CharSet = CharSet.Unicode, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetDllDirectory(string lpPathName);
+
+        public App()
+        {
+            Environment.SetEnvironmentVariable("PATH",
+                Environment.GetEnvironmentVariable("PATH") + ";" +
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Bililive_dm_VR.Renderer_Data\Managed")
+            );
+
+            SetDllDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Bililive_dm_VR.Renderer_Data\Plugins"));
+
+        }
     }
 }

@@ -12,6 +12,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Valve.VR;
 
 namespace Bililive_dm_VR.Desktop
 {
@@ -27,6 +28,7 @@ namespace Bililive_dm_VR.Desktop
         };
 
         private RpcServer server;
+        private OpenVR openVR;
 
         public ObservableCollection<Profile> Profiles { get; set; }
         private Profile selectedProfile;
@@ -68,10 +70,24 @@ namespace Bililive_dm_VR.Desktop
 
             DataContext = this;
 
+            if (!OpenVR.IsRuntimeInstalled())
+            {
+                OverlayOVRRuntimeNotInstalled.Visibility = Visibility.Visible;
+                return;
+            }
+            if (!OpenVR.IsHmdPresent())
+            {
+                OverlayOVRHmdNotPresent.Visibility = Visibility.Visible;
+                return;
+            }
+
+
             LoadConfig();
 
             Closing += MainWindow_Closing;
             Closed += MainWindow_Closed;
+
+            LoadOpenVR();
 
             LoadRpcServer();
 
@@ -112,6 +128,16 @@ namespace Bililive_dm_VR.Desktop
             }
             catch (Exception)
             { }
+        }
+
+        private void LoadOpenVR()
+        {
+            var error = EVRInitError.None;
+
+            OpenVR.IsRuntimeInstalled();
+
+            var cvrsystem = OpenVR.Init(ref error, EVRApplicationType.VRApplication_Utility);
+
         }
 
         private void LoadRpcServer()

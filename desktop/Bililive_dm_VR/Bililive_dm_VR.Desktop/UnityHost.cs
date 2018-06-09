@@ -94,7 +94,7 @@ namespace Bililive_dm_VR.Desktop
         }
 
         //PInvoke declarations
-        [DllImport("user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Unicode)]
+        [DllImport("user32", EntryPoint = "CreateWindowEx", CharSet = CharSet.Unicode)]
         internal static extern IntPtr CreateWindowEx(int dwExStyle,
                                                       string lpszClassName,
                                                       string lpszWindowName,
@@ -106,14 +106,14 @@ namespace Bililive_dm_VR.Desktop
                                                       IntPtr hInst,
                                                       [MarshalAs(UnmanagedType.AsAny)] object pvParam);
 
-        [DllImport("user32.dll", EntryPoint = "DestroyWindow", CharSet = CharSet.Unicode)]
+        [DllImport("user32", EntryPoint = "DestroyWindow", CharSet = CharSet.Unicode)]
         internal static extern bool DestroyWindow(IntPtr hwnd);
 
-        [DllImport("User32.dll")]
+        [DllImport("user32")]
         static extern bool MoveWindow(IntPtr handle, int x, int y, int width, int height, bool redraw);
 
         internal delegate int WindowEnumProc(IntPtr hwnd, IntPtr lparam);
-        [DllImport("user32.dll")]
+        [DllImport("user32")]
         internal static extern bool EnumChildWindows(IntPtr hwnd, WindowEnumProc func, IntPtr lParam);
     }
 }
