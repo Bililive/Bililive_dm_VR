@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -17,12 +16,19 @@ namespace Bililive_dm_VR.Desktop
 
         public App()
         {
+            if (!Environment.Is64BitProcess)
+            {
+                MessageBox.Show("不支持 32 位操作系统", "B站VR弹幕姬", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown(-1);
+                return;
+            }
+
             Environment.SetEnvironmentVariable("PATH",
                 Environment.GetEnvironmentVariable("PATH") + ";" +
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Bililive_dm_VR.Renderer_Data\Managed")
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\Managed")
             );
 
-            SetDllDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Bililive_dm_VR.Renderer_Data\Plugins"));
+            SetDllDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\Plugins"));
 
         }
     }

@@ -46,9 +46,9 @@ namespace Bililive_dm_VR.Desktop
             {
                 process = Process.Start(new ProcessStartInfo()
                 {
-                    FileName = "Bililive_dm_VR.Renderer.exe",
+                    FileName = "Bililive_dm_VR.Renderer.bin",
                     Arguments = "-parentHWND " + hwndHost.ToInt32() + " " + args,
-                    UseShellExecute = true,
+                    UseShellExecute = false,
                     CreateNoWindow = true
                 });
 

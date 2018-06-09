@@ -39,7 +39,7 @@ if (!(Test-Path $zipfilename)) {
 }
 Unzip $zipfilename $resultpath
 
-@("Bililive_dm_VR.Desktop.exe", "BinarySerializer.dll", "Newtonsoft.Json.dll", "Xceed.Wpf.Toolkit.dll").ForEach( 
+@("Bililive_dm_VR.Desktop.exe", "Newtonsoft.Json.dll", "Xceed.Wpf.Toolkit.dll").ForEach( 
     {
         Copy-Item "$($wpfbuildpath)$($_)" $resultpath
     }
