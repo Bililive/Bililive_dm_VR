@@ -486,7 +486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7314d480a23bf4049a0a7aecc9c92ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Size: 800
+  Size: 1000
 --- !u!124 &308587213
 Behaviour:
   m_ObjectHideFlags: 0
