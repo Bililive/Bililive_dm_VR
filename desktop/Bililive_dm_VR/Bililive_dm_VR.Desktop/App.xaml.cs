@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -23,12 +24,16 @@ namespace Bililive_dm_VR.Desktop
                 return;
             }
 
-            Environment.SetEnvironmentVariable("PATH",
-                Environment.GetEnvironmentVariable("PATH") + ";" +
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\Managed")
-            );
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+            {
+                string fullpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Managed", args.Name.Split(',')[0] + ".dll");
+                if (File.Exists(fullpath))
+                    return Assembly.LoadFrom(fullpath);
+                else
+                    return null;
+            };
 
-            SetDllDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\Plugins"));
+            SetDllDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Plugins"));
 
         }
     }
