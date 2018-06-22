@@ -6,7 +6,7 @@ using System.Windows.Interop;
 
 namespace Bililive_dm_VR.Desktop
 {
-    internal class UnityHost : HwndHost
+    public class UnityHost : HwndHost
     {
         private const int WS_CHILD = 0x40000000;
         private const int WS_VISIBLE = 0x10000000;
@@ -20,11 +20,16 @@ namespace Bililive_dm_VR.Desktop
         private Process process;
         private IntPtr unityHWND = IntPtr.Zero;
 
+        public UnityHost() { }
+
         public UnityHost(double width, double height, string arguments)
         {
             hostHeight = (int)height;
             hostWidth = (int)width;
             args = arguments;
+
+            Height = height;
+            Width = width;
         }
 
 

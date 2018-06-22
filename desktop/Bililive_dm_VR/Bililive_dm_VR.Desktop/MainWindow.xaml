@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Bililive_dm_VR.Desktop"
         xmlns:model="clr-namespace:Bililive_dm_VR.Desktop.Model"
         mc:Ignorable="d" ResizeMode="NoResize"
-        Title="B站VR弹幕姬" Height="500" Width="800">
+        Title="B站VR弹幕姬" Height="540" Width="840">
     <Window.Resources>
         <ResourceDictionary>
             <local:IntColorBrushValueConverter x:Key="ICBVC"/>
@@ -17,16 +17,20 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Viewbox StretchDirection="Both" Stretch="UniformToFill">
-            <Grid Background="Gray" x:Name="Unity" MinHeight="500" MinWidth="500" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        </Viewbox>
+        <!--<Viewbox>
+            <Grid Background="Gray" x:Name="Unity" Height="500" Width="500" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        </Viewbox>-->
+
+        <Border x:Name="Unity" Height="500" Width="500">
+
+        </Border>
+
 
         <Grid Panel.ZIndex="99" Grid.ColumnSpan="99" Grid.RowSpan="99" Background="Wheat" Visibility="Collapsed" x:Name="OverlayOVRRuntimeNotInstalled">
             <TextBlock FontSize="36" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -43,7 +47,7 @@
                 请先把头戴显示器连接到电脑
             </TextBlock>
         </Grid>
-        
+
         <Grid Margin="15" Grid.Column="1">
             <Viewbox Stretch="None">
                 <StackPanel>

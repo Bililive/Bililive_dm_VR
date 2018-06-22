@@ -170,7 +170,10 @@ namespace Bililive_dm_VR.Desktop
             runUnity = false;
 #endif
             if (runUnity)
-                Unity.Children.Add(new UnityHost(Unity.ActualWidth, Unity.ActualHeight, server.PipeName));
+            {
+                // Unity.Children.Add(new UnityHost(Unity.ActualWidth, Unity.ActualHeight, server.PipeName));
+                Unity.Child = new UnityHost(500, 500, server.PipeName);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
