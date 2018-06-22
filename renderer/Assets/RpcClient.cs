@@ -152,6 +152,8 @@ public class RpcClient : MonoBehaviour
         Overlay.AnimationAlpha = profile.AnimationAlpha / 100f;
         Overlay.AnimationScale = profile.AnimationScale / 100f;
 
+        Displayer.overlayMessageType = profile.MessageType;
+
         SetBackgroundColor(profile.Color);
     }
 

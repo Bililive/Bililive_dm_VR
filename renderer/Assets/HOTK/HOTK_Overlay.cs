@@ -48,7 +48,7 @@ public class HOTK_Overlay : MonoBehaviour
     [Tooltip("Controls the offset for the Overlay.")]
     public Vector3 AnchorOffset = Vector3.zero;
 
-    public Vector3 AnchorRotation { get => transform.eulerAngles; set => transform.eulerAngles = value; }
+    public Vector3 AnchorRotation { get { return transform.eulerAngles; } set { transform.eulerAngles = value; } }
     #endregion
 
     #region Interal Vars
@@ -591,7 +591,7 @@ public class HOTK_Overlay : MonoBehaviour
         if (_hmdTracker != null && _hmdTracker.IsValid)
         {
             var result = new IntersectionResults();
-            hit = ComputeIntersection(_hmdTracker.gameObject.transform.position, _hmdTracker.gameObject.transform.forward, ref result);
+            hit = ComputeIntersection(_hmdTracker.gameObject.transform.localPosition, _hmdTracker.gameObject.transform.forward, ref result);
             //Debug.Log("Hit! " + gameObject.name);
         }
         HandleAnimateOnGaze(hit, ref changed);

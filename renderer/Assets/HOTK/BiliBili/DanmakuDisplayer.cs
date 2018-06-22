@@ -16,6 +16,8 @@ public class DanmakuDisplayer : MonoBehaviour
     }
     private static DanmakuDisplayer _instance;
 
+    public OverlayMessageType overlayMessageType = OverlayMessageType.None;
+
     public int ChatLineCount = 27; // Max line count for our display
 
     public InputField RoomIDBox;
@@ -71,14 +73,56 @@ public class DanmakuDisplayer : MonoBehaviour
 
     public void HandlerReceivedDanmaku(DanmakuModel model)
     {
-        if (model.MsgType == MsgTypeEnum.Comment)
+        switch (model.MsgType)
         {
-            AddMsg(model.UserName, model.CommentText, "FFFFFF");
+            case MsgTypeEnum.Comment:
+                {
+                    if (overlayMessageType.HasFlag(OverlayMessageType.Danmaku))
+                        AddMsg(model.UserName, model.CommentText, "FFFFFF");
+                }
+                break;
+            case MsgTypeEnum.GiftSend:
+                {
+                    if (overlayMessageType.HasFlag(OverlayMessageType.Gift))
+                    {
+                        AddMsg("收到礼物", model.UserName + " 赠送了 " + model.GiftName + " x " + model.GiftCount, "22ce12");
+                    }
+                }
+                break;
+            case MsgTypeEnum.GuardBuy:
+                {
+                    if (overlayMessageType.HasFlag(OverlayMessageType.Gift))
+                    {
+                        AddMsg("上船", model.UserName + " 购买了 " + model.GiftName + " x " + model.GiftCount, "22ce12");
+                    }
+                }
+                break;
+            case MsgTypeEnum.Welcome:
+                {
+                    if (overlayMessageType.HasFlag(OverlayMessageType.Welcome))
+                    {
+                        AddMsg("欢迎老爷", model.UserName + " 进入直播间", "8ec407");
+                    }
+                }
+                break;
+            case MsgTypeEnum.WelcomeGuard:
+                {
+                    if (overlayMessageType.HasFlag(OverlayMessageType.Welcome))
+                    {
+                        AddMsg("欢迎船员", model.UserName + " 进入直播间", "8ec407");
+                    }
+                }
+                break;
+            case MsgTypeEnum.LiveStart:
+            case MsgTypeEnum.LiveEnd:
+            case MsgTypeEnum.Unknown:
+            default:
+                {
+                    Debug.Log("Danmaku Received: " + model.MsgType.ToString());
+                }
+                break;
         }
-        else
-        {
-            Debug.Log("Danmaku Received: " + model.MsgType.ToString());
-        }
+
     }
 
     public void HandlerReceivedRoomCount(uint viewer)
