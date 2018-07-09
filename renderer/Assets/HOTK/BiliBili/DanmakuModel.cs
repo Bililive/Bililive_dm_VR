@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
 
 public enum MsgTypeEnum
 {
@@ -193,17 +196,17 @@ public class DanmakuModel
                 break;
             case "DANMU_MSG":
                 MsgType = MsgTypeEnum.Comment;
-                CommentText = obj["info"][1].str;
+                CommentText = obj["info"][1].str.EncodeNonAsciiCharacters();
                 UserID = (int)obj["info"][2][0].i;
-                UserName = obj["info"][2][1].str;
+                UserName = obj["info"][2][1].str.EncodeNonAsciiCharacters();
                 isAdmin = obj["info"][2][2].str == "1";
                 isVIP = obj["info"][2][3].str == "1";
                 UserGuardLevel = (int)obj["info"][7].i;
                 break;
             case "SEND_GIFT":
                 MsgType = MsgTypeEnum.GiftSend;
-                GiftName = obj["data"]["giftName"].str;
-                UserName = obj["data"]["uname"].str;
+                GiftName = obj["data"]["giftName"].str.EncodeNonAsciiCharacters();
+                UserName = obj["data"]["uname"].str.EncodeNonAsciiCharacters();
                 UserID = (int)obj["data"]["uid"].i;
                 // Giftrcost = obj["data"]["rcost"].ToString();
                 GiftCount = (int)obj["data"]["num"].i;
@@ -211,7 +214,7 @@ public class DanmakuModel
             case "WELCOME":
                 {
                     MsgType = MsgTypeEnum.Welcome;
-                    UserName = obj["data"]["uname"].str;
+                    UserName = obj["data"]["uname"].str.EncodeNonAsciiCharacters();
                     UserID = (int)obj["data"]["uid"].i;
                     isVIP = true;
                     // isAdmin = obj["data"]["isadmin"].str == "1";
@@ -221,7 +224,7 @@ public class DanmakuModel
             case "WELCOME_GUARD":
                 {
                     MsgType = MsgTypeEnum.WelcomeGuard;
-                    UserName = obj["data"]["username"].str;
+                    UserName = obj["data"]["username"].str.EncodeNonAsciiCharacters();
                     UserID = (int)obj["data"]["uid"].i;
                     UserGuardLevel = (int)obj["data"]["guard_level"].i;
                     break;
@@ -230,7 +233,7 @@ public class DanmakuModel
                 {
                     MsgType = MsgTypeEnum.GuardBuy;
                     UserID = (int)obj["data"]["uid"].i;
-                    UserName = obj["data"]["username"].str;
+                    UserName = obj["data"]["username"].str.EncodeNonAsciiCharacters();
                     UserGuardLevel = (int)obj["data"]["guard_level"].i;
                     GiftName = UserGuardLevel == 3 ? "舰长" : UserGuardLevel == 2 ? "提督" : UserGuardLevel == 1 ? "总督" : "";
                     GiftCount = (int)obj["data"]["num"].i;
@@ -242,5 +245,29 @@ public class DanmakuModel
                     break;
                 }
         }
+    }
+}
+
+internal static class Ex
+{
+    internal static string EncodeNonAsciiCharacters(this string value)
+    {
+        StringBuilder sb = new StringBuilder();
+        foreach (char c in value)
+        {
+            if (c > 127)
+            {
+                string encodedValue = "\\u" + ((int)c).ToString("x4");
+                sb.Append(encodedValue);
+            }
+            else
+            { sb.Append(c); }
+        }
+        return sb.ToString();
+    }
+
+    internal static string DecodeEncodedNonAsciiCharacters(this string value)
+    {
+        return Regex.Replace(value, @"\\u(?<Value>[a-zA-Z0-9]{4})", m => { return ((char)int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString(); });
     }
 }
