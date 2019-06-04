@@ -184,6 +184,17 @@ public class DanmakuModel
         JSON_Version = 2;
         var obj = new JSONObject(JSON);
         string cmd = obj["cmd"].str;
+        if (cmd.StartsWith("DANMU_MSG")) // "高考"fix
+        {
+            MsgType = MsgTypeEnum.Comment;
+            CommentText = obj["info"][1].str.DecodeEncodedNonAsciiCharacters();
+            UserID = (int)obj["info"][2][0].i;
+            UserName = obj["info"][2][1].str.DecodeEncodedNonAsciiCharacters();
+            isAdmin = obj["info"][2][2].str == "1";
+            isVIP = obj["info"][2][3].str == "1";
+            UserGuardLevel = (int)obj["info"][7].i;
+        }
+        else
         switch (cmd)
         {
             case "LIVE":
