@@ -567,7 +567,7 @@ PlayerSettings:
   il2cppCompilerConfiguration: {}
   incrementalIl2cppBuild:
     iOS: 1
-  allowUnsafeCode: 0
+  allowUnsafeCode: 1
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   apiCompatibilityLevelPerPlatform: {}
