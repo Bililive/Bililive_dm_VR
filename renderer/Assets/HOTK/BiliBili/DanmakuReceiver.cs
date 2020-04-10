@@ -136,7 +136,7 @@ public class DanmakuReceiver : MonoBehaviour
             while(this.Connected)
             {
                 NetStream.ReadB(stableBuffer, 0, 16);
-                Parse2Protocol(stableBuffer, out DanmakuProtocol protocol);
+                DanmakuProtocol protocol = Parse2Protocol(stableBuffer);
 
                 if (protocol.PacketLength < 16)
                 {
@@ -161,7 +161,7 @@ public class DanmakuReceiver : MonoBehaviour
                     {
                         while (deflate.Read(stableBuffer, 0, 16) > 0)
                         {
-                            Parse2Protocol(stableBuffer, out protocol);
+                            protocol = Parse2Protocol(stableBuffer);
                             payloadlength = protocol.PacketLength - 16;
                             if (payloadlength == 0)
                             {
@@ -298,13 +298,15 @@ public class DanmakuReceiver : MonoBehaviour
         ViewerCount = 0;
     }
 
-    private static unsafe void Parse2Protocol(byte[] buffer, out DanmakuProtocol protocol)
+    private static unsafe DanmakuProtocol Parse2Protocol(byte[] buffer)
     {
+        DanmakuProtocol protocol;
         fixed (byte* ptr = buffer)
         {
             protocol = *(DanmakuProtocol*)ptr;
         }
         protocol.ChangeEndian();
+        return protocol;
     }
 
     private struct DanmakuProtocol
